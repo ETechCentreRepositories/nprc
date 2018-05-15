@@ -4,7 +4,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/red</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/red</item>
         <item name="android:font" tools:targetApi="o">@font/segoe_ui</item>
