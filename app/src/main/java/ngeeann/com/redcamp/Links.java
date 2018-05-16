@@ -3,9 +3,9 @@ package ngeeann.com.redcamp;
 public class Links {
     //link to main activity stuff
     String camp_programme = "www.np.edu.sg";
-    String course_finder = "www.np.edu.sg";
-    String campus_explorer = "www.np.edu.sg";
-    String ask_red_camp = "www.np.edu.sg";
+    String course_finder = "https://www.np.edu.sg/Pages/diplomas.aspx";
+    String campus_explorer = "https://www.np.edu.sg/pages/tour.aspx";
+    String ask_red_camp = "https://www.np.edu.sg/redcamp/pages/askredcamp.aspx";
 
     //API
     String login = "http://bryanlowsk.com/RedCamp/API/login.php";
