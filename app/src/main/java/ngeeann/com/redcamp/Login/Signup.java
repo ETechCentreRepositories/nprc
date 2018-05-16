@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -15,9 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,8 @@ public class Signup extends AppCompatActivity {
     TextView school, diet, tnu, pp, pwdErrorMsg, emailErrorMsg, nricErrorMessage, schoolErrorMessage, dietErrorMessage;
     Links link;
     AppCompatCheckBox checkBox;
+    LinearLayout progressbar;
+    ConstraintLayout ui;
 
 
     private int mYear, mMonth, mDay;
@@ -75,6 +80,9 @@ public class Signup extends AppCompatActivity {
         pp = findViewById(R.id.pp);
         pp.setOnClickListener(v->ppDialogue());
         checkBox = findViewById(R.id.checkbox);
+        progressbar = findViewById(R.id.progressbar);
+        progressbar.setVisibility(View.GONE);
+        ui = findViewById(R.id.ui);
 
 
         String getMethod = getIntent.getStringExtra("method");
@@ -122,7 +130,11 @@ public class Signup extends AppCompatActivity {
         diet.setOnClickListener(v -> selectDiet());
 
         submit_user.setOnClickListener((View v) -> {
+            disableUI();
+            progressbar.setVisibility(View.VISIBLE);
             if (!checkEmpty()) {
+                enableUI();
+                progressbar.setVisibility(View.GONE);
                 Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
             } else {
                 Log.e("CHECK VALIDATION: ", checkValidation().toString());
@@ -133,14 +145,20 @@ public class Signup extends AppCompatActivity {
                             Register register = new Register();
                             register.execute(link.getRegister());
                         }else{
+                            enableUI();
+                            progressbar.setVisibility(View.GONE);
                             Toast.makeText(this, "Please switch on your data or wifi",Toast.LENGTH_SHORT).show();
                         }
                     }else{
+                        enableUI();
+                        progressbar.setVisibility(View.GONE);
                         Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy",Toast.LENGTH_SHORT).show();
 
                     }
 
                 }else{
+                    enableUI();
+                    progressbar.setVisibility(View.GONE);
                     Toast.makeText(this, "There are still some errors",Toast.LENGTH_SHORT).show();
 
                 }
@@ -234,13 +252,13 @@ public class Signup extends AppCompatActivity {
                             + "&password="
                             + password.getText().toString()
                             + "&status=0");
-
-
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            enableUI();
+            progressbar.setVisibility(View.GONE);
             Log.e("JSON RETURN: ", s.toString());
             String[] splitString = s.split("");
             Log.e("ITEM RESULT", splitString[2]);
@@ -344,16 +362,16 @@ public class Signup extends AppCompatActivity {
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, monthOfYear, dayOfMonth) -> dob.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth), mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
-    public void selectSchool() {
-        final CharSequence[] items = {"ADMIRALTY SECONDARY SCHOOL"
-                , "AHMAD IBRAHIM SECONDARY SCHOOL"
-                , "ANDERSON SECONDARY SCHOOL"
+        public void selectSchool() {
+            final CharSequence[] items = {"ADMIRALTY SECONDARY SCHOOL"
+                    , "AHMAD IBRAHIM SECONDARY SCHOOL"
+                    , "ANDERSON SECONDARY SCHOOL"
                 , "ANG MO KIO SECONDARY SCHOOL"
                 , "ANGLICAN HIGH SCHOOL"
                 , "ANGLO-CHINESE SCHOOL (BARKER ROAD)"
@@ -527,6 +545,18 @@ public class Signup extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+    public void disableUI(){
+        for (int i =0; i < ui.getChildCount(); i++){
+            View child = ui.getChildAt(i);
+            child.setEnabled(false);
+        }
+    }
+    public void enableUI(){
+        for (int i =0; i < ui.getChildCount(); i++){
+            View child = ui.getChildAt(i);
+            child.setEnabled(true);
+        }
     }
 
 

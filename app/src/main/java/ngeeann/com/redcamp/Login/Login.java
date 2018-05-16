@@ -2,17 +2,20 @@ package ngeeann.com.redcamp.Login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -30,6 +33,12 @@ public class Login extends AppCompatActivity {
     EditText email, password;
     Links link;
     Toolbar toolbar;
+    LinearLayout progressbar;
+    AppCompatCheckBox checkBox;
+
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
+    SharedPreferences sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +49,33 @@ public class Login extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
+        progressbar = findViewById(R.id.progressbar);
+        progressbar.setVisibility(View.GONE);
         login = findViewById(R.id.login);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        checkBox = findViewById(R.id.checkbox);
         login.setOnClickListener(v -> {
-            if (checkNetwork()) {
-                Boolean checkNetworkState = checkNetwork();
-                if (!checkNetworkState) {
-                    Toast.makeText(Login.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
-                } else {
-                    DoLogin login = new DoLogin();
-                    login.execute(link.getLogin());
-                }
+            progressbar.setVisibility(View.VISIBLE);
+            login.setEnabled(false);
+            if (checkEmpty()) {
+                if (checkNetwork()) {
+                    Boolean checkNetworkState = checkNetwork();
+                    if (!checkNetworkState) {
+                        progressbar.setVisibility(View.GONE);
+                        login.setEnabled(true);
+                        Toast.makeText(Login.this, "Please Switch on your wifi or Data", Toast.LENGTH_SHORT).show();
+                    } else {
 
+                        DoLogin login = new DoLogin();
+                        login.execute(link.getLogin());
+                    }
+
+                }
+            } else {
+                progressbar.setVisibility(View.GONE);
+                login.setEnabled(true);
+                Toast.makeText(Login.this, "Please fill in the fields", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -89,6 +112,7 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressbar.setVisibility(View.GONE);
             Log.e("JSON RETURN: ", s.toString());
             try {
                 JSONObject result = new JSONObject(s);
@@ -103,7 +127,30 @@ public class Login extends AppCompatActivity {
                     String email = user.getString("email");
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
-                    startActivity(new Intent(Login.this, Home.class));
+                    login.setEnabled(true);
+                    if (checkBox.isChecked()){
+                        //remember me
+                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sessionManager.edit();
+                        editor.putString(SESSION_ID, "200");
+                        editor.putString("email", email);
+                        editor.putString("name", name);
+                        editor.putString("dob", user.getString("dob"));
+                        editor.apply();
+                        startActivity(new Intent(Login.this, Home.class).putExtra("name", name).putExtra("email", email).putExtra("dob", user.getString("dob")));
+                        finish();
+                    }else{
+                        startActivity(new Intent(Login.this, Home.class).putExtra("name", name).putExtra("email", email).putExtra("dob", user.getString("dob")));
+                        finish();
+
+                    }
+
+
+                } else {
+                    progressbar.setVisibility(View.GONE);
+                    login.setEnabled(true);
+                    Toast.makeText(Login.this, "Wrong Credentials", Toast.LENGTH_SHORT).show();
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -111,6 +158,10 @@ public class Login extends AppCompatActivity {
 
         }
 
+    }
+
+    public Boolean checkEmpty() {
+        return !email.getText().toString().isEmpty() && !password.getText().toString().isEmpty();
     }
 
 }

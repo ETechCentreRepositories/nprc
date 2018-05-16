@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/ui"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
     tools:context=".Login.Signup">
@@ -133,6 +134,7 @@
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF"
                     android:textSize="15sp" />
+
                 <EditText
                     android:id="@+id/mobile"
                     android:layout_width="match_parent"
@@ -179,9 +181,9 @@
                         android:layout_weight="9"
                         android:background="@drawable/login_field_background"
                         android:hint="date of birth(YYYY-MM-DD)"
+                        android:inputType="date"
                         android:padding="10dp"
                         android:textColor="#FFFFFF"
-                        android:inputType="date"
                         android:textColorHint="#90FFFFFF"
                         android:textSize="15sp" />
 
@@ -193,11 +195,13 @@
                         android:layout_weight="1"
                         android:src="@drawable/ic_date_range" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/schoolErrorMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/red" />
+
                 <TextView
                     android:id="@+id/school"
                     android:layout_width="match_parent"
@@ -209,11 +213,13 @@
                     android:text="School"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF" />
+
                 <TextView
                     android:id="@+id/dietErrorMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/red" />
+
                 <TextView
                     android:id="@+id/diet"
                     android:layout_width="match_parent"
@@ -300,6 +306,18 @@
                     android:textColor="#FFFFFF" />
             </LinearLayout>
         </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#97000000"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -1,24 +1,40 @@
 package ngeeann.com.redcamp.Content;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 
 public class Home extends AppCompatActivity {
     RelativeLayout Btn1,Btn2,Btn3,Btn4;
+
+    TextView welcomeName;
+    public static final String SESSION = "login_status";
+    SharedPreferences sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         Links links = new Links();
+        welcomeName = findViewById(R.id.welcomeName);
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+        String fullname = sessionManager.getString("name", null);
+        String[] name = fullname.split(" ");
+        String firstName = name[0];
+        welcomeName.setText(String.format("Hi %s!",firstName));
+        Log.e("name", sessionManager.getString("name", null));
 
         Btn1 = findViewById(R.id.button1);
         Btn2 = findViewById(R.id.button2);
@@ -26,7 +42,7 @@ public class Home extends AppCompatActivity {
         Btn4 = findViewById(R.id.button4);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            Btn1.setOnClickListener(v-> startActivity(new Intent(this,WebView.class)
+            Btn1.setOnClickListener(v-> startActivity(new Intent(this,CampProgramme.class)
                     .putExtra("links", links.getCamp_programme())
                     .putExtra("name","Camp Programme")));
             Btn3.setOnClickListener(v-> startActivity(new Intent(this,WebView.class)
@@ -34,7 +50,7 @@ public class Home extends AppCompatActivity {
                     .putExtra("name","Campus Explorer")));
             Btn2.setOnClickListener(v-> startActivity(new Intent(this,WebView.class)
                     .putExtra("links", links.getCourse_finder())
-                    .putExtra("name","Course Finder")));
+                    .putExtra("name","Path of Discovery")));
             Btn4.setOnClickListener(v-> startActivity(new Intent(this,WebView.class)
                     .putExtra("links", links.getAsk_red_camp())
                     .putExtra("name","Ask Red Camp")));
