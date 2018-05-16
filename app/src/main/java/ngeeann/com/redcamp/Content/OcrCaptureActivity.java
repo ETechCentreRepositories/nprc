@@ -1,8 +1,5 @@
 package ngeeann.com.redcamp.Content;
 
-
-
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -68,10 +65,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.ocr_capture);
+        setContentView(R.layout.activity_ocr_capture);
 
-        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
+        mPreview = findViewById(R.id.preview);
+        mGraphicOverlay = findViewById(R.id.graphicOverlay);
 
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
@@ -111,13 +108,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         final Activity thisActivity = this;
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions,
-                        RC_HANDLE_CAMERA_PERM);
-            }
-        };
+        View.OnClickListener listener = view -> ActivityCompat.requestPermissions(thisActivity, permissions,
+                RC_HANDLE_CAMERA_PERM);
 
         Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
                 Snackbar.LENGTH_INDEFINITE)
@@ -222,11 +214,11 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     /**
      * Callback for the result from requesting permissions. This method
      * is invoked for every call on {@link #requestPermissions(String[], int)}.
+     * </p>
      * <p>
      * <strong>Note:</strong> It is possible that the permissions request interaction
      * with the user is interrupted. In this case you will receive empty permissions
      * and results arrays which should be treated as a cancellation.
-     * </p>
      *
      * @param requestCode  The request code passed in {@link #requestPermissions(String[], int)}.
      * @param permissions  The requested permissions. Never null.
@@ -257,11 +249,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         Log.e(TAG, "Permission not granted: results len = " + grantResults.length +
                 " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
 
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                finish();
-            }
-        };
+        DialogInterface.OnClickListener listener = (dialog, id) -> finish();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Multitracker sample")

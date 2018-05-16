@@ -1,5 +1,6 @@
 package ngeeann.com.redcamp.ui.camera;
 
+
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;

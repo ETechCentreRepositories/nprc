@@ -16,25 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/background"/>
-
-    <RelativeLayout
-        android:layout_margin="30dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
-
-        <TextView
-            android:id="@+id/daysLeft"
-            android:layout_marginBottom="100dp"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/light_blue"
-            android:text="1 DAY"
-            android:textAlignment="center"
-            android:textSize="70sp"/>
-
-
-    </RelativeLayout>
-
+    <ImageView
+        android:layout_margin="10dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"/>
 </RelativeLayout>

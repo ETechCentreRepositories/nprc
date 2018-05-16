@@ -6,15 +6,20 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 
+import java.util.Objects;
+
+import ngeeann.com.redcamp.Content.Home;
 import ngeeann.com.redcamp.Content.MainActivity;
 import ngeeann.com.redcamp.Login.LaunchScreen;
 import ngeeann.com.redcamp.Login.Login;
@@ -56,12 +61,12 @@ public class Splash extends AppCompatActivity {
                 startActivity(i);
                 finish();
             } else if (sessionManager.getString(SESSION_ID, null).equals("400")) {
-                Intent i = new Intent(Splash.this, Login.class);
+                Intent i = new Intent(Splash.this, LoginLauncher.class);
                 Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
                 startActivity(i);
                 finish();
             } else if(sessionManager.getString(SESSION_ID, null).equals("200")){
-                Intent i = new Intent(Splash.this, MainActivity.class);
+                Intent i = new Intent(Splash.this, Home.class);
                 Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
                 startActivity(i);
                 finish();

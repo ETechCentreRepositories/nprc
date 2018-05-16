@@ -10,43 +10,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="0dp"
-        android:layout_marginRight="0dp"
         android:background="@drawable/login_background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="0dp"
-        android:layout_marginRight="0dp"
         android:background="#90000000" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/logo" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical"
-        android:layout_marginBottom="40dp">
-
         <TextView
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -54,45 +46,53 @@
             android:textColor="#FFFFFF" />
 
         <Button
+            android:id="@+id/fbsignup"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/fb_button"
             android:text="Register with facebook"
             android:textColor="#FFFFFF" />
 
         <Button
+            android:id="@+id/googlesignup"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/button_red_round"
             android:text="Register with Google+"
             android:textColor="#FFFFFF" />
+
         <Button
+            android:id="@+id/signup"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/button_light_blue_round"
             android:text="Create Account"
             android:textColor="#FFFFFF" />
+
         <TextView
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:text="OR LOGIN"
             android:textColor="#FFFFFF" />
+
         <Button
+            android:id="@+id/login"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/button_red_round"

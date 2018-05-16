@@ -4,6 +4,253 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background"
     tools:context=".Login.Signup">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#90000000" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/toolbarHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back"/>
+            <TextView
+                android:textColor="#FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="CREATE ACCOUNT"/>
+        </RelativeLayout>
+        <ScrollView
+            android:layout_below="@id/toolbarHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/cfmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/login_field_background"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF"
+                    android:textSize="15sp" />
+
+                <Button
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey"
+                    android:text="SCAN STUDENT EZ-LINK"
+                    android:textColor="#90000000" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="*scan student ez-link card to fill up details or complete form below"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF"
+                    android:textSize="15sp" />
+
+                <EditText
+
+                    android:id="@+id/nric"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:hint="NRIC number"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF"
+                    android:textSize="15sp" />
+                <LinearLayout
+                    android:weightSum="10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/dob"
+                        android:layout_weight="9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/login_field_background"
+                        android:hint="Date of Birth"
+                        android:padding="10dp"
+                        android:textSize="15sp"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#90FFFFFF"/>
+                    <ImageButton
+                        android:id="@+id/selectdob"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_weight="1"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_date_range"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:drawableRight="@drawable/ic_arrow_drop_down"
+                    android:padding="10dp"
+                    android:text="School"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF" />
+
+                <TextView
+                    android:id="@+id/diet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:drawableRight="@drawable/ic_arrow_drop_down"
+                    android:padding="10dp"
+                    android:text="Dietary Requirements"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:buttonTint="#FFFFFF" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="I have read and agreed to the "
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tnu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Terms of Use"
+                                android:textColor="@color/red"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" and "
+                                android:textColor="#FFFFFF"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/pp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Privacy Policy"
+                                android:textColor="@color/red"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:layout_marginBottom="30dp"
+                    android:text="To continue, you mucst check and acknowledge you have read and agreed to the Terms of use and Privacy Policy"/>
+                <Button
+                    android:id="@+id/submit_user"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/button_red_round"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="SIGN UP NOW!"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>
