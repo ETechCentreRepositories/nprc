@@ -10,6 +10,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -41,14 +43,21 @@ public class Signup extends AppCompatActivity {
     EditText email, password, cfmPassword, name, nric, dob, mobile;
     TextView school, diet, tnu, pp, pwdErrorMsg, emailErrorMsg, nricErrorMessage, schoolErrorMessage, dietErrorMessage;
     Links link;
+    AppCompatCheckBox checkBox;
 
 
     private int mYear, mMonth, mDay;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(v -> finish());
         Intent getIntent = getIntent();
         submit_user = findViewById(R.id.submit_user);
         selectdob = findViewById(R.id.selectdob);
@@ -62,14 +71,29 @@ public class Signup extends AppCompatActivity {
         mobile = findViewById(R.id.mobile);
         diet = findViewById(R.id.diet);
         tnu = findViewById(R.id.tnu);
+        tnu.setOnClickListener(v->tncDialogue());
         pp = findViewById(R.id.pp);
+        pp.setOnClickListener(v->ppDialogue());
+        checkBox = findViewById(R.id.checkbox);
 
-        try {
-            JSONObject userProfile = new JSONObject(getIntent.getStringExtra("userProfile"));
-            name.setText(userProfile.getString("name"));
-            email.setText(userProfile.getString("email"));
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        String getMethod = getIntent.getStringExtra("method");
+        switch (getMethod) {
+            case "facebook":
+                try {
+                    JSONObject userProfile = new JSONObject(getIntent.getStringExtra("userProfile"));
+                    name.setText(userProfile.getString("name"));
+                    email.setText(userProfile.getString("email"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "google":
+
+                break;
+            default:
+
+                break;
         }
 
         //Error Messages
@@ -101,11 +125,24 @@ public class Signup extends AppCompatActivity {
             if (!checkEmpty()) {
                 Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
             } else {
-                checkValidation();
-                if (checkNetwork()) {
-                    Links link = new Links();
-                    Register register = new Register();
-                    register.execute(link.getRegister());
+                Log.e("CHECK VALIDATION: ", checkValidation().toString());
+                if (checkValidation()) {
+                    if(checkBox.isChecked()){
+                        if (checkNetwork()) {
+                            Links link = new Links();
+                            Register register = new Register();
+                            register.execute(link.getRegister());
+                        }else{
+                            Toast.makeText(this, "Please switch on your data or wifi",Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy",Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }else{
+                    Toast.makeText(this, "There are still some errors",Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -154,6 +191,25 @@ public class Signup extends AppCompatActivity {
         return false;
     }
 
+    public void tncDialogue(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+        dialog.setCancelable(false);
+        dialog.setTitle("Terms of use");
+        dialog.setMessage("Terms of use here");
+        dialog.setPositiveButton("OK", (dialogInterface, i) ->  {});
+        AlertDialog dialogue = dialog.create();
+        dialogue.show();
+    }
+    public void ppDialogue(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+        dialog.setCancelable(false);
+        dialog.setTitle("Privacy Policy");
+        dialog.setMessage("privacy policy here");
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> {});
+        AlertDialog dialogue = dialog.create();
+        dialogue.show();
+    }
+
     private class Register extends AsyncTask<String, Void, String> {
 
         @Override
@@ -188,9 +244,9 @@ public class Signup extends AppCompatActivity {
             Log.e("JSON RETURN: ", s.toString());
             String[] splitString = s.split("");
             Log.e("ITEM RESULT", splitString[2]);
-            if(splitString[2].equals("D")){
+            if (splitString[2].equals("D")) {
                 Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 try {
                     JSONObject result = new JSONObject(s);
                     int status = result.getInt("status");
@@ -199,6 +255,15 @@ public class Signup extends AppCompatActivity {
                     Log.i("JSON STATUS: ", String.valueOf(status));
                     if (status == 200) {
 //                    startActivity(new Intent(Signup.this, Home.class));
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle("Registration");
+                        dialog.setMessage("Thank you for registering. We will send you an email soon! thank you!");
+                        dialog.setPositiveButton("OK", (dialogInterface, i) ->  finish());
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -207,37 +272,67 @@ public class Signup extends AppCompatActivity {
         }
     }
 
-    public void checkValidation() {
+    public Boolean checkValidation() {
+        boolean[] checkallvalidation = new boolean[5];
         if (!validate_email(email.getText().toString())) {
             emailErrorMsg.setVisibility(View.VISIBLE);
             emailErrorMsg.setText("Your Email is invalid");
+            checkallvalidation[0] = false;
+
         } else {
             emailErrorMsg.setVisibility(View.GONE);
+            checkallvalidation[0] = true;
         }
         if (!validate_nric(nric.getText().toString())) {
             nricErrorMessage.setVisibility(View.VISIBLE);
             nricErrorMessage.setText("Your NRIC is invalid!");
+            checkallvalidation[1] = false;
+
         } else {
             nricErrorMessage.setVisibility(View.GONE);
+            checkallvalidation[1] = true;
         }
         if (!checkPassword(password.getText().toString(), cfmPassword.getText().toString())) {
             pwdErrorMsg.setVisibility(View.VISIBLE);
             pwdErrorMsg.setText("Your passwords do not match!");
+            checkallvalidation[2] = false;
+
         } else {
             pwdErrorMsg.setVisibility(View.GONE);
+            checkallvalidation[2] = true;
         }
         if (checkSchool(school.getText().toString())) {
             schoolErrorMessage.setVisibility(View.VISIBLE);
             schoolErrorMessage.setText("Please Select a School");
+            checkallvalidation[3] = false;
+
         } else {
             schoolErrorMessage.setVisibility(View.GONE);
+            checkallvalidation[3] = true;
         }
         if (checkDiet(diet.getText().toString())) {
             dietErrorMessage.setVisibility(View.VISIBLE);
             dietErrorMessage.setText("Please select one");
+            checkallvalidation[4] = false;
+
         } else {
             dietErrorMessage.setVisibility(View.GONE);
+            checkallvalidation[4] = true;
         }
+        ArrayList<Boolean> falseItems = new ArrayList<>();
+        Log.e("VALIDATED LENGTH: ", checkallvalidation.length + "");
+        for (int i = 0; i < checkallvalidation.length; i++) {
+            Log.e("VALIDATED " + i + ":", String.valueOf(checkallvalidation[i]));
+            if(!checkallvalidation[i]){
+                falseItems.add(checkallvalidation[i]);
+            }
+        }
+        if(falseItems.size()>=1){
+            return false;
+        }else{
+            return true;
+        }
+
 
     }
 
@@ -411,7 +506,6 @@ public class Signup extends AppCompatActivity {
                 , "MERIDIAN SECONDARY SCHOOL"
                 , "OTHERS"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select a School");
         builder.setItems(items, (dialog, item) -> {
             // Do something with the selection
             school.setText(items[item]);

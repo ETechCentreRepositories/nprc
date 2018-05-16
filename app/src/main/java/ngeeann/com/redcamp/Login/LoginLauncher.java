@@ -91,7 +91,7 @@ public class LoginLauncher extends AppCompatActivity {
             editor.apply();
         });
         signup.setOnClickListener((View v) -> {
-            startActivity(new Intent(this, Signup.class));
+            startActivity(new Intent(this, Signup.class).putExtra("method","normal"));
         });
         fbsignup.setOnClickListener((View v) -> {
 //            startActivity(new Intent(this, Signup.class));
@@ -100,7 +100,7 @@ public class LoginLauncher extends AppCompatActivity {
             }
 
         });
-        googlesignup.setOnClickListener((View v) -> startActivity(new Intent(this, Signup.class)));
+        googlesignup.setOnClickListener((View v) -> startActivity(new Intent(this, Signup.class).putExtra("method","google")));
     }
 
     @Override
@@ -116,6 +116,7 @@ public class LoginLauncher extends AppCompatActivity {
                         Log.wtf("jsonString: ", "" + json_object);
                         Intent intent = new Intent(LoginLauncher.this, Signup.class);
                         intent.putExtra("userProfile", json_object.toString());
+                        intent.putExtra("method", "facebook");
                         LoginManager.getInstance().logOut();
                         startActivity(intent);
                     });
@@ -150,7 +151,7 @@ public class LoginLauncher extends AppCompatActivity {
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
 
             // notify user you are not online
-            Toast.makeText(this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please switch on your data or wifi",Toast.LENGTH_SHORT).show();
             return false;
         }
         return false;
