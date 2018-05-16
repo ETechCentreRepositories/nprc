@@ -9,7 +9,7 @@ public class Links {
 
     //API
     String login = "http://bryanlowsk.com/RedCamp/API/login.php";
-    String register = "http://bryanlowsk.com/RedCamp/API/addUser.php";
+    String register = "http://bryanlowsk.com/RedCamp/API/addUsers.php";
 
 
     public String getCamp_programme() {

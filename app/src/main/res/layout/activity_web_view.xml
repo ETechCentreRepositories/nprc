@@ -26,13 +26,14 @@
     </RelativeLayout>
 
     <ProgressBar
+        android:background="@color/black"
         android:layout_below="@id/toolbarLayout"
         android:id="@+id/pb"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:progressDrawable="@drawable/progressbar_states"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <WebView
         android:id="@+id/web_view"

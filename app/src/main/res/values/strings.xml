@@ -12,4 +12,6 @@
     <string name="ocr_success">Text read successfully</string>
     <string name="ocr_failure">No text captured</string>
     <string name="ocr_error">"Error reading text: %1$s"</string>
+    <string name="facebook_app_id">836119169917710</string>
+    <string name="fb_login_protocol_scheme">fb836119169917710</string>
 </resources>

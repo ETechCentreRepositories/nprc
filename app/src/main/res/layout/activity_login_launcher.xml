@@ -45,17 +45,35 @@
             android:text="CREATE ACCOUNT"
             android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/fbsignup"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/fb_button"
-            android:text="Register with facebook"
-            android:textColor="#FFFFFF" />
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/fblogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/fbsignup"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/fb_button"
+                android:text="Register with facebook"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/googlesignup"

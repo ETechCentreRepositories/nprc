@@ -11,30 +11,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#90000000" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/toolbarHeader"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize">
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_arrow_back"/>
+                app:navigationIcon="@drawable/ic_arrow_back" />
+
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="CREATE ACCOUNT"/>
+                android:text="CREATE ACCOUNT"
+                android:textColor="#FFFFFF" />
         </RelativeLayout>
+
         <ScrollView
-            android:layout_below="@id/toolbarHeader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbarHeader">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,6 +51,11 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/emailErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red" />
 
                 <EditText
                     android:id="@+id/email"
@@ -60,6 +70,7 @@
                     android:textColorHint="#90FFFFFF"
                     android:textSize="15sp" />
 
+
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
@@ -73,6 +84,12 @@
                     android:textColorHint="#90FFFFFF"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/pwdErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red" />
+
                 <EditText
                     android:id="@+id/cfmPassword"
                     android:layout_width="match_parent"
@@ -85,6 +102,7 @@
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF"
                     android:textSize="15sp" />
+
 
                 <Button
                     android:id="@+id/btnScan"
@@ -115,9 +133,26 @@
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF"
                     android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_field_background"
+                    android:hint="Mobile"
+                    android:inputType="phone"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#90FFFFFF"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/nricErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red" />
 
                 <EditText
-
                     android:id="@+id/nric"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,32 +163,40 @@
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF"
                     android:textSize="15sp" />
+
                 <LinearLayout
-                    android:weightSum="10"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
                     <EditText
                         android:id="@+id/dob"
-                        android:layout_weight="9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="9"
                         android:background="@drawable/login_field_background"
-                        android:hint="Date of Birth"
+                        android:hint="DD-MM-YYYY"
                         android:padding="10dp"
-                        android:textSize="15sp"
                         android:textColor="#FFFFFF"
-                        android:textColorHint="#90FFFFFF"/>
+                        android:textColorHint="#90FFFFFF"
+                        android:textSize="15sp" />
+
                     <ImageButton
                         android:id="@+id/selectdob"
                         style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:layout_weight="1"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_date_range"/>
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_date_range" />
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/schoolErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red" />
                 <TextView
                     android:id="@+id/school"
                     android:layout_width="match_parent"
@@ -165,7 +208,11 @@
                     android:text="School"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF" />
-
+                <TextView
+                    android:id="@+id/dietErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red" />
                 <TextView
                     android:id="@+id/diet"
                     android:layout_width="match_parent"
@@ -233,21 +280,23 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
                 <TextView
-                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="10sp"
                     android:layout_marginBottom="30dp"
-                    android:text="To continue, you mucst check and acknowledge you have read and agreed to the Terms of use and Privacy Policy"/>
+                    android:text="To continue, you mucst check and acknowledge you have read and agreed to the Terms of use and Privacy Policy"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp" />
+
                 <Button
                     android:id="@+id/submit_user"
-                    android:textColor="#FFFFFF"
-                    android:background="@drawable/button_red_round"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:text="SIGN UP NOW!"/>
+                    android:background="@drawable/button_red_round"
+                    android:text="SIGN UP NOW!"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
         </ScrollView>
 
