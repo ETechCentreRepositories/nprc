@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ngeeann.com.redcamp">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -41,7 +43,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Content.WebView" />
-        <activity android:name=".Content.HomeActivity"></activity>
+        <activity android:name=".Content.OcrCaptureActivity"></activity>
     </application>
 
 </manifest>
