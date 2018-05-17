@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "107818119637",
+    "firebase_url": "https://redcamp-f0b38.firebaseio.com",
+    "project_id": "redcamp-f0b38",
+    "storage_bucket": "redcamp-f0b38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107818119637:android:41baeddb641c6984",
+        "android_client_info": {
+          "package_name": "ngeeann.com.redcamp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107818119637-1fbnbs5utjqhjelfue8eufsdb7o3es6k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ngeeann.com.redcamp",
+            "certificate_hash": "8c14cc96b50d0e8ecfcf12a1ac3f5b6b32581032"
+          }
+        },
+        {
+          "client_id": "107818119637-mbepo18e66rnkapv41lg0u6d0gip5ueg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgXn1jCZT3zs1ZdMI4CvxygjzVUlh4SxM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107818119637-mbepo18e66rnkapv41lg0u6d0gip5ueg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -126,10 +126,6 @@ public class CameraSource {
     private String mFocusMode = null;
     private String mFlashMode = null;
 
-    // These instances need to be held onto to avoid GC of their underlying resources.  Even though
-    // these aren't used outside of the method that creates them, they still must have hard
-    // references maintained to them.
-    private SurfaceView mDummySurfaceView;
     private SurfaceTexture mDummySurfaceTexture;
 
     /**
@@ -329,13 +325,8 @@ public class CameraSource {
 
             // SurfaceTexture was introduced in Honeycomb (11), so if we are running and
             // old version of Android. fall back to use SurfaceView.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                mDummySurfaceTexture = new SurfaceTexture(DUMMY_TEXTURE_NAME);
-                mCamera.setPreviewTexture(mDummySurfaceTexture);
-            } else {
-                mDummySurfaceView = new SurfaceView(mContext);
-                mCamera.setPreviewDisplay(mDummySurfaceView.getHolder());
-            }
+            mDummySurfaceTexture = new SurfaceTexture(DUMMY_TEXTURE_NAME);
+            mCamera.setPreviewTexture(mDummySurfaceTexture);
             mCamera.startPreview();
 
             mProcessingThread = new Thread(mFrameProcessor);

@@ -24,6 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,6 +88,11 @@ public class Signup extends AppCompatActivity {
         ui = findViewById(R.id.ui);
 
 
+
+
+
+
+
         String getMethod = getIntent.getStringExtra("method");
         switch (getMethod) {
             case "facebook":
@@ -97,6 +105,13 @@ public class Signup extends AppCompatActivity {
                 }
                 break;
             case "google":
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user!=null) {
+                    String getName = user.getDisplayName();
+                    String getEemail = user.getEmail();
+                    name.setText(getName);
+                    email.setText(getEemail);
+                }
 
                 break;
             default:
