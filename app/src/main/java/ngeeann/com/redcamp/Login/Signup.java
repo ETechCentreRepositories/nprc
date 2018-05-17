@@ -111,6 +111,7 @@ public class Signup extends AppCompatActivity {
                     String getEemail = user.getEmail();
                     name.setText(getName);
                     email.setText(getEemail);
+                    FirebaseAuth.getInstance().signOut();
                 }
 
                 break;

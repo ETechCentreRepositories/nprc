@@ -29,7 +29,7 @@
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"/>
+            android:layout_height="?android:attr/actionBarSize" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -38,12 +38,13 @@
             android:src="@drawable/logo" />
 
         <TextView
-            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="CREATE ACCOUNT"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,18 +76,38 @@
                 android:textColor="#FFFFFF" />
         </RelativeLayout>
 
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/googlesignup"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/button_red_round"
-            android:text="Register with Google+"
-            android:textColor="#FFFFFF" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/googlelogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="Register with Google+"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/googlesignup"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/button_red_round"
+                android:text="Register with Google+"
+                android:textColor="#FFFFFF" />
+
+        </RelativeLayout>
+
+
 
         <Button
             android:id="@+id/signup"
@@ -100,12 +121,12 @@
             android:textColor="#FFFFFF" />
 
         <TextView
-            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="OR LOGIN"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/login"

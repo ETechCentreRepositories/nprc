@@ -79,8 +79,8 @@ public class LoginLauncher extends AppCompatActivity {
         setContentView(R.layout.activity_login_launcher);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
-        //googlesignup = findViewById(R.id.googlesignup);
-        googleButton = (SignInButton) findViewById(R.id.googlesignup);
+        googlesignup = findViewById(R.id.googlesignup);
+        googleButton = findViewById(R.id.googlelogin);
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -97,21 +97,14 @@ public class LoginLauncher extends AppCompatActivity {
         }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(LoginLauncher.this, Signup.class).putExtra("method","google"));
-                }
+        mAuthListener = firebaseAuth -> {
+            if (firebaseAuth.getCurrentUser() != null) {
+                startActivity(new Intent(LoginLauncher.this, Signup.class).putExtra("method","google"));
             }
         };
 
-        googleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        googlesignup.setOnClickListener(v-> signIn());
+//        googleButton.setOnClickListener(v -> );
 
 
         fbsignup = findViewById(R.id.fbsignup);
