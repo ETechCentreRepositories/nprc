@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomePage">
+
+    <!-- TODO: Update blank fragment layout -->
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <RelativeLayout
+           android:id="@+id/header"
+           android:layout_width="match_parent"
+           android:layout_height="200dp"
+           android:gravity="top">
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentStart="true"
+               android:layout_margin="20dp"
+               android:orientation="vertical">
+
+               <TextView
+                   android:id="@+id/welcomeName"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginBottom="10dp"
+                   android:background="@android:color/darker_gray"
+                   android:padding="5dp"
+                   android:textAlignment="center"
+                   android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
+                   android:textColor="@android:color/white"
+                   android:textStyle="bold" />
+
+               <ImageButton
+                   android:id="@+id/imageButton8"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:background="@color/black"
+                   app:srcCompat="@drawable/main_page_item" />
+
+           </LinearLayout>
+
+           <ImageView
+               android:id="@+id/imageView4"
+               android:layout_width="160dp"
+               android:layout_height="160dp"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentTop="true"
+               android:layout_margin="20dp"
+               app:srcCompat="@drawable/logo" />
+
+
+       </RelativeLayout>
+
+       <LinearLayout
+           android:id="@+id/view"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_below="@id/header"
+           android:orientation="vertical"
+           android:weightSum="2">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="0.5dp"
+               android:layout_weight="1"
+               android:orientation="horizontal"
+               android:weightSum="2">
+
+               <RelativeLayout
+                   android:id="@+id/button1"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginEnd="0.5dp"
+                   android:layout_marginRight="0.5dp"
+                   android:layout_weight="1"
+                   android:background="@drawable/campporgramme"
+                   android:gravity="center"
+                   android:orientation="vertical">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="#95000000" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Camp Programme"
+                           android:textColor="#FFF"
+                           android:textSize="20sp" />
+                   </LinearLayout>
+
+               </RelativeLayout>
+
+               <RelativeLayout
+                   android:id="@+id/button2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="0.5dp"
+                   android:layout_marginStart="0.5dp"
+                   android:layout_weight="1"
+                   android:background="@drawable/pathofdiscovery"
+                   android:gravity="center"
+                   android:orientation="vertical">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="#95000000" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Path of Discovery"
+                           android:textColor="#FFF"
+                           android:textSize="20sp" />
+                   </LinearLayout>
+               </RelativeLayout>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="0.5dp"
+               android:layout_weight="1"
+               android:orientation="horizontal"
+               android:weightSum="2">
+
+               <RelativeLayout
+                   android:id="@+id/button3"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginEnd="0.5dp"
+                   android:layout_marginRight="0.5dp"
+                   android:layout_weight="1"
+                   android:background="@drawable/campusexplorer"
+                   android:gravity="center"
+                   android:orientation="vertical">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="#95000000" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Campus Explorer"
+                           android:textColor="#FFF"
+                           android:textSize="20sp" />
+                   </LinearLayout>
+
+               </RelativeLayout>
+
+               <RelativeLayout
+                   android:id="@+id/button4"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="0.5dp"
+                   android:layout_marginStart="0.5dp"
+                   android:layout_weight="1"
+                   android:background="@drawable/askredcamp"
+                   android:gravity="center"
+                   android:orientation="vertical">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="#95000000" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Ask Red Camp"
+                           android:textColor="#FFF"
+                           android:textSize="20sp" />
+                   </LinearLayout>
+
+               </RelativeLayout>
+
+           </LinearLayout>
+
+       </LinearLayout>
+   </RelativeLayout>
+
+</FrameLayout>

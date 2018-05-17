@@ -48,7 +48,12 @@ public class Login extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent ib = new Intent();
+            ib.putExtra("type", "0");
+            setResult(1, ib);
+            finish();
+        });
         progressbar = findViewById(R.id.progressbar);
         progressbar.setVisibility(View.GONE);
         login = findViewById(R.id.login);
@@ -66,11 +71,9 @@ public class Login extends AppCompatActivity {
                         login.setEnabled(true);
                         Toast.makeText(Login.this, "Please Switch on your wifi or Data", Toast.LENGTH_SHORT).show();
                     } else {
-
                         DoLogin login = new DoLogin();
                         login.execute(link.getLogin());
                     }
-
                 }
             } else {
                 progressbar.setVisibility(View.GONE);
@@ -78,9 +81,7 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(Login.this, "Please fill in the fields", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
     public boolean checkNetwork() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -131,20 +132,39 @@ public class Login extends AppCompatActivity {
                     if (checkBox.isChecked()){
                         //remember me
                         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, "200");
                         editor.putString("email", email);
                         editor.putString("name", name);
+                        editor.putString("number", user.getString("mobile"));
                         editor.putString("dob", user.getString("dob"));
                         editor.apply();
-                        startActivity(new Intent(Login.this, Home.class).putExtra("name", name).putExtra("email", email).putExtra("dob", user.getString("dob")));
+                        Intent ib = new Intent();
+                        ib.putExtra("type", "1");
+                        setResult(1, ib);
+                        finish();
+                        startActivity(new Intent(Login.this, Home.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                .putExtra("name", name)
+                                .putExtra("email", email)
+                                .putExtra("number", user.getString("mobile"))
+                                .putExtra("dob", user.getString("dob")));
                         finish();
                     }else{
-                        startActivity(new Intent(Login.this, Home.class).putExtra("name", name).putExtra("email", email).putExtra("dob", user.getString("dob")));
+                        Intent ib = new Intent();
+                        ib.putExtra("type", "1");
+                        setResult(1, ib);
+                        finish();
+                        startActivity(new Intent(Login.this, Home.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                .putExtra("name", name)
+                                .putExtra("email", email)
+                                .putExtra("number", user.getString("mobile"))
+                                .putExtra("dob", user.getString("dob")));
                         finish();
 
                     }
-
 
                 } else {
                     progressbar.setVisibility(View.GONE);
@@ -162,6 +182,14 @@ public class Login extends AppCompatActivity {
 
     public Boolean checkEmpty() {
         return !email.getText().toString().isEmpty() && !password.getText().toString().isEmpty();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent ib = new Intent();
+        ib.putExtra("type", "0");
+        setResult(1, ib);
+        finish();
     }
 
 }

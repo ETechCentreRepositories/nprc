@@ -36,9 +36,6 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        background = findViewById(R.id.background);
-//        startBackgroundAnim();
-        Glide.with(this).asGif().load(R.drawable.splash).into(background);
 
         Window w = getWindow();
         w.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -102,14 +99,4 @@ public class Splash extends AppCompatActivity {
 //        stopBackgroundAnim();
     }
 
-
-    private void startBackgroundAnim() {
-        AnimationDrawable progressDrawable = (AnimationDrawable) background.getBackground();
-        progressDrawable.start();
-    }
-
-    private void stopBackgroundAnim() {
-        AnimationDrawable progressDrawable = (AnimationDrawable) background.getBackground();
-        progressDrawable.stop();
-    }
 }

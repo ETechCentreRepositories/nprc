@@ -39,5 +39,7 @@ dependencies {
     implementation 'devlight.io:arcprogressstackview:1.0.4'
     //FB Login
     implementation 'com.facebook.android:facebook-login:[4,5)'
+    //user Image View
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
 }

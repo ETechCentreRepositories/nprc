@@ -28,6 +28,7 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import ngeeann.com.redcamp.Content.MainActivity;
 import ngeeann.com.redcamp.R;
@@ -84,7 +85,7 @@ public class LoginLauncher extends AppCompatActivity {
 
 
         login.setOnClickListener((View v) -> {
-            startActivity(new Intent(this, Login.class));
+            startActivityForResult(new Intent(this, Login.class),1);
             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sessionManager.edit();
             editor.putString(SESSION_ID, "400");
@@ -103,11 +104,7 @@ public class LoginLauncher extends AppCompatActivity {
         googlesignup.setOnClickListener((View v) -> startActivity(new Intent(this, Signup.class).putExtra("method","google")));
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
 
         protected void getUserDetails(LoginResult loginResult) {
             GraphRequest data_request = GraphRequest.newMeRequest(
@@ -155,5 +152,28 @@ public class LoginLauncher extends AppCompatActivity {
             return false;
         }
         return false;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            Log.e("res: ", String.valueOf(requestCode));
+            if (data != null) {
+                if (data.getStringExtra("type") != null) {
+                    if (data.getStringExtra("type").equals("0")) {
+                        Log.e("type", "back button");
+                    } else if (data.getStringExtra("type").equals("1")) {
+                        finish();
+                    }
+                } else {
+                    Log.e("type", "null");
+                }
+                Log.e("data", "null");
+            }
+
+        } else {
+            Log.e("res: ", String.valueOf(requestCode));
+        }
     }
 }

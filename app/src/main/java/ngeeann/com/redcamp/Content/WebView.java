@@ -46,7 +46,7 @@ public class WebView extends AppCompatActivity {
         mRelativeLayout = findViewById(R.id.rl);
         mWebView = findViewById(R.id.web_view);
         mProgressBar = findViewById(R.id.pb);
-        renderWebPage(intent.getStringExtra("links"));
+        renderWebPage(intent.getStringExtra("Links"));
     }
     protected void renderWebPage(String urlToRender){
         mWebView.setWebViewClient(new WebViewClient(){
