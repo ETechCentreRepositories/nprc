@@ -50,31 +50,32 @@ public class CampProgramme extends AppCompatActivity {
         dates.add("22 November, Thursday");
 
 
-        contents.add("08:30am:  Registration \n" +
-                "09:00am:  Event Opening \n" +
-                "10:00am:  Path of Discovery \n" +
-                "01:00pm:  Lunch \n" +
-                "02:30pm:  Path of Discovery 2 \n" +
-                "05:30pm:  Course & Admissions Talk \n" +
-                "06:00pm:  Mass Dance \n" +
-                "06:30pm:  End of Day 1 \n");
+        contents.add("08:30am:     Registration \n" +
+                "09:00am:     Event Opening \n" +
+                "10:00am:     Path of Discovery \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Path of Discovery 2 \n" +
+                "05:30pm:     Course & Admissions Talk \n" +
+                "06:00pm:     Mass Dance \n" +
+                "06:30pm:     End of Day 1 \n");
 
-        contents.add("08:30am  Registration \n" +
-                "09:00am  Skit Performance \n" +
-                "10:00am  Path of Discovery 3 \n" +
-                "01:00pm  Lunch \n" +
-                "02:30pm  Path of Discovery 4 \n" +
-                "05:30pm  CCA Fiesta \n" +
-                "06:00pm  Mass Dance \n" +
-                "06:30pm  End of Day 2 \n");
+        contents.add("08:30am     Registration \n" +
+                "09:00am:     Skit Performance \n" +
+                "10:00am:     Path of Discovery 3 \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Path of Discovery 4 \n" +
+                "05:30pm:     CCA Fiesta \n" +
+                "06:00pm:     Mass Dance \n" +
+                "06:30pm:     End of Day 2 \n");
 
-        contents.add( "08:30am  Registration \n" +
-                "09:00am  Event Opening \n" +
-                "10:00am  Path of Discovery 5 \n" +
-                "01:00pm  Lunch \n" +
-                "02:30pm  Camp Finale \n" +
-                "06:00pm  Dinner \n" +
-                "07:30pm  End of Red Camp \n");
+        contents.add( "08:30am     Registration \n" +
+                "09:00am:     Event Opening \n" +
+                "10:00am:     Path of Discovery 5 \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Camp Finale \n" +
+                "06:00pm:     Dinner \n" +
+                "07:30pm:     End of Red Camp \n\n");
+
 
         date.setText(dates.get(0));
         content.setText(contents.get(0));
@@ -98,31 +99,32 @@ public class CampProgramme extends AppCompatActivity {
         dates.add("22 November, Thursday");
 
 
-        contents.add("08:30am:  Registration \n" +
-                "09:00am:  Event Opening \n" +
-                "10:00am:  Path of Discovery \n" +
-                "01:00pm:  Lunch \n" +
-                "02:30pm:  Path of Discovery 2 \n" +
-                "05:30pm:  Course & Admissions Talk \n" +
-                "06:00pm:  Mass Dance \n" +
-                "06:30pm:  End of Day 1 \n");
+        contents.add("08:30am:     Registration \n" +
+                "09:00am:     Event Opening \n" +
+                "10:00am:     Path of Discovery \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Path of Discovery 2 \n" +
+                "05:30pm:     Course & Admissions Talk \n" +
+                "06:00pm:     Mass Dance \n" +
+                "06:30pm:     End of Day 1 \n");
 
-        contents.add("08:30am  Registration \n" +
-                "09:00am  Skit Performance \n" +
-                "10:00am  Path of Discovery 3 \n" +
-                "01:00pm  Lunch \n" +
-                "02:30pm  Path of Discovery 4 \n" +
-                "05:30pm  CCA Fiesta \n" +
-                "06:00pm  Mass Dance \n" +
-                "06:30pm  End of Day 2 \n");
+        contents.add("08:30am     Registration \n" +
+                "09:00am:     Skit Performance \n" +
+                "10:00am:     Path of Discovery 3 \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Path of Discovery 4 \n" +
+                "05:30pm:     CCA Fiesta \n" +
+                "06:00pm:     Mass Dance \n" +
+                "06:30pm:     End of Day 2 \n");
 
-        contents.add( "08:30am  Registration \n" +
-                "09:00am  Event Opening \n" +
-                "10:00am  Path of Discovery 5 \n" +
-                "01:00pm  Lunch \n" +
-                "02:30pm  Camp Finale \n" +
-                "06:00pm  Dinner \n" +
-                "07:30pm  End of Red Camp \n");
+        contents.add( "08:30am     Registration \n" +
+                "09:00am:     Event Opening \n" +
+                "10:00am:     Path of Discovery 5 \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Camp Finale \n" +
+                "06:00pm:     Dinner \n" +
+                "07:30pm:     End of Red Camp \n\n");
+
 
         date.setText(dates.get(1));
         content.setText(contents.get(1));
@@ -144,31 +146,31 @@ public class CampProgramme extends AppCompatActivity {
         dates.add("21 November, Wednesday");
         dates.add("22 November, Thursday");
 
-        contents.add("08:30am:  Registration \n" +
-                "09:00am:  Event Opening \n" +
-                "10:00am:  Path of Discovery \n" +
-                "01:00pm:  Lunch \n" +
-                "02:30pm:  Path of Discovery 2 \n" +
-                "05:30pm:  Course & Admissions Talk \n" +
-                "06:00pm:  Mass Dance \n" +
-                "06:30pm:  End of Day 1 \n");
+        contents.add("08:30am:     Registration \n" +
+                "09:00am:     Event Opening \n" +
+                "10:00am:     Path of Discovery \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Path of Discovery 2 \n" +
+                "05:30pm:     Course & Admissions Talk \n" +
+                "06:00pm:     Mass Dance \n" +
+                "06:30pm:     End of Day 1 \n");
 
-        contents.add("08:30am  Registration \n" +
-                "09:00am  Skit Performance \n" +
-                "10:00am  Path of Discovery 3 \n" +
-                "01:00pm  Lunch \n" +
-                "02:30pm  Path of Discovery 4 \n" +
-                "05:30pm  CCA Fiesta \n" +
-                "06:00pm  Mass Dance \n" +
-                "06:30pm  End of Day 2 \n");
+        contents.add("08:30am     Registration \n" +
+                "09:00am:     Skit Performance \n" +
+                "10:00am:     Path of Discovery 3 \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Path of Discovery 4 \n" +
+                "05:30pm:     CCA Fiesta \n" +
+                "06:00pm:     Mass Dance \n" +
+                "06:30pm:     End of Day 2 \n");
 
-        contents.add( "08:30am  Registration \n" +
-                "09:00am  Event Opening \n" +
-                "10:00am  Path of Discovery 5 \n" +
-                "01:00pm  Lunch \n" +
-                "02:30pm  Camp Finale \n" +
-                "06:00pm  Dinner \n" +
-                "07:30pm  End of Red Camp \n");
+        contents.add( "08:30am     Registration \n" +
+                "09:00am:     Event Opening \n" +
+                "10:00am:     Path of Discovery 5 \n" +
+                "01:00pm:     Lunch \n" +
+                "02:30pm:     Camp Finale \n" +
+                "06:00pm:     Dinner \n" +
+                "07:30pm:     End of Red Camp \n\n");
 
         date.setText(dates.get(2));
         content.setText(contents.get(2));
