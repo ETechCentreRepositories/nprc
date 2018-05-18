@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +72,7 @@ public class LoginLauncher extends AppCompatActivity {
     private static final String EMAIL = "email";
     LoginButton fblogin;
 
+
     boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
 
     @Override
@@ -99,10 +101,12 @@ public class LoginLauncher extends AppCompatActivity {
 
         mAuthListener = firebaseAuth -> {
 
+
             if (firebaseAuth.getCurrentUser() != null) {
                 String getName = firebaseAuth.getCurrentUser().getDisplayName();
                 String getEmail = firebaseAuth.getCurrentUser().getEmail();
                 FirebaseAuth.getInstance().signOut();
+
                 startActivity(new Intent(LoginLauncher.this, Signup.class)
                         .putExtra("method","google")
                         .putExtra("name",getName)
@@ -111,6 +115,7 @@ public class LoginLauncher extends AppCompatActivity {
         };
         googlesignup.setOnClickListener(v-> {
             if(checkNetwork()){
+
                 signIn();
             }else{
                 Toast.makeText(this, "Please switch on your data or wifi",Toast.LENGTH_SHORT).show();
@@ -241,7 +246,7 @@ public class LoginLauncher extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-//                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
         }
