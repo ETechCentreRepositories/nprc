@@ -11,12 +11,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,11 +31,12 @@ import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.Login.Signup;
 import ngeeann.com.redcamp.R;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity {
 
     FragmentTransaction ft;
     TextView name, email, number, dob;
     LinearLayout logout;
+    DrawerLayout drawerLayout;
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
@@ -103,10 +108,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             dob.setText(getdob);
         }
 
-        NavigationView navigationView = findViewById(R.id.left_drawer
-        );
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = findViewById(R.id.left_drawer);
         replacefragment(new HomePage());
+        configureToolbar();
+        configureNavigationDrawer();
     }
 
     @Override
@@ -119,28 +124,46 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    private void configureToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        assert actionbar != null;
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+    private void configureNavigationDrawer() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navView = findViewById(R.id.left_drawer);
+    }
+
+
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        switch (itemId) {
+            // Android home
+            case android.R.id.home:
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    CloseDrawer();
+                    return true;
+                } else {
+                    OpenDrawer();
+                    return true;
+                }
+                // manage other entries if you have it ...
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        return false;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
         return true;
     }
 
@@ -151,5 +174,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // Complete the changes added above
         ft.commit();
     }
+
+    public void CloseDrawer(){
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public void OpenDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
 
 }

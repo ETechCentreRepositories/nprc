@@ -98,12 +98,25 @@ public class LoginLauncher extends AppCompatActivity {
 
 
         mAuthListener = firebaseAuth -> {
+
             if (firebaseAuth.getCurrentUser() != null) {
-                startActivity(new Intent(LoginLauncher.this, Signup.class).putExtra("method","google"));
+                String getName = firebaseAuth.getCurrentUser().getDisplayName();
+                String getEmail = firebaseAuth.getCurrentUser().getEmail();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(LoginLauncher.this, Signup.class)
+                        .putExtra("method","google")
+                        .putExtra("name",getName)
+                        .putExtra("email",getEmail));
             }
         };
+        googlesignup.setOnClickListener(v-> {
+            if(checkNetwork()){
+                signIn();
+            }else{
+                Toast.makeText(this, "Please switch on your data or wifi",Toast.LENGTH_SHORT).show();
+            }
 
-        googlesignup.setOnClickListener(v-> signIn());
+        });
 //        googleButton.setOnClickListener(v -> );
 
 

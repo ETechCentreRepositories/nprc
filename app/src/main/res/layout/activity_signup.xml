@@ -8,10 +8,7 @@
     android:background="@drawable/login_background_dark"
     tools:context=".Login.Signup">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#50000000" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -161,6 +158,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/login_field_background"
                     android:hint="NRIC number"
+                    android:singleLine="true"
                     android:padding="10dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#90FFFFFF"

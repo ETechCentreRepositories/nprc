@@ -18,12 +18,14 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -39,6 +41,7 @@ import java.util.List;
 
 import ngeeann.com.redcamp.Content.Home;
 import ngeeann.com.redcamp.Content.MainActivity;
+import ngeeann.com.redcamp.Content.OcrCaptureActivity;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.connection.HttpRequest;
@@ -53,6 +56,11 @@ public class Signup extends AppCompatActivity {
     LinearLayout progressbar;
     ConstraintLayout ui;
 
+
+    public static String ocrText = "";
+
+    private static final int RC_OCR_CAPTURE = 9003;
+    private static final String TAG = "MainActivity";
 
     private int mYear, mMonth, mDay;
 
@@ -105,14 +113,8 @@ public class Signup extends AppCompatActivity {
                 }
                 break;
             case "google":
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user!=null) {
-                    String getName = user.getDisplayName();
-                    String getEemail = user.getEmail();
-                    name.setText(getName);
-                    email.setText(getEemail);
-                    FirebaseAuth.getInstance().signOut();
-                }
+                name.setText(getIntent.getStringExtra("name"));
+                email.setText(getIntent.getStringExtra("email"));
 
                 break;
             default:
@@ -138,8 +140,11 @@ public class Signup extends AppCompatActivity {
 
         btnScan = findViewById(R.id.btnScan);
         btnScan.setOnClickListener(v -> {
-            Intent intent = new Intent(Signup.this, MainActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(this, OcrCaptureActivity.class);
+            intent.putExtra(OcrCaptureActivity.AutoFocus,true);
+            intent.putExtra(OcrCaptureActivity.UseFlash,false);
+
+            startActivityForResult(intent, RC_OCR_CAPTURE);
         });
 
         school.setOnClickListener(v -> selectSchool());
@@ -217,6 +222,7 @@ public class Signup extends AppCompatActivity {
 
         } else if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+            progressbar.setVisibility(View.GONE);
 
             // notify user you are not online
             Toast.makeText(this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
@@ -572,6 +578,27 @@ public class Signup extends AppCompatActivity {
         for (int i =0; i < ui.getChildCount(); i++){
             View child = ui.getChildAt(i);
             child.setEnabled(true);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RC_OCR_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
+                    ocrText = text;
+                    Log.e(TAG, "onActivityResult: " + ocrText);
+                    Log.e(TAG, "Text read: " + text);
+                    nric.setText(text);
+                } else {
+
+                    Log.d(TAG, "No Text captured, intent data is null");
+                }
+            } else {
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

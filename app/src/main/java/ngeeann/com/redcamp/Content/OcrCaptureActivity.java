@@ -336,6 +336,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
          * only wants to update scaling factors if the change is
          * greater than 0.01.
          */
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             return false;
@@ -353,6 +354,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
          * sense, onScaleBegin() may return false to ignore the
          * rest of the gesture.
          */
+
         @Override
         public boolean onScaleBegin(ScaleGestureDetector detector) {
             return true;
@@ -369,6 +371,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
          * @param detector The detector reporting the event - use this to
          *                 retrieve extended info about event state.
          */
+
         @Override
         public void onScaleEnd(ScaleGestureDetector detector) {
             mCameraSource.doZoom(detector.getScaleFactor());

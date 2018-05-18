@@ -34,7 +34,7 @@ public class Login extends AppCompatActivity {
     Links link;
     Toolbar toolbar;
     LinearLayout progressbar;
-    AppCompatCheckBox checkBox;
+
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
@@ -59,7 +59,6 @@ public class Login extends AppCompatActivity {
         login = findViewById(R.id.login);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        checkBox = findViewById(R.id.checkbox);
         login.setOnClickListener(v -> {
             progressbar.setVisibility(View.VISIBLE);
             login.setEnabled(false);
@@ -67,8 +66,7 @@ public class Login extends AppCompatActivity {
                 if (checkNetwork()) {
                     Boolean checkNetworkState = checkNetwork();
                     if (!checkNetworkState) {
-                        progressbar.setVisibility(View.GONE);
-                        login.setEnabled(true);
+
                         Toast.makeText(Login.this, "Please Switch on your wifi or Data", Toast.LENGTH_SHORT).show();
                     } else {
                         DoLogin login = new DoLogin();
@@ -82,6 +80,7 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
     public boolean checkNetwork() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -93,6 +92,8 @@ public class Login extends AppCompatActivity {
 
         } else if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+            progressbar.setVisibility(View.GONE);
+            login.setEnabled(true);
 
             // notify user you are not online
             Toast.makeText(this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
@@ -129,42 +130,28 @@ public class Login extends AppCompatActivity {
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
                     login.setEnabled(true);
-                    if (checkBox.isChecked()){
-                        //remember me
-                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
-                        SharedPreferences.Editor editor = sessionManager.edit();
-                        editor.putString(SESSION_ID, "200");
-                        editor.putString("email", email);
-                        editor.putString("name", name);
-                        editor.putString("number", user.getString("mobile"));
-                        editor.putString("dob", user.getString("dob"));
-                        editor.apply();
-                        Intent ib = new Intent();
-                        ib.putExtra("type", "1");
-                        setResult(1, ib);
-                        finish();
-                        startActivity(new Intent(Login.this, Home.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                .putExtra("name", name)
-                                .putExtra("email", email)
-                                .putExtra("number", user.getString("mobile"))
-                                .putExtra("dob", user.getString("dob")));
-                        finish();
-                    }else{
-                        Intent ib = new Intent();
-                        ib.putExtra("type", "1");
-                        setResult(1, ib);
-                        finish();
-                        startActivity(new Intent(Login.this, Home.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                .putExtra("name", name)
-                                .putExtra("email", email)
-                                .putExtra("number", user.getString("mobile"))
-                                .putExtra("dob", user.getString("dob")));
-                        finish();
+                    //remember me
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
-                    }
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString(SESSION_ID, "200");
+                    editor.putString("email", email);
+                    editor.putString("name", name);
+                    editor.putString("number", user.getString("mobile"));
+                    editor.putString("dob", user.getString("dob"));
+                    editor.apply();
+                    Intent ib = new Intent();
+                    ib.putExtra("type", "1");
+                    setResult(1, ib);
+                    finish();
+                    startActivity(new Intent(Login.this, Home.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            .putExtra("name", name)
+                            .putExtra("email", email)
+                            .putExtra("number", user.getString("mobile"))
+                            .putExtra("dob", user.getString("dob")));
+                    finish();
 
                 } else {
                     progressbar.setVisibility(View.GONE);
@@ -183,6 +170,7 @@ public class Login extends AppCompatActivity {
     public Boolean checkEmpty() {
         return !email.getText().toString().isEmpty() && !password.getText().toString().isEmpty();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
