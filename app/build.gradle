@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'key0'
             keyPassword 'RedCamp2018'
-            storeFile file('/Users/ivanlipotan/Downloads/RedCamp (1).jks')
+            storeFile file('C:/Users/asus/Desktop/RedCamp.jks')
             storePassword 'RedCamp2018'
         }
     }
@@ -51,9 +51,6 @@ dependencies {
     //user Image View
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //firebase
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    //g+ login
-    implementation 'com.google.firebase:firebase-auth:15.1.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
 }
 
