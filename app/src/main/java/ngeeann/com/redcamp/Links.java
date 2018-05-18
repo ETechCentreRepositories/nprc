@@ -8,8 +8,8 @@ public class Links {
     String ask_red_camp = "https://www.np.edu.sg/redcamp/pages/askredcamp.aspx";
 
     //API
-    String login = "http://bryanlowsk.com/RedCamp/API/login.php";
-    String register = "http://bryanlowsk.com/RedCamp/API/addUsers.php";
+    String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
+    String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
 
 
     public String getCamp_programme() {

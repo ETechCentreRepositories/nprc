@@ -109,13 +109,13 @@
                     android:layout_height="wrap_content"
                     android:background="@color/grey"
                     android:text="SCAN STUDENT EZ-LINK"
-                    android:textColor="#90000000" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:text="*scan student ez-link card to fill up details or complete form below"
+                    android:text="*Scan student ez-link card to fill up details or complete form below"
                     android:textColor="#FFFFFF"
                     android:textSize="10sp" />
 
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/login_field_background"
-                    android:hint="Mobile"
+                    android:hint="Mobile Number"
                     android:inputType="phone"
                     android:padding="10dp"
                     android:textColor="#FFFFFF"
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/login_field_background"
-                    android:hint="NRIC number"
+                    android:hint="NRIC Number"
                     android:singleLine="true"
                     android:padding="10dp"
                     android:textColor="#FFFFFF"
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
                         android:background="@drawable/login_field_background"
-                        android:hint="date of birth(YYYY-MM-DD)"
+                        android:hint="Date of Birth(DD-MM-DYYYY)"
                         android:inputType="date"
                         android:padding="10dp"
                         android:textColor="#FFFFFF"

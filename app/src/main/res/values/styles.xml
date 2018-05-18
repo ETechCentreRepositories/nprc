@@ -7,8 +7,8 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/red</item>
-        <item name="android:font" tools:targetApi="o">@font/raleway_regular</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/raleway_regular</item>
+        <item name="android:font" tools:targetApi="o">@font/segoe_ui</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/segoe_ui</item>
 
 
     </style>

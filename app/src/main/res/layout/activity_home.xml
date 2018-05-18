@@ -30,8 +30,7 @@
                     android:layout_alignParentTop="true"
                     android:background="@color/red"
                     android:minHeight="0dp"
-                    app:navigationIcon="@drawable/ic_menu"
-                    app:titleTextColor="@android:color/white" />
+                    app:navigationIcon="@drawable/ic_menu" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -71,11 +70,10 @@
 
                     <ImageView
                         android:id="@+id/profile_image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/spartan_user_icon" />
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/logo" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -111,7 +109,7 @@
                         android:layout_marginTop="10dp"
                         android:text="Email"
                         android:textColor="@android:color/white"
-                        android:textSize="15sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/email"
@@ -119,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:text="bryanlowsk@gmail.com"
                         android:textColor="@color/red"
-                        android:textSize="10sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/phoneLabel"
@@ -128,7 +126,7 @@
                         android:layout_marginTop="20dp"
                         android:text="Phone"
                         android:textColor="@android:color/white"
-                        android:textSize="15sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/phone"
@@ -136,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:text="+65 9451 1958"
                         android:textColor="@color/red"
-                        android:textSize="10sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/dobLabel"
@@ -145,7 +143,7 @@
                         android:layout_marginTop="20dp"
                         android:text="Date of Birth"
                         android:textColor="@android:color/white"
-                        android:textSize="15sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/dob"
@@ -153,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:text="19 September 1998"
                         android:textColor="@color/red"
-                        android:textSize="10sp" />
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:gravity="center_vertical"

@@ -69,12 +69,10 @@ public class LoginLauncher extends AppCompatActivity {
         setContentView(R.layout.activity_login_launcher);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
+        //Bryan's
         googlesignup = findViewById(R.id.googlesignup);
+        //ivan's
         googleButton = findViewById(R.id.googlelogin);
-
-
-
-
 
 
         fbsignup = findViewById(R.id.fbsignup);
@@ -86,20 +84,20 @@ public class LoginLauncher extends AppCompatActivity {
 
         fblogin = findViewById(R.id.fblogin);
         fblogin.setReadPermissions(Arrays.asList(EMAIL));
-        // If you are using in a fragment, call loginButton.setFragment(this);
+            // If you are using in a fragment, call loginButton.setFragment(this);
 
-        // Callback registration
+            // Callback registration
         fblogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-                getUserDetails(loginResult);
-            }
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    // App code
+                    getUserDetails(loginResult);
+                }
 
-            @Override
-            public void onCancel() {
-                // App code
-            }
+                @Override
+                public void onCancel() {
+                    // App code
+                }
 
             @Override
             public void onError(FacebookException exception) {
@@ -125,6 +123,7 @@ public class LoginLauncher extends AppCompatActivity {
             }
 
         });
+        googlesignup.setOnClickListener(v->startActivity(new Intent(this, Signup.class).putExtra("method", "google")));
 
     }
 
@@ -140,6 +139,7 @@ public class LoginLauncher extends AppCompatActivity {
                     LoginManager.getInstance().logOut();
                     startActivity(intent);
                 });
+
         Bundle permission_param = new Bundle();
         permission_param.putString("fields", "id,name,email,picture.width(120).height(120)");
         data_request.setParameters(permission_param);

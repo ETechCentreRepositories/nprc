@@ -89,7 +89,7 @@
                    <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       android:background="#70000000" />
+                       android:background="#75000000" />
 
                    <LinearLayout
                        android:padding="10dp"
@@ -101,9 +101,9 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Camp\n Programme"
+                           android:text="Camp Programme"
                            android:textColor="#FFF"
-                           android:textSize="20sp" />
+                           android:textSize="15sp" />
                    </LinearLayout>
 
                </RelativeLayout>
@@ -122,7 +122,7 @@
                    <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       android:background="#70000000" />
+                       android:background="#75000000" />
 
                    <LinearLayout
                        android:padding="10dp"
@@ -134,9 +134,9 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Path of\n Discovery"
+                           android:text="Path of Discovery"
                            android:textColor="#FFF"
-                           android:textSize="20sp" />
+                           android:textSize="15sp" />
                    </LinearLayout>
                </RelativeLayout>
 
@@ -164,7 +164,7 @@
                    <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       android:background="#70000000" />
+                       android:background="#75000000" />
 
                    <LinearLayout
                        android:padding="10dp"
@@ -176,9 +176,9 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Campus\n Explorer"
+                           android:text="Campus Explorer"
                            android:textColor="#FFF"
-                           android:textSize="20sp" />
+                           android:textSize="15sp" />
                    </LinearLayout>
 
                </RelativeLayout>
@@ -197,7 +197,7 @@
                    <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       android:background="#70000000" />
+                       android:background="#75000000" />
 
                    <LinearLayout
                        android:padding="10dp"
@@ -209,9 +209,9 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Ask\n Red Camp"
+                           android:text="Ask Red Camp"
                            android:textColor="#FFF"
-                           android:textSize="20sp" />
+                           android:textSize="15sp" />
                    </LinearLayout>
 
                </RelativeLayout>

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -54,6 +55,9 @@ public class Signup extends AppCompatActivity {
     LinearLayout progressbar;
     ConstraintLayout ui;
 
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
+    SharedPreferences sessionManager;
 
     public static String ocrText = "";
 
@@ -68,9 +72,11 @@ public class Signup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         toolbar.setNavigationOnClickListener(v -> finish());
         Intent getIntent = getIntent();
         submit_user = findViewById(R.id.submit_user);
@@ -85,16 +91,13 @@ public class Signup extends AppCompatActivity {
         mobile = findViewById(R.id.mobile);
         diet = findViewById(R.id.diet);
         tnu = findViewById(R.id.tnu);
-        tnu.setOnClickListener(v->tncDialogue());
+        tnu.setOnClickListener(v -> tncDialogue());
         pp = findViewById(R.id.pp);
-        pp.setOnClickListener(v->ppDialogue());
+        pp.setOnClickListener(v -> ppDialogue());
         checkBox = findViewById(R.id.checkbox);
         progressbar = findViewById(R.id.progressbar);
         progressbar.setVisibility(View.GONE);
         ui = findViewById(R.id.ui);
-
-
-
 
         String getMethod = getIntent.getStringExtra("method");
         switch (getMethod) {
@@ -134,8 +137,8 @@ public class Signup extends AppCompatActivity {
         btnScan = findViewById(R.id.btnScan);
         btnScan.setOnClickListener(v -> {
             Intent intent = new Intent(this, OcrCaptureActivity.class);
-            intent.putExtra(OcrCaptureActivity.AutoFocus,true);
-            intent.putExtra(OcrCaptureActivity.UseFlash,false);
+            intent.putExtra(OcrCaptureActivity.AutoFocus, true);
+            intent.putExtra(OcrCaptureActivity.UseFlash, false);
 
             startActivityForResult(intent, RC_OCR_CAPTURE);
         });
@@ -144,36 +147,36 @@ public class Signup extends AppCompatActivity {
         diet.setOnClickListener(v -> selectDiet());
 
         submit_user.setOnClickListener((View v) -> {
-            disableUI();
+
             progressbar.setVisibility(View.VISIBLE);
             if (!checkEmpty()) {
-                enableUI();
+
                 progressbar.setVisibility(View.GONE);
                 Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
             } else {
                 Log.e("CHECK VALIDATION: ", checkValidation().toString());
                 if (checkValidation()) {
-                    if(checkBox.isChecked()){
+                    if (checkBox.isChecked()) {
                         if (checkNetwork()) {
                             Links link = new Links();
                             Register register = new Register();
                             register.execute(link.getRegister());
-                        }else{
-                            enableUI();
+                        } else {
+
                             progressbar.setVisibility(View.GONE);
-                            Toast.makeText(this, "Please switch on your data or wifi",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
                         }
-                    }else{
-                        enableUI();
+                    } else {
+
                         progressbar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
 
                     }
 
-                }else{
-                    enableUI();
+                } else {
+
                     progressbar.setVisibility(View.GONE);
-                    Toast.makeText(this, "There are still some errors",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -224,21 +227,24 @@ public class Signup extends AppCompatActivity {
         return false;
     }
 
-    public void tncDialogue(){
+    public void tncDialogue() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
         dialog.setCancelable(false);
         dialog.setTitle("Terms of use");
         dialog.setMessage("Terms of use here");
-        dialog.setPositiveButton("OK", (dialogInterface, i) ->  {});
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+        });
         AlertDialog dialogue = dialog.create();
         dialogue.show();
     }
-    public void ppDialogue(){
+
+    public void ppDialogue() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
         dialog.setCancelable(false);
         dialog.setTitle("Privacy Policy");
         dialog.setMessage("privacy policy here");
-        dialog.setPositiveButton("OK", (dialogInterface, i) -> {});
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+        });
         AlertDialog dialogue = dialog.create();
         dialogue.show();
     }
@@ -247,6 +253,9 @@ public class Signup extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
+            String[] splitDate = dob.getText().toString().split("-");
+            String newDate = splitDate[2] + splitDate[1] + splitDate[0];
+
             HttpRequest request = new HttpRequest();
             link = new Links();
             return request.PostRequest(link.getRegister()
@@ -257,7 +266,7 @@ public class Signup extends AppCompatActivity {
                             + "&nric="
                             + nric.getText().toString()
                             + "&dob="
-                            + dob.getText().toString()
+                            + newDate
                             + "&mobile="
                             + mobile.getText().toString()
                             + "&school="
@@ -266,15 +275,15 @@ public class Signup extends AppCompatActivity {
                             + diet.getText().toString()
                             + "&password="
                             + password.getText().toString()
-                            + "&status=0");
+                            + "&statuses_id=" + String.valueOf(getRegistrationStatus(dob.getText().toString())));
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            enableUI();
+
             progressbar.setVisibility(View.GONE);
-            Log.e("JSON RETURN: ", s.toString());
+            Log.e("JSON RETURN: ", s);
             String[] splitString = s.split("");
             Log.e("ITEM RESULT", splitString[2]);
             if (splitString[2].equals("D")) {
@@ -284,17 +293,66 @@ public class Signup extends AppCompatActivity {
                     JSONObject result = new JSONObject(s);
                     int status = result.getInt("status");
                     String message = result.getString("message");
+
                     Log.i("JSON MESSAGE:", message);
                     Log.i("JSON STATUS: ", String.valueOf(status));
+
+
                     if (status == 200) {
+                        int type = result.getInt("type");
+                        String display_message = result.getString("display_message");
+                        Log.i("JSON DISPLAY MESSAGE", display_message);
+
+                        switch (type) {
+                            case 1: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle("Registration");
+
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                                AlertDialog dialogue = dialog.create();
+
+                                dialogue.show();
+                                break;
+                            }
+                            case 2: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle("Registration");
+
+                                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                                SharedPreferences.Editor editor = sessionManager.edit();
+                                editor.putString(SESSION_ID, "200");
+                                editor.putString("email", email.getText().toString());
+                                editor.putString("name", name.getText().toString());
+                                editor.putString("number", mobile.getText().toString());
+                                editor.putString("dob", dob.getText().toString());
+                                editor.apply();
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
+                                AlertDialog dialogue = dialog.create();
+                                dialogue.show();
+                                break;
+                            }
+                            case 3: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle("Registration");
+
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                                AlertDialog dialogue = dialog.create();
+
+                                dialogue.show();
+                                break;
+                            }
+                        }
 //                    startActivity(new Intent(Signup.this, Home.class));
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                        dialog.setCancelable(false);
-                        dialog.setTitle("Registration");
-                        dialog.setMessage("Thank you for registering. We will send you an email soon! thank you!");
-                        dialog.setPositiveButton("OK", (dialogInterface, i) ->  finish());
-                        AlertDialog dialogue = dialog.create();
-                        dialogue.show();
 
 
                     }
@@ -356,13 +414,13 @@ public class Signup extends AppCompatActivity {
         Log.e("VALIDATED LENGTH: ", checkallvalidation.length + "");
         for (int i = 0; i < checkallvalidation.length; i++) {
             Log.e("VALIDATED " + i + ":", String.valueOf(checkallvalidation[i]));
-            if(!checkallvalidation[i]){
+            if (!checkallvalidation[i]) {
                 falseItems.add(checkallvalidation[i]);
             }
         }
-        if(falseItems.size()>=1){
+        if (falseItems.size() >= 1) {
             return false;
-        }else{
+        } else {
             return true;
         }
 
@@ -377,16 +435,16 @@ public class Signup extends AppCompatActivity {
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year, monthOfYear, dayOfMonth) -> dob.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth), mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> dob.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year), mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
-        public void selectSchool() {
-            final CharSequence[] items = {"ADMIRALTY SECONDARY SCHOOL"
-                    , "AHMAD IBRAHIM SECONDARY SCHOOL"
-                    , "ANDERSON SECONDARY SCHOOL"
+    public void selectSchool() {
+        final CharSequence[] items = {"ADMIRALTY SECONDARY SCHOOL"
+                , "AHMAD IBRAHIM SECONDARY SCHOOL"
+                , "ANDERSON SECONDARY SCHOOL"
                 , "ANG MO KIO SECONDARY SCHOOL"
                 , "ANGLICAN HIGH SCHOOL"
                 , "ANGLO-CHINESE SCHOOL (BARKER ROAD)"
@@ -561,21 +619,11 @@ public class Signup extends AppCompatActivity {
         alert.show();
 
     }
-    public void disableUI(){
-        for (int i =0; i < ui.getChildCount(); i++){
-            View child = ui.getChildAt(i);
-            child.setEnabled(false);
-        }
-    }
-    public void enableUI(){
-        for (int i =0; i < ui.getChildCount(); i++){
-            View child = ui.getChildAt(i);
-            child.setEnabled(true);
-        }
-    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RC_OCR_CAPTURE) {
+        if (requestCode == RC_OCR_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
@@ -584,16 +632,24 @@ public class Signup extends AppCompatActivity {
                     Log.e(TAG, "Text read: " + text);
                     nric.setText(text);
                 } else {
-
                     Log.d(TAG, "No Text captured, intent data is null");
                 }
             } else {
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-
+    public int getRegistrationStatus(String date) {
+        String[] yearString = date.split("-");
+        int year = Integer.parseInt(yearString[2]);
+        if (year <= 2000) {
+            return 1;
+        } else if (year >= 2003) {
+            return 3;
+        } else {
+            return 2;
+        }
+    }
 }
