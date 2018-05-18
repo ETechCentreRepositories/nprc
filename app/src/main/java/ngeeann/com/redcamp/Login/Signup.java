@@ -26,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,9 +96,6 @@ public class Signup extends AppCompatActivity {
 
 
 
-
-
-
         String getMethod = getIntent.getStringExtra("method");
         switch (getMethod) {
             case "facebook":
@@ -113,8 +108,6 @@ public class Signup extends AppCompatActivity {
                 }
                 break;
             case "google":
-                name.setText(getIntent.getStringExtra("name"));
-                email.setText(getIntent.getStringExtra("email"));
 
                 break;
             default:
