@@ -29,6 +29,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -50,9 +51,9 @@ import ngeeann.com.redcamp.R;
 
 public class LoginLauncher extends AppCompatActivity {
     Button login, signup, fbsignup, googlesignup;
-    private SignInButton googleButton;
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
+    public static final String TAG = "LoginLauncher.java";
     SharedPreferences sessionManager;
 
     //FB stuff
@@ -60,8 +61,10 @@ public class LoginLauncher extends AppCompatActivity {
     private static final String EMAIL = "email";
     LoginButton fblogin;
 
-
     boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
+
+    GoogleSignInClient mGoogleSignInClient;
+    private int RC_SIGN_IN = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +74,20 @@ public class LoginLauncher extends AppCompatActivity {
         signup = findViewById(R.id.signup);
         //Bryan's
         googlesignup = findViewById(R.id.googlesignup);
-        //ivan's
-        googleButton = findViewById(R.id.googlelogin);
 
+        googlesignup.setOnClickListener(v -> {
+            Log.d(TAG, "setOnClickListener: ");
+            signIn();
+        });
 
         fbsignup = findViewById(R.id.fbsignup);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //fb setup
         callbackManager = CallbackManager.Factory.create();
@@ -105,7 +117,6 @@ public class LoginLauncher extends AppCompatActivity {
             }
         });
 
-
         login.setOnClickListener((View v) -> {
             startActivityForResult(new Intent(this, Login.class), 1);
             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -123,10 +134,14 @@ public class LoginLauncher extends AppCompatActivity {
             }
 
         });
-        googlesignup.setOnClickListener(v->startActivity(new Intent(this, Signup.class).putExtra("method", "google")));
 
     }
 
+    private void signIn() {
+        Log.d(TAG, "signIn: ");
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
 
     protected void getUserDetails(LoginResult loginResult) {
         GraphRequest data_request = GraphRequest.newMeRequest(
@@ -178,15 +193,10 @@ public class LoginLauncher extends AppCompatActivity {
         return false;
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
-
-
 
         if (requestCode == 1) {
             Log.e("res: ", String.valueOf(requestCode));
@@ -203,8 +213,31 @@ public class LoginLauncher extends AppCompatActivity {
                 Log.e("data", "null");
             }
 
-        } else {
-            Log.e("res: ", String.valueOf(requestCode));
+        } else if (requestCode == RC_SIGN_IN) {
+            Log.d(TAG, "onActivityResult: RC_SIGN_IN");
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        Log.d(TAG, "handleSignInResult: ");
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            account.getEmail();
+            account.getDisplayName();
+
+
+            Log.d(TAG, "handleSignInResult: successful " + account);
+
+//            Intent intent = new Intent(LoginLauncher.this,)
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }
 }

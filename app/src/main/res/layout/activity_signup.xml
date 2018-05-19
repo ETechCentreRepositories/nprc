@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
                         android:background="@drawable/login_field_background"
-                        android:hint="Date of Birth(DD-MM-DYYYY)"
+                        android:hint="Date of Birth (DD-MM-DYYYY)"
                         android:inputType="date"
                         android:padding="10dp"
                         android:textColor="#FFFFFF"
