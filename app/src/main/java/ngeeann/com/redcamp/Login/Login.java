@@ -35,6 +35,7 @@ public class Login extends AppCompatActivity {
     Links link;
     Toolbar toolbar;
     LinearLayout progressbar;
+    Button forgetpw;
 
 
     public static final String SESSION = "login_status";
@@ -46,6 +47,15 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         link = new Links();
         setContentView(R.layout.activity_login);
+        forgetpw = findViewById(R.id.forgotpassword);
+        forgetpw.setOnClickListener(v->{
+            AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
+            dialog.setCancelable(false);
+            dialog.setMessage("Please email redcamp@np.edu.sg with your new password and we'll take it from there!");
+            dialog.setPositiveButton("OK", (dialogInterface, i) -> {});
+            AlertDialog dialogue = dialog.create();
+            dialogue.show();
+        });
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
