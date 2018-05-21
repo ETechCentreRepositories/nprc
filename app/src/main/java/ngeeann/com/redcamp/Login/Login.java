@@ -48,11 +48,12 @@ public class Login extends AppCompatActivity {
         link = new Links();
         setContentView(R.layout.activity_login);
         forgetpw = findViewById(R.id.forgotpassword);
-        forgetpw.setOnClickListener(v->{
+        forgetpw.setOnClickListener(v -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
             dialog.setCancelable(false);
             dialog.setMessage("Please email redcamp@np.edu.sg with your new password and we'll take it from there!");
-            dialog.setPositiveButton("OK", (dialogInterface, i) -> {});
+            dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+            });
             AlertDialog dialogue = dialog.create();
             dialogue.show();
         });
@@ -71,6 +72,7 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         login.setOnClickListener(v -> {
+
             progressbar.setVisibility(View.VISIBLE);
             login.setEnabled(false);
             if (checkEmpty()) {
@@ -119,7 +121,7 @@ public class Login extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpRequest request = new HttpRequest();
             link = new Links();
-            return request.PostRequest(link.getLogin(), "email=" + email.getText().toString() + "&password=" + password.getText().toString());
+            return request.PostRequest(link.getLogin(), "email=" + email.getText().toString() + "&password=" + password.getText().toString() + "&type=3");
         }
 
         @Override
@@ -141,15 +143,16 @@ public class Login extends AppCompatActivity {
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
                     int statuses_id = user.getInt("statuses_id");
-                    if(statuses_id==1){
+                    if (statuses_id == 1) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
                         dialog.setCancelable(false);
                         dialog.setMessage("Your application to RedCamp is still pending. \n\nIf you have not submitted your 'O'Level 2018 entry proof, please do so to redcamp@np.edu.sg\n\nThank you for your patience!");
-                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {});
+                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                        });
                         AlertDialog dialogue = dialog.create();
                         dialogue.show();
                         login.setEnabled(true);
-                    }else if(statuses_id==2){
+                    } else if (statuses_id == 2) {
                         login.setEnabled(true);
 
                         //remember me
@@ -168,16 +171,18 @@ public class Login extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(Login.this, Home.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
                                 .putExtra("name", name)
                                 .putExtra("email", email)
                                 .putExtra("number", user.getString("mobile"))
                                 .putExtra("dob", user.getString("dob")));
                         finish();
-                    }else if(statuses_id==3){
+                    } else if (statuses_id == 3) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
                         dialog.setCancelable(false);
                         dialog.setMessage("Your application to Red Camp 15 has been rejected as you did not meet the requirements to join.\nWe apologize for any inconveniences caused and we hope to see you in the near future!");
-                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {});
+                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                        });
                         AlertDialog dialogue = dialog.create();
                         dialogue.show();
                         login.setEnabled(true);

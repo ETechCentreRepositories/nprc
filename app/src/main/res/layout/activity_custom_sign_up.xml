@@ -6,7 +6,7 @@
     android:id="@+id/ui"
     android:layout_height="match_parent"
     android:background="@drawable/login_background_dark"
-    tools:context=".Login.Signup">
+    tools:context=".Login.CustomSignUp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,74 +47,6 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/emailErrorMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red" />
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/login_field_background"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#90FFFFFF"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/login_field_background"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#90FFFFFF"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/pwdErrorMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red" />
-
-                <EditText
-                    android:id="@+id/cfmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/login_field_background"
-                    android:hint="Confirm Password"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#90FFFFFF"
-                    android:textSize="15sp" />
-
-                <!--<Button-->
-                    <!--android:id="@+id/btnScan"-->
-                    <!--style="@style/Base.Widget.AppCompat.Button.Borderless"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:background="@color/grey"-->
-                    <!--android:text="SCAN STUDENT EZ-LINK"-->
-                    <!--android:textColor="#FFFFFF" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="20dp"-->
-                    <!--android:text="*Scan student ez-link card to fill up details or complete form below"-->
-                    <!--android:textColor="#FFFFFF"-->
-                    <!--android:textSize="10sp" />-->
-
                 <EditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
@@ -145,7 +77,7 @@
                     android:id="@+id/nricErrorMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/red"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -260,7 +192,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        app:buttonTint="@color/red" />
+                        app:buttonTint="#FFFFFF" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

@@ -66,7 +66,7 @@ public class HomePage extends Fragment {
         Btn2.setOnClickListener((View v)->{
             Intent intent = new Intent(getContext(), WebView.class);
             intent.putExtra("Links", links.getCourse_finder());
-            intent.putExtra("name","Path Of Discovery");
+            intent.putExtra("name","Course Finder");
             startActivity(intent);
         });
         Btn3.setOnClickListener((View v)->{

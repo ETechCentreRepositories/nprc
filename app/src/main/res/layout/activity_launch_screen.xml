@@ -11,8 +11,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/login_background_dark" />
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,6 +39,7 @@
             android:text="Hey Fam!"
             android:textAlignment="center"
             android:textColor="#fff"
+            android:textStyle="bold"
             android:textSize="20sp" />
 
         <TextView
@@ -49,6 +48,7 @@
             android:text="Register for RED Camp here and get updates and other fun stuff all from you phone!"
             android:textAlignment="center"
             android:textColor="#fff"
+            android:textStyle="bold"
             android:textSize="15sp" />
 
         <TextView
@@ -57,6 +57,7 @@
             android:text="More Details coming through, including your in-app QR Code for entry to RED Camp!"
             android:textAlignment="center"
             android:textColor="#fff"
+            android:textStyle="bold"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -71,6 +72,7 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/button_red_round"
         android:text="LEGGO!"
+        android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 

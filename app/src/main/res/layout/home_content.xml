@@ -110,7 +110,7 @@
                 android:layout_marginEnd="0.5dp"
                 android:layout_marginRight="0.5dp"
                 android:layout_weight="1"
-                android:background="@drawable/campporgramme"
+                android:background="@drawable/campprogramme"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -160,7 +160,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Path of Discovery"
+                        android:text="Campus Finder"
                         android:textColor="#FFF"
                         android:textSize="20sp" />
                 </LinearLayout>

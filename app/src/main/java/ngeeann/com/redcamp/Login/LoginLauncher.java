@@ -1,10 +1,12 @@
 package ngeeann.com.redcamp.Login;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,14 +42,19 @@ import com.google.android.gms.signin.SignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 
+import ngeeann.com.redcamp.Content.Home;
 import ngeeann.com.redcamp.Content.MainActivity;
+import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
+import ngeeann.com.redcamp.connection.HttpRequest;
 
 public class LoginLauncher extends AppCompatActivity {
     Button login, signup, fbsignup, googlesignup;
@@ -60,6 +67,8 @@ public class LoginLauncher extends AppCompatActivity {
     CallbackManager callbackManager;
     private static final String EMAIL = "email";
     LoginButton fblogin;
+    Button fbLogin;
+    Button gLogin;
 
     boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
 
@@ -72,12 +81,16 @@ public class LoginLauncher extends AppCompatActivity {
         setContentView(R.layout.activity_login_launcher);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
+
         //Bryan's
         googlesignup = findViewById(R.id.googlesignup);
 
         googlesignup.setOnClickListener(v -> {
             Log.d(TAG, "setOnClickListener: ");
-            signIn();
+            if (checkNetwork()) {
+                signIn();
+            }
+
         });
 
         fbsignup = findViewById(R.id.fbsignup);
@@ -96,20 +109,20 @@ public class LoginLauncher extends AppCompatActivity {
 
         fblogin = findViewById(R.id.fblogin);
         fblogin.setReadPermissions(Arrays.asList(EMAIL));
-            // If you are using in a fragment, call loginButton.setFragment(this);
+        // If you are using in a fragment, call loginButton.setFragment(this);
 
-            // Callback registration
+        // Callback registration
         fblogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    // App code
-                    getUserDetails(loginResult);
-                }
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                getUserDetails(loginResult);
+            }
 
-                @Override
-                public void onCancel() {
-                    // App code
-                }
+            @Override
+            public void onCancel() {
+                // App code
+            }
 
             @Override
             public void onError(FacebookException exception) {
@@ -135,6 +148,18 @@ public class LoginLauncher extends AppCompatActivity {
 
         });
 
+        gLogin = findViewById(R.id.googlesignupAPI);
+        gLogin.setOnClickListener(v -> {
+            if (checkNetwork()) {
+                signIn();
+            }
+        });
+        fbLogin = findViewById(R.id.fbsignupAPI);
+        fbLogin.setOnClickListener(v -> {
+            if (checkNetwork()){
+                fblogin.performClick();
+            }
+        });
     }
 
     private void signIn() {
@@ -148,11 +173,22 @@ public class LoginLauncher extends AppCompatActivity {
                 loginResult.getAccessToken(),
                 (json_object, response) -> {
                     Log.wtf("jsonString: ", "" + json_object);
-                    Intent intent = new Intent(LoginLauncher.this, Signup.class);
-                    intent.putExtra("userProfile", json_object.toString());
-                    intent.putExtra("method", "facebook");
-                    LoginManager.getInstance().logOut();
-                    startActivity(intent);
+                    try {
+                        JSONObject object = new JSONObject(String.valueOf(json_object));
+                        String email = object.getString("email");
+                        String name = object.getString("name");
+                        FacebookLogin fbLogin = new FacebookLogin();
+                        fbLogin.execute(email, name);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+//                    Intent intent = new Intent(LoginLauncher.this, CustomSignUp.class);
+//                    intent.putExtra("userProfile", json_object.toString());
+//                    intent.putExtra("method", "facebook");
+//                    LoginManager.getInstance().logOut();
+//                    startActivity(intent);
                 });
 
         Bundle permission_param = new Bundle();
@@ -226,18 +262,200 @@ public class LoginLauncher extends AppCompatActivity {
         Log.d(TAG, "handleSignInResult: ");
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            account.getEmail();
-            account.getDisplayName();
-
 
             Log.d(TAG, "handleSignInResult: successful " + account);
-
-//            Intent intent = new Intent(LoginLauncher.this,)
+            GoogleLogin glogin = new GoogleLogin();
+            String email = account.getEmail();
+            String name = account.getGivenName();
+            glogin.execute(email, name);
+//
+//            Intent intent = new Intent(LoginLauncher.this, Signup.class);
+//            intent.putExtra("name", account.getDisplayName());
+//            intent.putExtra("email", account.getEmail());
+//            intent.putExtra("method", "google");
+//            LoginManager.getInstance().logOut();
+//            startActivity(intent);
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    public class FacebookLogin extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpRequest request = new HttpRequest();
+            Links link = new Links();
+            return request.PostRequest(link.getLogin(), "email=" + strings[0] + "&name=" + strings[1] + "&type=1");
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                LoginManager.getInstance().logOut();
+                JSONObject object = new JSONObject(s);
+                Log.e("FACEBOOK LOGIN MSG: ", object.getString("message"));
+                Log.e("FACEBOOK LOGIN STATUS: ", object.getString("status"));
+                Log.e("LOGIN JSON EMAIL: ", object.getString("display_title"));
+                Log.e("LOGIN JSON NAME: ", object.getString("display_message"));
+                int status = object.getInt("status");
+                if (status == 404) {
+                    //not signed up
+                    startActivity(new Intent(LoginLauncher.this, Signup.class)
+                            .putExtra("method", "facebook")
+                            .putExtra("email", object.getString("display_title"))
+                            .putExtra("name", object.getString("display_message")));
+                } else if (status == 200) {
+                    JSONArray users = object.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+                    Log.i("USER NAME: ", name);
+                    Log.i("USER EMAIL: ", email);
+                    int statuses_id = user.getInt("statuses_id");
+
+                    login.setEnabled(true);
+
+                    //remember me
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString(SESSION_ID, "200");
+                    editor.putString("email", email);
+                    editor.putString("name", name);
+                    editor.putString("number", user.getString("mobile"));
+                    editor.putString("dob", user.getString("dob"));
+                    editor.apply();
+                    Intent ib = new Intent();
+                    ib.putExtra("type", "1");
+                    setResult(1, ib);
+                    finish();
+                    startActivity(new Intent(LoginLauncher.this, Home.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                            .putExtra("name", name)
+                            .putExtra("email", email)
+                            .putExtra("number", user.getString("mobile"))
+                            .putExtra("dob", user.getString("dob")));
+                    finish();
+
+                } else if (status == 201) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                    dialog.setCancelable(false);
+                    dialog.setTitle(object.getString("display_title"));
+                    dialog.setMessage(object.getString("display_message"));
+                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                    });
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                    login.setEnabled(true);
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                    dialog.setCancelable(false);
+                    dialog.setTitle(object.getString("display_title"));
+                    dialog.setMessage(object.getString("display_message"));
+                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                    });
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                    login.setEnabled(true);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public class GoogleLogin extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpRequest request = new HttpRequest();
+            Links link = new Links();
+            return request.PostRequest(link.getLogin(), "email=" + strings[0] + "&name=" + strings[1] + "&type=2");
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                LoginManager.getInstance().logOut();
+                JSONObject object = new JSONObject(s);
+                Log.e("GOOGLE LOGIN MSG: ", object.getString("message"));
+                Log.e("GOOGLE LOGIN STATUS: ", object.getString("status"));
+                Log.e("LOGIN JSON EMAIL: ", object.getString("display_title"));
+                Log.e("LOGIN JSON NAME: ", object.getString("display_message"));
+                int status = object.getInt("status");
+                if (status == 404) {
+                    //not signed up
+                    startActivity(new Intent(LoginLauncher.this, Signup.class)
+                            .putExtra("method", "google")
+                            .putExtra("email", object.getString("display_title"))
+                            .putExtra("name", object.getString("display_message")));
+                } else if (status == 200) {
+                    JSONArray users = object.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+                    Log.i("USER NAME: ", name);
+                    Log.i("USER EMAIL: ", email);
+                    int statuses_id = user.getInt("statuses_id");
+
+                    login.setEnabled(true);
+
+                    //remember me
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString(SESSION_ID, "200");
+                    editor.putString("email", email);
+                    editor.putString("name", name);
+                    editor.putString("number", user.getString("mobile"));
+                    editor.putString("dob", user.getString("dob"));
+                    editor.apply();
+                    Intent ib = new Intent();
+                    ib.putExtra("type", "1");
+                    setResult(1, ib);
+                    finish();
+                    startActivity(new Intent(LoginLauncher.this, Home.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                            .putExtra("name", name)
+                            .putExtra("email", email)
+                            .putExtra("number", user.getString("mobile"))
+                            .putExtra("dob", user.getString("dob")));
+                    finish();
+
+                } else if (status == 201) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                    dialog.setCancelable(false);
+                    dialog.setTitle(object.getString("display_title"));
+                    dialog.setMessage(object.getString("display_message"));
+                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                    });
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                    login.setEnabled(true);
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                    dialog.setCancelable(false);
+                    dialog.setTitle(object.getString("display_title"));
+                    dialog.setMessage(object.getString("display_message"));
+                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                    });
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                    login.setEnabled(true);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

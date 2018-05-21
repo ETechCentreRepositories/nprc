@@ -154,6 +154,8 @@ public class Home extends AppCompatActivity {
                     return true;
                 }
                 // manage other entries if you have it ...
+            case R.id.share:
+                return true;
 
 
         }
@@ -161,11 +163,14 @@ public class Home extends AppCompatActivity {
         return false;
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
+
+
 
     public void replacefragment(Fragment fragment) {
         ft = getSupportFragmentManager().beginTransaction();

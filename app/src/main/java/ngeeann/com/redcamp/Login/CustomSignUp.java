@@ -3,7 +3,6 @@ package ngeeann.com.redcamp.Login;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -17,39 +16,29 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.CommonStatusCodes;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 import ngeeann.com.redcamp.Content.Home;
-import ngeeann.com.redcamp.Content.MainActivity;
-import ngeeann.com.redcamp.Content.OcrCaptureActivity;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.connection.HttpRequest;
 
-public class Signup extends AppCompatActivity {
+public class CustomSignUp extends AppCompatActivity {
     Button submit_user;
     ImageButton selectdob;
-    EditText email, password, cfmPassword, name, nric, dob, mobile, others;
-    TextView school, diet, tnu, pp, pwdErrorMsg, emailErrorMsg, nricErrorMessage, schoolErrorMessage, dietErrorMessage;
+    EditText name, nric, dob, mobile, others;
+    TextView school, diet, tnu, pp, nricErrorMessage, schoolErrorMessage, dietErrorMessage;
     Links link;
     AppCompatCheckBox checkBox;
     LinearLayout progressbar;
@@ -60,13 +49,14 @@ public class Signup extends AppCompatActivity {
     SharedPreferences sessionManager;
 
     private int mYear, mMonth, mDay;
+    public static String email= "";
 
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_custom_sign_up);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,11 +66,8 @@ public class Signup extends AppCompatActivity {
         Intent getIntent = getIntent();
         submit_user = findViewById(R.id.submit_user);
         selectdob = findViewById(R.id.selectdob);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
         others = findViewById(R.id.others);
         others.setVisibility(View.GONE);
-        cfmPassword = findViewById(R.id.cfmPassword);
         name = findViewById(R.id.name);
         nric = findViewById(R.id.nric);
         dob = findViewById(R.id.dob);
@@ -99,34 +86,23 @@ public class Signup extends AppCompatActivity {
         String getMethod = getIntent.getStringExtra("method");
         switch (getMethod) {
             case "facebook":
-                name.setText(getIntent.getStringExtra("name"));
-                email.setText(getIntent.getStringExtra("email"));
-                password.setVisibility(View.GONE);
-                password.setText("Facebook");
-                cfmPassword.setVisibility(View.GONE);
-                cfmPassword.setText("Facebook");
-                email.setVisibility(View.GONE);
-
+                try {
+                    JSONObject userProfile = new JSONObject(getIntent.getStringExtra("userProfile"));
+                    name.setText(userProfile.getString("name"));
+                    email = getIntent.getStringExtra("email");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "google":
+                email = getIntent.getStringExtra("email");
                 name.setText(getIntent.getStringExtra("name"));
-                email.setText(getIntent.getStringExtra("email"));
-                password.setVisibility(View.GONE);
-                password.setText("Google");
-                cfmPassword.setVisibility(View.GONE);
-                cfmPassword.setText("Google");
-                email.setVisibility(View.GONE);
                 break;
             default:
 
                 break;
         }
 
-        //Error Messages
-        pwdErrorMsg = findViewById(R.id.pwdErrorMessage);
-        pwdErrorMsg.setVisibility(View.GONE);
-        emailErrorMsg = findViewById(R.id.emailErrorMessage);
-        emailErrorMsg.setVisibility(View.GONE);
         nricErrorMessage = findViewById(R.id.nricErrorMessage);
         nricErrorMessage.setVisibility(View.GONE);
         schoolErrorMessage = findViewById(R.id.schoolErrorMessage);
@@ -137,15 +113,6 @@ public class Signup extends AppCompatActivity {
 
         dob.setOnClickListener(v -> selectDate());
         selectdob.setOnClickListener(v -> selectDate());
-//
-//        btnScan = findViewById(R.id.btnScan);
-//        btnScan.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, OcrCaptureActivity.class);
-//            intent.putExtra(OcrCaptureActivity.AutoFocus, true);
-//            intent.putExtra(OcrCaptureActivity.UseFlash, false);
-//
-//            startActivityForResult(intent, RC_OCR_CAPTURE);
-//        });
 
         school.setOnClickListener(v -> selectSchool());
         diet.setOnClickListener(v -> selectDiet());
@@ -163,7 +130,7 @@ public class Signup extends AppCompatActivity {
                     if (checkBox.isChecked()) {
                         if (checkNetwork()) {
                             Links link = new Links();
-                            Register register = new Register();
+                            CustomSignUp.Register register = new CustomSignUp.Register();
                             register.execute(link.getRegister());
                         } else {
 
@@ -186,9 +153,7 @@ public class Signup extends AppCompatActivity {
             }
 
         });
-
     }
-
     public Boolean validate_nric(String nric) {
         String nricUpper = nric.toUpperCase();
         return nricUpper.matches("\\p{Upper}\\d{7}\\p{Upper}");
@@ -200,14 +165,6 @@ public class Signup extends AppCompatActivity {
 
     public Boolean checkDiet(String diet) {
         return diet.equals("Dietary Requirements");
-    }
-
-    public Boolean validate_email(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    public Boolean checkPassword(String password, String cfmPassword) {
-        return password.equals(cfmPassword);
     }
 
     public boolean checkNetwork() {
@@ -232,7 +189,7 @@ public class Signup extends AppCompatActivity {
     }
 
     public void tncDialogue() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomSignUp.this);
         dialog.setCancelable(false);
         dialog.setTitle("Terms of use");
         dialog.setMessage("Terms of use here");
@@ -243,7 +200,7 @@ public class Signup extends AppCompatActivity {
     }
 
     public void ppDialogue() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomSignUp.this);
         dialog.setCancelable(false);
         dialog.setTitle("Privacy Policy");
         dialog.setMessage("privacy policy here");
@@ -268,12 +225,12 @@ public class Signup extends AppCompatActivity {
                     , "name="
                             + name.getText().toString()
                             + "&email="
-                            + email.getText().toString()
+                            + email
                             + "&nric="
                             + nric.getText().toString()
                             + "&dob="
-                            + dob.getText().toString().split("-")[2] + "-"
-                            + dob.getText().toString().split("-")[1] + "-"
+                            + dob.getText().toString().split("-")[2]+"-"
+                            + dob.getText().toString().split("-")[1]+"-"
                             + dob.getText().toString().split("-")[0]
                             + "&mobile="
                             + mobile.getText().toString()
@@ -281,8 +238,7 @@ public class Signup extends AppCompatActivity {
                             + school.getText().toString()
                             + "&diet="
                             + diet.getText().toString()
-                            + "&password="
-                            + password.getText().toString()
+                            + "&password= "
                             + "&statuses_id=" + String.valueOf(getRegistrationStatus(dob.getText().toString())));
         }
 
@@ -295,7 +251,7 @@ public class Signup extends AppCompatActivity {
             String[] splitString = s.split("");
             Log.e("ITEM RESULT", splitString[2]);
             if (splitString[2].equals("D")) {
-                Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomSignUp.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
             } else {
                 try {
                     JSONObject result = new JSONObject(s);
@@ -314,7 +270,7 @@ public class Signup extends AppCompatActivity {
                         switch (type) {
                             case 1: {
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(CustomSignUp.this);
                                 dialog.setCancelable(false);
                                 dialog.setTitle("Registration");
 
@@ -327,7 +283,7 @@ public class Signup extends AppCompatActivity {
                             }
                             case 2: {
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(CustomSignUp.this);
                                 dialog.setCancelable(false);
                                 dialog.setTitle("Registration");
 
@@ -335,20 +291,20 @@ public class Signup extends AppCompatActivity {
 
                                 SharedPreferences.Editor editor = sessionManager.edit();
                                 editor.putString(SESSION_ID, "200");
-                                editor.putString("email", email.getText().toString());
+                                editor.putString("email", email);
                                 editor.putString("name", name.getText().toString());
                                 editor.putString("number", mobile.getText().toString());
                                 editor.putString("dob", dob.getText().toString());
                                 editor.apply();
                                 dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(CustomSignUp.this, Home.class)));
                                 AlertDialog dialogue = dialog.create();
                                 dialogue.show();
                                 break;
                             }
                             case 3: {
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(CustomSignUp.this);
                                 dialog.setCancelable(false);
                                 dialog.setTitle("Registration");
 
@@ -360,9 +316,6 @@ public class Signup extends AppCompatActivity {
                                 break;
                             }
                         }
-//                    startActivity(new Intent(Signup.this, Home.class));
-
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -373,30 +326,13 @@ public class Signup extends AppCompatActivity {
 
     public Boolean checkValidation() {
         boolean[] checkallvalidation = new boolean[5];
-        if (!validate_email(email.getText().toString())) {
-            emailErrorMsg.setVisibility(View.VISIBLE);
-            emailErrorMsg.setText("Your Email is invalid");
-            checkallvalidation[0] = false;
 
-        } else {
-            emailErrorMsg.setVisibility(View.GONE);
-            checkallvalidation[0] = true;
-        }
         if (!validate_nric(nric.getText().toString())) {
 
             checkallvalidation[1] = true;
 
         } else {
             checkallvalidation[1] = true;
-        }
-        if (!checkPassword(password.getText().toString(), cfmPassword.getText().toString())) {
-            pwdErrorMsg.setVisibility(View.VISIBLE);
-            pwdErrorMsg.setText("Your passwords do not match!");
-            checkallvalidation[2] = false;
-
-        } else {
-            pwdErrorMsg.setVisibility(View.GONE);
-            checkallvalidation[2] = true;
         }
         if (checkSchool(school.getText().toString())) {
             schoolErrorMessage.setVisibility(View.VISIBLE);
@@ -405,7 +341,7 @@ public class Signup extends AppCompatActivity {
 
         } else {
             schoolErrorMessage.setVisibility(View.GONE);
-            if (school.getText().toString() == "OTHERS") {
+            if(school.getText().toString()=="OTHERS"){
 
             }
             checkallvalidation[3] = true;
@@ -437,7 +373,7 @@ public class Signup extends AppCompatActivity {
     }
 
     public Boolean checkEmpty() {
-        return !email.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && !cfmPassword.getText().toString().isEmpty() && !name.getText().toString().isEmpty() && !nric.getText().toString().isEmpty() && !dob.getText().toString().isEmpty();
+        return !name.getText().toString().isEmpty() && !nric.getText().toString().isEmpty() && !dob.getText().toString().isEmpty();
     }
 
     public void selectDate() {
@@ -608,10 +544,10 @@ public class Signup extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(items, (dialog, item) -> {
             // Do something with the selection
-            if (items[item] == "OTHERS") {
+            if(items[item]=="OTHERS"){
                 others.setVisibility(View.VISIBLE);
                 school.setText(items[item]);
-            } else {
+            }else{
                 others.setVisibility(View.GONE);
                 school.setText(items[item]);
             }
@@ -636,26 +572,6 @@ public class Signup extends AppCompatActivity {
         alert.show();
 
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == RC_OCR_CAPTURE) {
-//            if (resultCode == CommonStatusCodes.SUCCESS) {
-//                if (data != null) {
-//                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
-//                    ocrText = text;
-//                    Log.e(TAG, "onActivityResult: " + ocrText);
-//                    Log.e(TAG, "Text read: " + text);
-//                    nric.setText(text);
-//                } else {
-//                    Log.d(TAG, "No Text captured, intent data is null");
-//                }
-//            } else {
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
 
     public int getRegistrationStatus(String date) {
         String[] yearString = date.split("-");

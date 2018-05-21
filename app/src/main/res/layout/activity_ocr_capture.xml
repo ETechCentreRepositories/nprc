@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:text="please scan your Ez-Link card"
+            android:text="please scan your NRIC"
             android:textAlignment="center"/>
     </LinearLayout>
     <LinearLayout

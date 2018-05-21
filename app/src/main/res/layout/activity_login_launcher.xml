@@ -13,7 +13,6 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_background_dark" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +36,8 @@
             android:layout_marginBottom="10dp"
             android:text="CREATE ACCOUNT"
             android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -67,12 +67,31 @@
                 android:layout_marginRight="30dp"
                 android:background="@drawable/fb_button"
                 android:text="Register with facebook"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textSize="16dp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/googlelogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="Register with Google+"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/googlesignup"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
@@ -82,12 +101,11 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/button_red_round"
-                android:text="Register with Google+"
-                android:textColor="#FFFFFF" />
-
+                android:text="Register with Google +"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp"
+                android:textStyle="bold" />
         </RelativeLayout>
-
-
 
         <Button
             android:id="@+id/signup"
@@ -98,15 +116,18 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/button_light_blue_round"
             android:text="Create Account"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="OR LOGIN"
+            android:text="OR"
             android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/login"
@@ -117,17 +138,82 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/button_red_round"
             android:text="LOGIN"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/fbloginAPI"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center" />
+
+                    <Button
+                        android:id="@+id/fbsignupAPI"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/fb_button"
+                        android:gravity="center"
+                        android:layout_marginRight="4dp"
+                        android:text="Facebook"
+                        android:textAllCaps="true"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.gms.common.SignInButton
+                        android:id="@+id/googleloginAPI"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:textColor="#FFFFFF" />
+
+                    <Button
+                        android:id="@+id/googlesignupAPI"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_red_round"
+                        android:layout_marginLeft="4dp"
+                        android:text="Google +"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        android:layout_alignParentBottom="true"
-        android:text="By creating an account, I agree to Terms of Use and Privacy Policy."
-        android:textColor="@android:color/white"
-        android:layout_margin="10dp"
-        android:textAlignment="center"/>
-
 </RelativeLayout>

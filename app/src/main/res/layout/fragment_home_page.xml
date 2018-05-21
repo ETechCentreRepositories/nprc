@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomePage">
 
-    <!-- TODO: Update blank fragment layout -->
    <RelativeLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent">
@@ -18,6 +17,8 @@
            android:gravity="top">
 
            <RelativeLayout
+
+
                android:layout_width="wrap_content"
                android:layout_height="160dp"
                android:layout_alignParentLeft="true"
@@ -37,66 +38,30 @@
                    android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
                    android:textColor="@android:color/white"
                    android:textStyle="bold" />
-               <RelativeLayout
-                   android:layout_alignParentBottom="true"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
-                   <ImageView
-                       android:scaleType="fitXY"
-                       android:layout_width="50dp"
-                       android:layout_height="80dp"
-                       android:src="@drawable/centurion"/>
-                   <ImageView
-                       android:layout_marginLeft="20dp"
-                       android:layout_marginStart="20dp"
-                       android:scaleType="fitXY"
-                       android:layout_width="50dp"
-                       android:layout_height="80dp"
-                       android:src="@drawable/ninjas"/>
-                   <ImageView
-                       android:layout_marginLeft="40dp"
-                       android:layout_marginStart="40dp"
-                       android:scaleType="fitXY"
-                       android:layout_width="50dp"
-                       android:layout_height="80dp"
-                       android:src="@drawable/apache"/>
-                   <ImageView
-                       android:layout_marginLeft="60dp"
-                       android:layout_marginStart="60dp"
-                       android:scaleType="fitXY"
-                       android:layout_width="50dp"
-                       android:layout_height="80dp"
-                       android:src="@drawable/vikings"/>
-                   <ImageView
-                       android:layout_marginLeft="80dp"
-                       android:layout_marginStart="80dp"
-                       android:scaleType="fitXY"
-                       android:layout_width="50dp"
-                       android:layout_height="80dp"
-                       android:src="@drawable/spartan"/>
-               </RelativeLayout>
+
 
 
 
            </RelativeLayout>
-
-           <ImageView
-               android:id="@+id/imageView4"
-               android:layout_width="160dp"
-               android:layout_height="160dp"
-               android:layout_alignParentEnd="true"
-               android:layout_alignParentRight="true"
-               android:layout_alignParentTop="true"
-               android:layout_margin="15dp"
-               app:srcCompat="@drawable/logo" />
+           <LinearLayout
+               android:layout_marginTop="30dp"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
+               <ImageView
+                   android:padding="10dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/landing_main_image"/>
+           </LinearLayout>
 
        </RelativeLayout>
 
        <LinearLayout
+           android:layout_below="@id/header"
            android:id="@+id/view"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
-           android:layout_below="@id/header"
            android:orientation="vertical"
            android:weightSum="2">
 
@@ -115,7 +80,7 @@
                    android:layout_marginEnd="0.5dp"
                    android:layout_marginRight="0.5dp"
                    android:layout_weight="1"
-                   android:background="@drawable/campporgramme"
+                   android:background="@drawable/campprogramme"
                    android:gravity="center"
                    android:orientation="vertical">
 
@@ -125,18 +90,20 @@
                        android:background="#75000000" />
 
                    <LinearLayout
-                       android:padding="10dp"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:gravity="center"
-                       android:orientation="vertical">
+                       android:orientation="vertical"
+                       android:padding="10dp">
 
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:text="Camp Programme"
                            android:textColor="#FFF"
-                           android:textSize="15sp" />
+                           android:textAllCaps="true"
+                           android:textSize="17dp"
+                           android:textStyle="bold" />
                    </LinearLayout>
 
                </RelativeLayout>
@@ -158,18 +125,20 @@
                        android:background="#75000000" />
 
                    <LinearLayout
-                       android:padding="10dp"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:gravity="center"
-                       android:orientation="vertical">
+                       android:orientation="vertical"
+                       android:padding="10dp">
 
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Path of Discovery"
+                           android:text="Course Finder"
+                           android:textAllCaps="true"
                            android:textColor="#FFF"
-                           android:textSize="15sp" />
+                           android:textStyle="bold"
+                           android:textSize="18dp" />
                    </LinearLayout>
                </RelativeLayout>
 
@@ -200,18 +169,20 @@
                        android:background="#75000000" />
 
                    <LinearLayout
-                       android:padding="10dp"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:gravity="center"
-                       android:orientation="vertical">
+                       android:orientation="vertical"
+                       android:padding="10dp">
 
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:text="Campus Explorer"
+                           android:textAllCaps="true"
                            android:textColor="#FFF"
-                           android:textSize="15sp" />
+                           android:textSize="17dp"
+                           android:textStyle="bold" />
                    </LinearLayout>
 
                </RelativeLayout>
@@ -233,18 +204,20 @@
                        android:background="#75000000" />
 
                    <LinearLayout
-                       android:padding="10dp"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:gravity="center"
-                       android:orientation="vertical">
+                       android:orientation="vertical"
+                       android:padding="10dp">
 
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:text="Ask Red Camp"
                            android:textColor="#FFF"
-                           android:textSize="15sp" />
+                           android:textAllCaps="true"
+                           android:textSize="18dp"
+                           android:textStyle="bold" />
                    </LinearLayout>
 
                </RelativeLayout>

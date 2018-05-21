@@ -49,9 +49,9 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Content.Home"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            android:hardwareAccelerated="true"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Content.WebView"
             android:screenOrientation="portrait"
@@ -83,9 +83,10 @@
         <activity
             android:name=".Content.NavDrawer"
             android:label="@string/title_activity_nav_drawer"
-            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Login.CustomSignUp"></activity>
     </application>
 
 </manifest>
