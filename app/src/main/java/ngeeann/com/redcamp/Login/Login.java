@@ -37,6 +37,7 @@ public class Login extends AppCompatActivity {
     LinearLayout progressbar;
     Button forgetpw;
     String getEmail, getName;
+    String myEmail,myName;
 
 
     public static final String SESSION = "login_status";
@@ -164,8 +165,8 @@ public class Login extends AppCompatActivity {
                     String email = user.getString("email");
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString(SESSION_ID, "200");
-                    editor.putString("email", getEmail);
-                    editor.putString("name", getName);
+                    editor.putString("email", email);
+                    editor.putString("name", name);
                     editor.putString("number", user.getString("mobile"));
                     editor.putString("dob", user.getString("dob"));
                     editor.apply();
