@@ -309,6 +309,7 @@ public class Signup extends AppCompatActivity {
                     if (status == 200) {
                         int type = result.getInt("type");
                         String display_message = result.getString("display_message");
+                        String display_title = result.getString("display_title");
                         Log.i("JSON DISPLAY MESSAGE", display_message);
 
                         switch (type) {
@@ -316,7 +317,7 @@ public class Signup extends AppCompatActivity {
 
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
                                 dialog.setCancelable(false);
-                                dialog.setTitle("Registration");
+                                dialog.setTitle(display_title);
 
                                 dialog.setMessage(display_message);
                                 dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
@@ -329,7 +330,7 @@ public class Signup extends AppCompatActivity {
 
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
                                 dialog.setCancelable(false);
-                                dialog.setTitle("Registration");
+                                dialog.setTitle(display_title);
 
                                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
@@ -350,7 +351,7 @@ public class Signup extends AppCompatActivity {
 
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
                                 dialog.setCancelable(false);
-                                dialog.setTitle("Registration");
+                                dialog.setTitle(display_title);
 
                                 dialog.setMessage(display_message);
                                 dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());

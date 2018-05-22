@@ -25,4 +25,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="share">share</string>
+    <string name="ask_red_camp">Ask Red Camp</string>
+    <string name="campus_explorer">Campus Explorer</string>
+    <string name="course_finder">Course Finder</string>
+    <string name="camp_programme">Camp Programme</string>
 </resources>

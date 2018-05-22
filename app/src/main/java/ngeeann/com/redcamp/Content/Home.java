@@ -155,6 +155,7 @@ public class Home extends AppCompatActivity {
                 }
                 // manage other entries if you have it ...
             case R.id.share:
+                shareIt();
                 return true;
 
 
@@ -169,8 +170,6 @@ public class Home extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
-
-
 
     public void replacefragment(Fragment fragment) {
         ft = getSupportFragmentManager().beginTransaction();
@@ -188,5 +187,16 @@ public class Home extends AppCompatActivity {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    private void shareIt() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "download this app now!\n https://www.np.edu.sg/rc-app-playstore/Pages/default.aspx\n";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+
+//sharing implementation here
+
+    }
 
 }

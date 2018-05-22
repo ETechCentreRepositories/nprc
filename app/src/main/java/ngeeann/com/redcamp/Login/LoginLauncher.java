@@ -62,6 +62,7 @@ public class LoginLauncher extends AppCompatActivity {
     public static final String SESSION_ID = "session";
     public static final String TAG = "LoginLauncher.java";
     SharedPreferences sessionManager;
+    String email, name;
 
     //FB stuff
     CallbackManager callbackManager;
@@ -175,11 +176,10 @@ public class LoginLauncher extends AppCompatActivity {
                     Log.wtf("jsonString: ", "" + json_object);
                     try {
                         JSONObject object = new JSONObject(String.valueOf(json_object));
-                        String email = object.getString("email");
-                        String name = object.getString("name");
+                        email = object.getString("email");
+                        name = object.getString("name");
                         FacebookLogin fbLogin = new FacebookLogin();
                         fbLogin.execute(email, name);
-
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -265,8 +265,8 @@ public class LoginLauncher extends AppCompatActivity {
 
             Log.d(TAG, "handleSignInResult: successful " + account);
             GoogleLogin glogin = new GoogleLogin();
-            String email = account.getEmail();
-            String name = account.getGivenName();
+            email = account.getEmail();
+            name = account.getGivenName();
             glogin.execute(email, name);
 //
 //            Intent intent = new Intent(LoginLauncher.this, Signup.class);
@@ -312,8 +312,8 @@ public class LoginLauncher extends AppCompatActivity {
                 } else if (status == 200) {
                     JSONArray users = object.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
-                    String name = user.getString("name");
-                    String email = user.getString("email");
+//                    String name = user.getString("name");
+//                    String email = user.getString("email");
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
                     int statuses_id = user.getInt("statuses_id");
@@ -336,7 +336,6 @@ public class LoginLauncher extends AppCompatActivity {
                     finish();
                     startActivity(new Intent(LoginLauncher.this, Home.class)
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
                             .putExtra("name", name)
                             .putExtra("email", email)
                             .putExtra("number", user.getString("mobile"))
@@ -395,13 +394,13 @@ public class LoginLauncher extends AppCompatActivity {
                     //not signed up
                     startActivity(new Intent(LoginLauncher.this, Signup.class)
                             .putExtra("method", "google")
-                            .putExtra("email", object.getString("display_title"))
-                            .putExtra("name", object.getString("display_message")));
+                            .putExtra("email", email)
+                            .putExtra("name", name));
                 } else if (status == 200) {
                     JSONArray users = object.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
-                    String name = user.getString("name");
-                    String email = user.getString("email");
+//                    String name = user.getString("name");
+//                    String email = user.getString("email");
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
                     int statuses_id = user.getInt("statuses_id");

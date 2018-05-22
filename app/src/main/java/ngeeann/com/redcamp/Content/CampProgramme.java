@@ -59,7 +59,7 @@ public class CampProgramme extends AppCompatActivity {
                 "06:00pm:     Mass Dance \n" +
                 "06:30pm:     End of Day 1 \n");
 
-        contents.add("08:30am      Registration \n" +
+        contents.add("08:30am:     Registration \n" +
                 "09:00am:     Skit Performance \n" +
                 "10:00am:     Path of Discovery 3 \n" +
                 "01:00pm:     Lunch \n" +
@@ -68,7 +68,7 @@ public class CampProgramme extends AppCompatActivity {
                 "06:00pm:     Mass Dance \n" +
                 "06:30pm:     End of Day 2 \n");
 
-        contents.add( "08:30am     Registration \n" +
+        contents.add( "08:30am:     Registration \n" +
                 "09:00am:     Event Opening \n" +
                 "10:00am:     Path of Discovery 5 \n" +
                 "01:00pm:     Lunch \n" +
@@ -108,7 +108,7 @@ public class CampProgramme extends AppCompatActivity {
                 "06:00pm:     Mass Dance \n" +
                 "06:30pm:     End of Day 1 \n");
 
-        contents.add("08:30am      Registration \n" +
+        contents.add("08:30am:     Registration \n" +
                 "09:00am:     Skit Performance \n" +
                 "10:00am:     Path of Discovery 3 \n" +
                 "01:00pm:     Lunch \n" +
@@ -117,7 +117,7 @@ public class CampProgramme extends AppCompatActivity {
                 "06:00pm:     Mass Dance \n" +
                 "06:30pm:     End of Day 2 \n");
 
-        contents.add( "08:30am     Registration \n" +
+        contents.add( "08:30am:     Registration \n" +
                 "09:00am:     Event Opening \n" +
                 "10:00am:     Path of Discovery 5 \n" +
                 "01:00pm:     Lunch \n" +
@@ -155,7 +155,7 @@ public class CampProgramme extends AppCompatActivity {
                 "06:00pm:     Mass Dance \n" +
                 "06:30pm:     End of Day 1 \n");
 
-        contents.add("08:30am      Registration \n" +
+        contents.add("08:30am:     Registration \n" +
                 "09:00am:     Skit Performance \n" +
                 "10:00am:     Path of Discovery 3 \n" +
                 "01:00pm:     Lunch \n" +
@@ -164,7 +164,7 @@ public class CampProgramme extends AppCompatActivity {
                 "06:00pm:     Mass Dance \n" +
                 "06:30pm:     End of Day 2 \n");
 
-        contents.add( "08:30am     Registration \n" +
+        contents.add( "08:30am:     Registration \n" +
                 "09:00am:     Event Opening \n" +
                 "10:00am:     Path of Discovery 5 \n" +
                 "01:00pm:     Lunch \n" +

@@ -66,19 +66,19 @@ public class HomePage extends Fragment {
         Btn2.setOnClickListener((View v)->{
             Intent intent = new Intent(getContext(), WebView.class);
             intent.putExtra("Links", links.getCourse_finder());
-            intent.putExtra("name","Course Finder");
+            intent.putExtra("name","COURSE FINDER");
             startActivity(intent);
         });
         Btn3.setOnClickListener((View v)->{
             Intent intent = new Intent(getContext(), WebView.class);
             intent.putExtra("Links", links.getCampus_explorer());
-            intent.putExtra("name","Campus Explorer");
+            intent.putExtra("name","CAMPUS EXPLORER");
             startActivity(intent);
         });
         Btn4.setOnClickListener((View v)->{
             Intent intent = new Intent(getContext(), WebView.class);
             intent.putExtra("Links", links.getAsk_red_camp());
-            intent.putExtra("name","Ask Red Camp");
+            intent.putExtra("name","ASK RED CAMP");
             startActivity(intent);
         });
         return view;

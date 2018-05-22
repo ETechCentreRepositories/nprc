@@ -13,14 +13,12 @@
        <RelativeLayout
            android:id="@+id/header"
            android:layout_width="match_parent"
-           android:layout_height="200dp"
+           android:layout_height="230dp"
            android:gravity="top">
 
            <RelativeLayout
-
-
                android:layout_width="wrap_content"
-               android:layout_height="160dp"
+               android:layout_height="match_parent"
                android:layout_alignParentLeft="true"
                android:layout_alignParentStart="true"
                android:layout_margin="15dp"
@@ -32,6 +30,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginBottom="10dp"
+                   android:textSize="19sp"
                    android:background="@android:color/darker_gray"
                    android:padding="5dp"
                    android:textAlignment="center"
@@ -39,12 +38,9 @@
                    android:textColor="@android:color/white"
                    android:textStyle="bold" />
 
-
-
-
            </RelativeLayout>
            <LinearLayout
-               android:layout_marginTop="30dp"
+               android:layout_marginTop="55dp"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:orientation="vertical">
@@ -99,10 +95,10 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Camp Programme"
+                           android:text="@string/camp_programme"
                            android:textColor="#FFF"
                            android:textAllCaps="true"
-                           android:textSize="17dp"
+                           android:textSize="15sp"
                            android:textStyle="bold" />
                    </LinearLayout>
 
@@ -134,11 +130,11 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Course Finder"
+                           android:text="@string/course_finder"
                            android:textAllCaps="true"
                            android:textColor="#FFF"
                            android:textStyle="bold"
-                           android:textSize="18dp" />
+                           android:textSize="15sp" />
                    </LinearLayout>
                </RelativeLayout>
 
@@ -178,10 +174,10 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Campus Explorer"
+                           android:text="@string/campus_explorer"
                            android:textAllCaps="true"
                            android:textColor="#FFF"
-                           android:textSize="17dp"
+                           android:textSize="15sp"
                            android:textStyle="bold" />
                    </LinearLayout>
 
@@ -213,10 +209,10 @@
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Ask Red Camp"
+                           android:text="@string/ask_red_camp"
                            android:textColor="#FFF"
                            android:textAllCaps="true"
-                           android:textSize="18dp"
+                           android:textSize="15sp"
                            android:textStyle="bold" />
                    </LinearLayout>
 
