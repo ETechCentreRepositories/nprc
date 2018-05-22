@@ -62,6 +62,7 @@ public class LoginLauncher extends AppCompatActivity {
     public static final String SESSION_ID = "session";
     public static final String TAG = "LoginLauncher.java";
     SharedPreferences sessionManager;
+    LinearLayout progressbar;
     String email, name;
 
     //FB stuff
@@ -82,6 +83,8 @@ public class LoginLauncher extends AppCompatActivity {
         setContentView(R.layout.activity_login_launcher);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
+        progressbar = findViewById(R.id.progressbar);
+        progressbar.setVisibility(View.GONE);
 
         //Bryan's
         googlesignup = findViewById(R.id.googlesignup);
@@ -89,6 +92,7 @@ public class LoginLauncher extends AppCompatActivity {
         googlesignup.setOnClickListener(v -> {
             Log.d(TAG, "setOnClickListener: ");
             if (checkNetwork()) {
+                progressbar.setVisibility(View.VISIBLE);
                 signIn();
             }
 
@@ -144,6 +148,7 @@ public class LoginLauncher extends AppCompatActivity {
         fbsignup.setOnClickListener((View v) -> {
 //            startActivity(new Intent(this, Signup.class));
             if (checkNetwork()) {
+                progressbar.setVisibility(View.VISIBLE);
                 fblogin.performClick();
             }
 
@@ -152,12 +157,14 @@ public class LoginLauncher extends AppCompatActivity {
         gLogin = findViewById(R.id.googlesignupAPI);
         gLogin.setOnClickListener(v -> {
             if (checkNetwork()) {
+                progressbar.setVisibility(View.VISIBLE);
                 signIn();
             }
         });
         fbLogin = findViewById(R.id.fbsignupAPI);
         fbLogin.setOnClickListener(v -> {
             if (checkNetwork()){
+                progressbar.setVisibility(View.VISIBLE);
                 fblogin.performClick();
             }
         });
@@ -175,11 +182,19 @@ public class LoginLauncher extends AppCompatActivity {
                 (json_object, response) -> {
                     Log.wtf("jsonString: ", "" + json_object);
                     try {
+
                         JSONObject object = new JSONObject(String.valueOf(json_object));
-                        email = object.getString("email");
-                        name = object.getString("name");
-                        FacebookLogin fbLogin = new FacebookLogin();
-                        fbLogin.execute(email, name);
+                        if(object.getString("email")==null){
+                            Toast.makeText(this, "Your Facebook does not contain email", Toast.LENGTH_SHORT).show();
+
+                        }else{
+                            email = object.getString("email");
+                            name = object.getString("name");
+                            FacebookLogin fbLogin = new FacebookLogin();
+                            fbLogin.execute(email, name);
+                        }
+
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -295,6 +310,7 @@ public class LoginLauncher extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressbar.setVisibility(View.GONE);
             try {
                 LoginManager.getInstance().logOut();
                 JSONObject object = new JSONObject(s);
@@ -312,56 +328,74 @@ public class LoginLauncher extends AppCompatActivity {
                 } else if (status == 200) {
                     JSONArray users = object.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
+                    String method = user.getString("method");
+                    if(method.equals("facebook")){
+                        Log.i("USER NAME: ", name);
+                        Log.i("USER EMAIL: ", email);
+
+                        login.setEnabled(true);
+
+                        //remember me
+                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                        SharedPreferences.Editor editor = sessionManager.edit();
+                        editor.putString(SESSION_ID, "200");
+                        editor.putString("email", email);
+                        editor.putString("name", name);
+                        editor.putString("number", user.getString("mobile"));
+                        editor.putString("dob", user.getString("dob"));
+                        editor.apply();
+                        Intent ib = new Intent();
+                        ib.putExtra("type", "1");
+                        setResult(1, ib);
+                        finish();
+                        startActivity(new Intent(LoginLauncher.this, Home.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                .putExtra("name", name)
+                                .putExtra("email", email)
+                                .putExtra("number", user.getString("mobile"))
+                                .putExtra("dob", user.getString("dob")));
+                        finish();
+                    }else{
+                        Toast.makeText(LoginLauncher.this, "Please Login via our portal if you did not register via facebook", Toast.LENGTH_SHORT).show();
+                    }
 //                    String name = user.getString("name");
 //                    String email = user.getString("email");
-                    Log.i("USER NAME: ", name);
-                    Log.i("USER EMAIL: ", email);
-                    int statuses_id = user.getInt("statuses_id");
-
-                    login.setEnabled(true);
-
-                    //remember me
-                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = sessionManager.edit();
-                    editor.putString(SESSION_ID, "200");
-                    editor.putString("email", email);
-                    editor.putString("name", name);
-                    editor.putString("number", user.getString("mobile"));
-                    editor.putString("dob", user.getString("dob"));
-                    editor.apply();
-                    Intent ib = new Intent();
-                    ib.putExtra("type", "1");
-                    setResult(1, ib);
-                    finish();
-                    startActivity(new Intent(LoginLauncher.this, Home.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            .putExtra("name", name)
-                            .putExtra("email", email)
-                            .putExtra("number", user.getString("mobile"))
-                            .putExtra("dob", user.getString("dob")));
-                    finish();
 
                 } else if (status == 201) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(object.getString("display_title"));
-                    dialog.setMessage(object.getString("display_message"));
-                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                    });
-                    AlertDialog dialogue = dialog.create();
-                    dialogue.show();
-                    login.setEnabled(true);
+                    JSONArray users = object.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String method = user.getString("method");
+                    if(method.equals("facebook")) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(object.getString("display_title"));
+                        dialog.setMessage(object.getString("display_message"));
+                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                        });
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+                        login.setEnabled(true);
+                    }else{
+                        Toast.makeText(LoginLauncher.this, "Please Login via our portal if you did not register via facebook", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(object.getString("display_title"));
-                    dialog.setMessage(object.getString("display_message"));
-                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                    });
-                    AlertDialog dialogue = dialog.create();
-                    dialogue.show();
-                    login.setEnabled(true);
+                    JSONArray users = object.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String method = user.getString("method");
+                    if(method.equals("facebook")) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(object.getString("display_title"));
+                        dialog.setMessage(object.getString("display_message"));
+                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                        });
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+                        login.setEnabled(true);
+                    }else{
+                        Toast.makeText(LoginLauncher.this, "Please Login via our portal if you did not register via facebook", Toast.LENGTH_SHORT).show();
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -382,6 +416,7 @@ public class LoginLauncher extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressbar.setVisibility(View.GONE);
             try {
                 LoginManager.getInstance().logOut();
                 JSONObject object = new JSONObject(s);
@@ -390,7 +425,9 @@ public class LoginLauncher extends AppCompatActivity {
                 Log.e("LOGIN JSON EMAIL: ", object.getString("display_title"));
                 Log.e("LOGIN JSON NAME: ", object.getString("display_message"));
                 int status = object.getInt("status");
-                if (status == 404) {
+                if(status == 405){
+                    Toast.makeText(LoginLauncher.this, "Please Login via out login portal!", Toast.LENGTH_SHORT).show();
+                } else if (status == 404) {
                     //not signed up
                     startActivity(new Intent(LoginLauncher.this, Signup.class)
                             .putExtra("method", "google")
@@ -399,57 +436,76 @@ public class LoginLauncher extends AppCompatActivity {
                 } else if (status == 200) {
                     JSONArray users = object.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
+                    String method = user.getString("method");
+                    if(method.equals("google")){
+                        Log.i("USER NAME: ", name);
+                        Log.i("USER EMAIL: ", email);
+
+                        login.setEnabled(true);
+
+                        //remember me
+                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                        SharedPreferences.Editor editor = sessionManager.edit();
+                        editor.putString(SESSION_ID, "200");
+                        editor.putString("email", email);
+                        editor.putString("name", name);
+                        editor.putString("number", user.getString("mobile"));
+                        editor.putString("dob", user.getString("dob"));
+                        editor.apply();
+                        Intent ib = new Intent();
+                        ib.putExtra("type", "1");
+                        setResult(1, ib);
+                        finish();
+                        startActivity(new Intent(LoginLauncher.this, Home.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                .putExtra("name", name)
+                                .putExtra("email", email)
+                                .putExtra("number", user.getString("mobile"))
+                                .putExtra("dob", user.getString("dob")));
+                        finish();
+                    }else{
+                        Toast.makeText(LoginLauncher.this, "Please Login via our portal if you did not register via google", Toast.LENGTH_SHORT).show();
+                    }
 //                    String name = user.getString("name");
 //                    String email = user.getString("email");
-                    Log.i("USER NAME: ", name);
-                    Log.i("USER EMAIL: ", email);
-                    int statuses_id = user.getInt("statuses_id");
 
-                    login.setEnabled(true);
-
-                    //remember me
-                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = sessionManager.edit();
-                    editor.putString(SESSION_ID, "200");
-                    editor.putString("email", email);
-                    editor.putString("name", name);
-                    editor.putString("number", user.getString("mobile"));
-                    editor.putString("dob", user.getString("dob"));
-                    editor.apply();
-                    Intent ib = new Intent();
-                    ib.putExtra("type", "1");
-                    setResult(1, ib);
-                    finish();
-                    startActivity(new Intent(LoginLauncher.this, Home.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-                            .putExtra("name", name)
-                            .putExtra("email", email)
-                            .putExtra("number", user.getString("mobile"))
-                            .putExtra("dob", user.getString("dob")));
-                    finish();
 
                 } else if (status == 201) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(object.getString("display_title"));
-                    dialog.setMessage(object.getString("display_message"));
-                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                    });
-                    AlertDialog dialogue = dialog.create();
-                    dialogue.show();
-                    login.setEnabled(true);
+                    JSONArray users = object.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String method = user.getString("method");
+                    if(!method.equals("google")){
+                        Toast.makeText(LoginLauncher.this, "Please Login via our portal if you did not register via google", Toast.LENGTH_SHORT).show();
+                    }else{
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(object.getString("display_title"));
+                        dialog.setMessage(object.getString("display_message"));
+                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                        });
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+                        login.setEnabled(true);
+                    }
+
                 } else {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(object.getString("display_title"));
-                    dialog.setMessage(object.getString("display_message"));
-                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                    });
-                    AlertDialog dialogue = dialog.create();
-                    dialogue.show();
-                    login.setEnabled(true);
+                    JSONArray users = object.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String method = user.getString("method");
+                    if(!method.equals("google")){
+                        Toast.makeText(LoginLauncher.this, "Please Login via our portal if you did not register via google", Toast.LENGTH_SHORT).show();
+                    }else {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginLauncher.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(object.getString("display_title"));
+                        dialog.setMessage(object.getString("display_message"));
+                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                        });
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+                        login.setEnabled(true);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

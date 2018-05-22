@@ -152,16 +152,15 @@
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="10sp"
-                    android:text="Please enter your last 4 digits on your nric"/>
+                    android:text="@string/last_4_digits_and_last_letter_of_nric"/>
 
                 <EditText
-                    android:maxLength="4"
+                    android:maxLength="5"
                     android:id="@+id/nric"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/login_field_background"
-                    android:hint="XXXXX"
                     android:singleLine="true"
                     android:padding="10dp"
                     android:textColor="#FFFFFF"
@@ -335,6 +334,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
 
     </RelativeLayout>
 

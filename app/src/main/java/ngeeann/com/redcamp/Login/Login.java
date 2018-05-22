@@ -36,6 +36,7 @@ public class Login extends AppCompatActivity {
     Toolbar toolbar;
     LinearLayout progressbar;
     Button forgetpw;
+    String getEmail, getName;
 
 
     public static final String SESSION = "login_status";
@@ -135,7 +136,7 @@ public class Login extends AppCompatActivity {
                 String message = result.getString("message");
                 Log.i("JSON MESSAGE:", message);
                 Log.i("JSON STATUS: ", String.valueOf(status));
-                if (status == 200) {
+                if (status == 201) {
                     JSONArray users = result.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
                     String name = user.getString("name");
@@ -143,50 +144,57 @@ public class Login extends AppCompatActivity {
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
                     int statuses_id = user.getInt("statuses_id");
-                    if (statuses_id == 1) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
-                        dialog.setCancelable(false);
-                        dialog.setMessage("Your application to RedCamp is still pending. \n\nIf you have not submitted your 'O'Level 2018 entry proof, please do so to redcamp@np.edu.sg\n\nThank you for your patience!");
-                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                        });
-                        AlertDialog dialogue = dialog.create();
-                        dialogue.show();
-                        login.setEnabled(true);
-                    } else if (statuses_id == 2) {
-                        login.setEnabled(true);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
+                    dialog.setCancelable(false);
+                    dialog.setTitle(result.getString("display_title"));
+                    dialog.setMessage(result.getString("display_message"));
+                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                    });
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                    login.setEnabled(true);
+                }else if(status == 200) {
+                    login.setEnabled(true);
 
-                        //remember me
-                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    //remember me
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    JSONArray users = result.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString(SESSION_ID, "200");
+                    editor.putString("email", getEmail);
+                    editor.putString("name", getName);
+                    editor.putString("number", user.getString("mobile"));
+                    editor.putString("dob", user.getString("dob"));
+                    editor.apply();
+                    Intent ib = new Intent();
+                    ib.putExtra("type", "1");
+                    setResult(1, ib);
+                    finish();
+                    startActivity(new Intent(Login.this, Home.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-                        SharedPreferences.Editor editor = sessionManager.edit();
-                        editor.putString(SESSION_ID, "200");
-                        editor.putString("email", email);
-                        editor.putString("name", name);
-                        editor.putString("number", user.getString("mobile"));
-                        editor.putString("dob", user.getString("dob"));
-                        editor.apply();
-                        Intent ib = new Intent();
-                        ib.putExtra("type", "1");
-                        setResult(1, ib);
-                        finish();
-                        startActivity(new Intent(Login.this, Home.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-                                .putExtra("name", name)
-                                .putExtra("email", email)
-                                .putExtra("number", user.getString("mobile"))
-                                .putExtra("dob", user.getString("dob")));
-                        finish();
-                    } else if (statuses_id == 3) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
-                        dialog.setCancelable(false);
-                        dialog.setMessage("Your application to Red Camp 15 has been rejected as you did not meet the requirements to join.\nWe apologize for any inconveniences caused and we hope to see you in the near future!");
-                        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                        });
-                        AlertDialog dialogue = dialog.create();
-                        dialogue.show();
-                        login.setEnabled(true);
-                    }
+                            .putExtra("name", name)
+                            .putExtra("email", email)
+                            .putExtra("number", user.getString("mobile"))
+                            .putExtra("dob", user.getString("dob")));
+                    finish();
+                }else if(status == 203){
+                    JSONArray users = result.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
+                    dialog.setCancelable(false);
+                    dialog.setTitle(result.getString("display_title"));
+                    dialog.setMessage(result.getString("display_message"));
+                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                    });
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                    login.setEnabled(true);
 
 
                 } else {

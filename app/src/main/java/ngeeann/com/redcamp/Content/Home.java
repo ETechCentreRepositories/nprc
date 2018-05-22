@@ -33,13 +33,12 @@ import ngeeann.com.redcamp.R;
 
 public class Home extends AppCompatActivity {
 
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
     FragmentTransaction ft;
     TextView name, email, number, dob;
     LinearLayout logout;
     DrawerLayout drawerLayout;
-
-    public static final String SESSION = "login_status";
-    public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
 
     @Override
@@ -133,11 +132,11 @@ public class Home extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+
     private void configureNavigationDrawer() {
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navView = findViewById(R.id.left_drawer);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -157,7 +156,6 @@ public class Home extends AppCompatActivity {
             case R.id.share:
                 shareIt();
                 return true;
-
 
         }
 
@@ -179,7 +177,7 @@ public class Home extends AppCompatActivity {
         ft.commit();
     }
 
-    public void CloseDrawer(){
+    public void CloseDrawer() {
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
@@ -190,10 +188,9 @@ public class Home extends AppCompatActivity {
     private void shareIt() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "download this app now!\n https://www.np.edu.sg/rc-app-playstore/Pages/default.aspx\n";
+        String shareBody = "download the Red Camp app from the link\n https://www.np.edu.sg/rc-app-playstore/Pages/default.aspx\n";
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
 
 //sharing implementation here
 

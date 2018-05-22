@@ -29,4 +29,5 @@
     <string name="campus_explorer">Campus Explorer</string>
     <string name="course_finder">Course Finder</string>
     <string name="camp_programme">Camp Programme</string>
+    <string name="last_4_digits_and_last_letter_of_nric">Last 4 digits and last letter of NRIC</string>
 </resources>

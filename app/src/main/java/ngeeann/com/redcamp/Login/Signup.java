@@ -54,6 +54,7 @@ public class Signup extends AppCompatActivity {
     AppCompatCheckBox checkBox;
     LinearLayout progressbar;
     ConstraintLayout ui;
+    String getMethod;
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
@@ -96,15 +97,13 @@ public class Signup extends AppCompatActivity {
         progressbar.setVisibility(View.GONE);
         ui = findViewById(R.id.ui);
 
-        String getMethod = getIntent.getStringExtra("method");
+        getMethod = getIntent.getStringExtra("method");
         switch (getMethod) {
             case "facebook":
                 name.setText(getIntent.getStringExtra("name"));
                 email.setText(getIntent.getStringExtra("email"));
                 password.setVisibility(View.GONE);
-                password.setText("Facebook");
                 cfmPassword.setVisibility(View.GONE);
-                cfmPassword.setText("Facebook");
                 email.setVisibility(View.GONE);
 
                 break;
@@ -112,9 +111,7 @@ public class Signup extends AppCompatActivity {
                 name.setText(getIntent.getStringExtra("name"));
                 email.setText(getIntent.getStringExtra("email"));
                 password.setVisibility(View.GONE);
-                password.setText("Google");
                 cfmPassword.setVisibility(View.GONE);
-                cfmPassword.setText("Google");
                 email.setVisibility(View.GONE);
                 break;
             default:
@@ -134,6 +131,7 @@ public class Signup extends AppCompatActivity {
         dietErrorMessage = findViewById(R.id.dietErrorMessage);
         dietErrorMessage.setVisibility(View.GONE);
         selectdob = findViewById(R.id.selectdob);
+        nric.setHint("NRIC (XXXXXX)");
 
         dob.setOnClickListener(v -> selectDate());
         selectdob.setOnClickListener(v -> selectDate());
@@ -151,42 +149,92 @@ public class Signup extends AppCompatActivity {
         diet.setOnClickListener(v -> selectDiet());
 
         submit_user.setOnClickListener((View v) -> {
-
             progressbar.setVisibility(View.VISIBLE);
-            if (!checkEmpty()) {
+            switch (getMethod) {
+                case "normal":
+                    if (!checkEmpty()) {
+                        progressbar.setVisibility(View.GONE);
+                        Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
+                    }else{
 
-                progressbar.setVisibility(View.GONE);
-                Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.e("CHECK VALIDATION: ", checkValidation().toString());
-                if (checkValidation()) {
-                    if (checkBox.isChecked()) {
-                        if (checkNetwork()) {
-                            Links link = new Links();
-                            Register register = new Register();
-                            register.execute(link.getRegister());
+                        if (checkValidation()) {
+                            if (checkBox.isChecked()) {
+                                if (checkNetwork()) {
+                                    Links link = new Links();
+                                    Register register = new Register();
+                                    register.execute(link.getRegister());
+                                } else {
+                                    progressbar.setVisibility(View.GONE);
+                                    Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                progressbar.setVisibility(View.GONE);
+                                Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-
                             progressbar.setVisibility(View.GONE);
-                            Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    break;
+                case "google":
+                    if (!socialMediaCheckEmpty()) {
+                        progressbar.setVisibility(View.GONE);
+                        Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
+
+                    }else{
+                    if (checkSocialMediaValidation()) {
+                        if (checkBox.isChecked()) {
+                            if (checkNetwork()) {
+                                Log.e("NETWORK TYPE", "NETWORK FINE");
+                                Links link = new Links();
+                                RegisterSocialMedia register = new RegisterSocialMedia();
+                                register.execute(link.getRegister());
+                            } else {
+                                progressbar.setVisibility(View.GONE);
+                                Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            progressbar.setVisibility(View.GONE);
+                            Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-
                         progressbar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
 
                     }
-
-                } else {
-
-                    progressbar.setVisibility(View.GONE);
-                    Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
-
                 }
+                    break;
+                case "facebook":
+                    if (!socialMediaCheckEmpty()) {
+                        progressbar.setVisibility(View.GONE);
+                        Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
+                    }else{
+
+                        if (checkSocialMediaValidation()) {
+                            if (checkBox.isChecked()) {
+                                if (checkNetwork()) {
+                                    Log.e("NETWORK TYPE", "NETWORK FINE");
+                                    Links link = new Links();
+                                    RegisterSocialMedia register = new RegisterSocialMedia();
+                                    register.execute(link.getRegister());
+                                } else {
+                                    progressbar.setVisibility(View.GONE);
+                                    Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                progressbar.setVisibility(View.GONE);
+                                Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            progressbar.setVisibility(View.GONE);
+                            Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                    break;
             }
-
         });
-
     }
 
     public Boolean validate_nric(String nric) {
@@ -253,124 +301,6 @@ public class Signup extends AppCompatActivity {
         dialogue.show();
     }
 
-    private class Register extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String[] splitDate = dob.getText().toString().split("-");
-            String newDate = splitDate[2] + splitDate[1] + splitDate[0];
-            Log.e("NEW DATE: ", newDate);
-
-
-            HttpRequest request = new HttpRequest();
-            link = new Links();
-            return request.PostRequest(link.getRegister()
-                    , "name="
-                            + name.getText().toString()
-                            + "&email="
-                            + email.getText().toString()
-                            + "&nric="
-                            + nric.getText().toString()
-                            + "&dob="
-                            + dob.getText().toString().split("-")[2] + "-"
-                            + dob.getText().toString().split("-")[1] + "-"
-                            + dob.getText().toString().split("-")[0]
-                            + "&mobile="
-                            + mobile.getText().toString()
-                            + "&school="
-                            + school.getText().toString()
-                            + "&diet="
-                            + diet.getText().toString()
-                            + "&password="
-                            + password.getText().toString()
-                            + "&statuses_id=" + String.valueOf(getRegistrationStatus(dob.getText().toString())));
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            progressbar.setVisibility(View.GONE);
-            Log.e("JSON RETURN: ", s);
-            String[] splitString = s.split("");
-            Log.e("ITEM RESULT", splitString[2]);
-            if (splitString[2].equals("D")) {
-                Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
-            } else {
-                try {
-                    JSONObject result = new JSONObject(s);
-                    int status = result.getInt("status");
-                    String message = result.getString("message");
-
-                    Log.i("JSON MESSAGE:", message);
-                    Log.i("JSON STATUS: ", String.valueOf(status));
-
-
-                    if (status == 200) {
-                        int type = result.getInt("type");
-                        String display_message = result.getString("display_message");
-                        String display_title = result.getString("display_title");
-                        Log.i("JSON DISPLAY MESSAGE", display_message);
-
-                        switch (type) {
-                            case 1: {
-
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
-                                AlertDialog dialogue = dialog.create();
-
-                                dialogue.show();
-                                break;
-                            }
-                            case 2: {
-
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-
-                                SharedPreferences.Editor editor = sessionManager.edit();
-                                editor.putString(SESSION_ID, "200");
-                                editor.putString("email", email.getText().toString());
-                                editor.putString("name", name.getText().toString());
-                                editor.putString("number", mobile.getText().toString());
-                                editor.putString("dob", dob.getText().toString());
-                                editor.apply();
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
-                                AlertDialog dialogue = dialog.create();
-                                dialogue.show();
-                                break;
-                            }
-                            case 3: {
-
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
-                                AlertDialog dialogue = dialog.create();
-
-                                dialogue.show();
-                                break;
-                            }
-                        }
-//                    startActivity(new Intent(Signup.this, Home.class));
-
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     public Boolean checkValidation() {
         boolean[] checkallvalidation = new boolean[5];
@@ -437,8 +367,69 @@ public class Signup extends AppCompatActivity {
 
     }
 
+    public Boolean checkSocialMediaValidation() {
+        Log.e("SOCIAL MEDIA VALIDATE", "done");
+        boolean[] checkallvalidation = new boolean[4];
+        if (!validate_email(email.getText().toString())) {
+            emailErrorMsg.setVisibility(View.VISIBLE);
+            emailErrorMsg.setText("Your Email is invalid");
+            checkallvalidation[0] = false;
+
+        } else {
+            emailErrorMsg.setVisibility(View.GONE);
+            checkallvalidation[0] = true;
+        }
+        if (!validate_nric(nric.getText().toString())) {
+
+            checkallvalidation[1] = true;
+
+        } else {
+            checkallvalidation[1] = true;
+        }
+        if (checkSchool(school.getText().toString())) {
+            schoolErrorMessage.setVisibility(View.VISIBLE);
+            schoolErrorMessage.setText("Please Select a School");
+            checkallvalidation[2] = false;
+
+        } else {
+            schoolErrorMessage.setVisibility(View.GONE);
+            if (school.getText().toString() == "OTHERS") {
+
+            }
+            checkallvalidation[2] = true;
+        }
+        if (checkDiet(diet.getText().toString())) {
+            dietErrorMessage.setVisibility(View.VISIBLE);
+            dietErrorMessage.setText("Please select one");
+            checkallvalidation[3] = false;
+
+        } else {
+            dietErrorMessage.setVisibility(View.GONE);
+            checkallvalidation[3] = true;
+        }
+        ArrayList<Boolean> falseItems = new ArrayList<>();
+        Log.e("VALIDATED LENGTH: ", checkallvalidation.length + "");
+        for (int i = 0; i < checkallvalidation.length; i++) {
+            Log.e("VALIDATED " + i + ":", String.valueOf(checkallvalidation[i]));
+            if (!checkallvalidation[i]) {
+                falseItems.add(checkallvalidation[i]);
+            }
+        }
+        if (falseItems.size() >= 1) {
+            return false;
+        } else {
+            return true;
+        }
+
+
+    }
+
     public Boolean checkEmpty() {
         return !email.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && !cfmPassword.getText().toString().isEmpty() && !name.getText().toString().isEmpty() && !nric.getText().toString().isEmpty() && !dob.getText().toString().isEmpty();
+    }
+
+    public Boolean socialMediaCheckEmpty() {
+        return !email.getText().toString().isEmpty() && !name.getText().toString().isEmpty() && !nric.getText().toString().isEmpty() && !dob.getText().toString().isEmpty();
     }
 
     public void selectDate() {
@@ -667,6 +658,239 @@ public class Signup extends AppCompatActivity {
             return 3;
         } else {
             return 2;
+        }
+    }
+
+    private class Register extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String[] splitDate = dob.getText().toString().split("-");
+            String newDate = splitDate[2] + splitDate[1] + splitDate[0];
+            Log.e("NEW DATE: ", newDate);
+
+
+            HttpRequest request = new HttpRequest();
+            link = new Links();
+
+            return request.PostRequest(link.getRegister()
+                    , "name="
+                            + name.getText().toString()
+                            + "&email="
+                            + email.getText().toString()
+                            + "&nric="
+                            + nric.getText().toString()
+                            + "&dob="
+                            + dob.getText().toString().split("-")[2] + "-"
+                            + dob.getText().toString().split("-")[1] + "-"
+                            + dob.getText().toString().split("-")[0]
+                            + "&mobile="
+                            + mobile.getText().toString()
+                            + "&school="
+                            + school.getText().toString()
+                            + "&diet="
+                            + diet.getText().toString()
+                            + "&password="+cfmPassword.getText().toString()
+                            + "&statuses_id="
+                            + String.valueOf(getRegistrationStatus(dob.getText().toString()))
+                            + "&method=" + getMethod);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            progressbar.setVisibility(View.GONE);
+            Log.e("JSON RETURN: ", s);
+            String[] splitString = s.split("");
+            Log.e("ITEM RESULT", splitString[2]);
+            if (splitString[2].equals("D")) {
+                Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    JSONObject result = new JSONObject(s);
+                    int status = result.getInt("status");
+                    String message = result.getString("message");
+
+                    Log.i("JSON MESSAGE:", message);
+                    Log.i("JSON STATUS: ", String.valueOf(status));
+
+                    if (status == 200) {
+                        int type = result.getInt("type");
+                        String display_message = result.getString("display_message");
+                        String display_title = result.getString("display_title");
+                        Log.i("JSON DISPLAY MESSAGE", display_message);
+
+                        switch (type) {
+                            case 1: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle(display_title);
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                                AlertDialog dialogue = dialog.create();
+
+                                dialogue.show();
+                                break;
+                            }
+                            case 2: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle(display_title);
+
+                                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                                SharedPreferences.Editor editor = sessionManager.edit();
+                                editor.putString(SESSION_ID, "200");
+                                editor.putString("email", email.getText().toString());
+                                editor.putString("name", name.getText().toString());
+                                editor.putString("number", mobile.getText().toString());
+                                editor.putString("dob", dob.getText().toString());
+                                editor.apply();
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
+                                AlertDialog dialogue = dialog.create();
+                                dialogue.show();
+                                break;
+                            }
+                            case 3: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle(display_title);
+
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                                AlertDialog dialogue = dialog.create();
+
+                                dialogue.show();
+                                break;
+                            }
+                        }
+//                    startActivity(new Intent(Signup.this, Home.class));
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class RegisterSocialMedia extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.e("SOCIAL MEDIA LOGIN", "IN PROGRESS");
+            String[] splitDate = dob.getText().toString().split("-");
+            String newDate = splitDate[2] +"-"+ splitDate[1] +"-"+ splitDate[0];
+            Log.e("NEW DATE: ", newDate);
+
+            HttpRequest request = new HttpRequest();
+            link = new Links();
+
+            return request.PostRequest(link.getRegister()
+                    , "name="
+                            + name.getText().toString()
+                            + "&email="
+                            + email.getText().toString()
+                            + "&nric="
+                            + nric.getText().toString()
+                            + "&dob="
+                            + newDate
+                            + "&mobile="
+                            + mobile.getText().toString()
+                            + "&school="
+                            + school.getText().toString()
+                            + "&diet="
+                            + diet.getText().toString()
+                            + "&password=" + "''"
+                            + "&statuses_id="
+                            + String.valueOf(getRegistrationStatus(dob.getText().toString()))
+                            + "&method=" + getMethod);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            progressbar.setVisibility(View.GONE);
+            Log.e("JSON RETURN: ", s);
+            String[] splitString = s.split("");
+            Log.e("ITEM RESULT", splitString[2]);
+            if (splitString[2].equals("D")) {
+                Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    JSONObject result = new JSONObject(s);
+                    int status = result.getInt("status");
+                    String message = result.getString("message");
+
+                    Log.i("JSON MESSAGE:", message);
+                    Log.i("JSON STATUS: ", String.valueOf(status));
+
+                    if (status == 200) {
+                        int type = result.getInt("type");
+                        String display_message = result.getString("display_message");
+                        String display_title = result.getString("display_title");
+                        Log.i("JSON DISPLAY MESSAGE", display_message);
+
+                        switch (type) {
+                            case 1: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle(display_title);
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                                AlertDialog dialogue = dialog.create();
+
+                                dialogue.show();
+                                break;
+                            }
+                            case 2: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle(display_title);
+
+                                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                                SharedPreferences.Editor editor = sessionManager.edit();
+                                editor.putString(SESSION_ID, "200");
+                                editor.putString("email", email.getText().toString());
+                                editor.putString("name", name.getText().toString());
+                                editor.putString("number", mobile.getText().toString());
+                                editor.putString("dob", dob.getText().toString());
+                                editor.apply();
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
+                                AlertDialog dialogue = dialog.create();
+                                dialogue.show();
+                                break;
+                            }
+                            case 3: {
+
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                                dialog.setCancelable(false);
+                                dialog.setTitle(display_title);
+
+                                dialog.setMessage(display_message);
+                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                                AlertDialog dialogue = dialog.create();
+
+                                dialogue.show();
+                                break;
+                            }
+                        }
+//                    startActivity(new Intent(Signup.this, Home.class));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
