@@ -11,6 +11,10 @@ public class Links {
     String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
     String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
 
+    //tnc and pp
+    String tnc = "https://www.np.edu.sg/Pages/terms.aspx";
+    String pp = "https://www.np.edu.sg/Pages/privacy.aspx";
+
 
     public String getCamp_programme() {
         return camp_programme;
@@ -34,6 +38,14 @@ public class Links {
 
     public String getRegister() {
         return register;
+    }
+
+    public String getTnc() {
+        return tnc;
+    }
+
+    public String getPp() {
+        return pp;
     }
 
     public Links() {

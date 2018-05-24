@@ -30,4 +30,6 @@
     <string name="course_finder">Course Finder</string>
     <string name="camp_programme">Camp Programme</string>
     <string name="last_4_digits_and_last_letter_of_nric">Last 4 digits and last letter of NRIC</string>
+
+    <string name="server_client_id">313250078269-folu0eg6rssqeatdjotns7nmdqp8t26v.apps.googleusercontent.com</string>
 </resources>

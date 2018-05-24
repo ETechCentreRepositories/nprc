@@ -41,6 +41,7 @@ import java.util.List;
 import ngeeann.com.redcamp.Content.Home;
 import ngeeann.com.redcamp.Content.MainActivity;
 import ngeeann.com.redcamp.Content.OcrCaptureActivity;
+import ngeeann.com.redcamp.Content.WebView;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.connection.HttpRequest;
@@ -58,6 +59,7 @@ public class Signup extends AppCompatActivity {
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
+    Links links;
     SharedPreferences sessionManager;
 
     private int mYear, mMonth, mDay;
@@ -68,6 +70,7 @@ public class Signup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -280,25 +283,19 @@ public class Signup extends AppCompatActivity {
     }
 
     public void tncDialogue() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-        dialog.setCancelable(false);
-        dialog.setTitle("Terms of use");
-        dialog.setMessage("Terms of use here");
-        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-        });
-        AlertDialog dialogue = dialog.create();
-        dialogue.show();
+        Intent intent = new Intent(Signup.this, WebView.class);
+        links = new Links();
+        intent.putExtra("Links", links.getTnc());
+        intent.putExtra("name","Terms of Use");
+        startActivity(intent);
     }
 
     public void ppDialogue() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-        dialog.setCancelable(false);
-        dialog.setTitle("Privacy Policy");
-        dialog.setMessage("privacy policy here");
-        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-        });
-        AlertDialog dialogue = dialog.create();
-        dialogue.show();
+        Intent intent = new Intent(Signup.this, WebView.class);
+        links = new Links();
+        intent.putExtra("Links", links.getPp());
+        intent.putExtra("name","Privacy Policy");
+        startActivity(intent);
     }
 
 
