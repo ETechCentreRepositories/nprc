@@ -136,7 +136,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:background="@drawable/button_red_round"
+            android:background="@drawable/button_light_blue_round"
             android:text="LOGIN"
             android:textColor="#FFFFFF"
             android:textSize="16dp"

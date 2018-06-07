@@ -126,11 +126,13 @@ public class LoginLauncher extends AppCompatActivity {
 
             @Override
             public void onCancel() {
+                progressbar.setVisibility(View.GONE);
                 // App code
             }
 
             @Override
             public void onError(FacebookException exception) {
+                progressbar.setVisibility(View.GONE);
                 // App code
             }
         });
@@ -188,8 +190,27 @@ public class LoginLauncher extends AppCompatActivity {
                             Toast.makeText(this, "Your Facebook does not contain email", Toast.LENGTH_SHORT).show();
 
                         }else{
-                            email = object.getString("email");
-                            name = object.getString("name");
+                            email = "";
+                            if(object.getString("email") != null){
+                                if(object.getString("email").equals("")){
+                                    email = "";
+                                }else{
+                                    email = object.getString("email");
+                                }
+                            }else{
+                                email = "";
+                            }
+                            name = "";
+                            if(object.getString("name") != null){
+                                if(object.getString("name").equals("")){
+                                    name = "";
+                                }else{
+                                    name = object.getString("name");
+                                }
+                            }else{
+                                name = "";
+                            }
+
                             FacebookLogin fbLogin = new FacebookLogin();
                             fbLogin.execute(email, name);
                         }
@@ -275,13 +296,34 @@ public class LoginLauncher extends AppCompatActivity {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         Log.d(TAG, "handleSignInResult: ");
+        progressbar.setVisibility(View.GONE);
         try {
+
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             Log.d(TAG, "handleSignInResult: successful " + account);
             GoogleLogin glogin = new GoogleLogin();
-            email = account.getEmail();
-            name = account.getGivenName();
+            email = "";
+            if(account.getEmail() != null){
+                if(account.getEmail().equals("")){
+                    email = "";
+                }else{
+                    email = account.getEmail();
+                }
+            }else{
+                email = "";
+            }
+            name = "";
+            if(account.getGivenName() != null){
+                if(account.getGivenName().equals("")){
+                    name = "";
+                }else{
+                    name = account.getGivenName();
+                }
+            }else{
+                name = "";
+            }
+
             glogin.execute(email, name);
 //
 //            Intent intent = new Intent(LoginLauncher.this, Signup.class);
@@ -314,17 +356,26 @@ public class LoginLauncher extends AppCompatActivity {
             try {
                 LoginManager.getInstance().logOut();
                 JSONObject object = new JSONObject(s);
-                Log.e("FACEBOOK LOGIN MSG: ", object.getString("message"));
-                Log.e("FACEBOOK LOGIN STATUS: ", object.getString("status"));
-                Log.e("LOGIN JSON EMAIL: ", object.getString("display_title"));
-                Log.e("LOGIN JSON NAME: ", object.getString("display_message"));
+                String getObjectEmail;
+                String getObjectName;
+                if(email == null){
+                    getObjectEmail = "";
+                }else{
+                    getObjectEmail = email;
+                }
+                if(name == null){
+                    getObjectName = "";
+                }else{
+                    getObjectName = name;
+                }
+
                 int status = object.getInt("status");
                 if (status == 404) {
                     //not signed up
                     startActivity(new Intent(LoginLauncher.this, Signup.class)
                             .putExtra("method", "facebook")
-                            .putExtra("email", object.getString("display_title"))
-                            .putExtra("name", object.getString("display_message")));
+                            .putExtra("email", getObjectEmail)
+                            .putExtra("name", getObjectName));
                 } else if (status == 200) {
                     JSONArray users = object.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
@@ -332,7 +383,6 @@ public class LoginLauncher extends AppCompatActivity {
                     if(method.equals("facebook")){
                         Log.i("USER NAME: ", name);
                         Log.i("USER EMAIL: ", email);
-
                         login.setEnabled(true);
 
                         //remember me

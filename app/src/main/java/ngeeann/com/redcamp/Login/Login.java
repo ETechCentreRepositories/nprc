@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import ngeeann.com.redcamp.Content.Home;
 import ngeeann.com.redcamp.Links;
@@ -36,9 +39,6 @@ public class Login extends AppCompatActivity {
     Toolbar toolbar;
     LinearLayout progressbar;
     Button forgetpw;
-    String getEmail, getName;
-    String myEmail,myName;
-
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
@@ -50,15 +50,7 @@ public class Login extends AppCompatActivity {
         link = new Links();
         setContentView(R.layout.activity_login);
         forgetpw = findViewById(R.id.forgotpassword);
-        forgetpw.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
-            dialog.setCancelable(false);
-            dialog.setMessage("Please email redcamp@np.edu.sg with your new password and we'll take it from there!");
-            dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-            });
-            AlertDialog dialogue = dialog.create();
-            dialogue.show();
-        });
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -73,6 +65,11 @@ public class Login extends AppCompatActivity {
         login = findViewById(R.id.login);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+
+        forgetpw.setOnClickListener(v -> {
+            startActivity(new Intent(this, ForgotPassword.class).putExtra("email", email.getText().toString()));
+        });
+
         login.setOnClickListener(v -> {
 
             progressbar.setVisibility(View.VISIBLE);
@@ -154,7 +151,7 @@ public class Login extends AppCompatActivity {
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
                     login.setEnabled(true);
-                }else if(status == 200) {
+                } else if (status == 200) {
                     login.setEnabled(true);
 
                     //remember me
@@ -176,17 +173,12 @@ public class Login extends AppCompatActivity {
                     finish();
                     startActivity(new Intent(Login.this, Home.class)
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
                             .putExtra("name", name)
                             .putExtra("email", email)
                             .putExtra("number", user.getString("mobile"))
                             .putExtra("dob", user.getString("dob")));
                     finish();
-                }else if(status == 203){
-                    JSONArray users = result.getJSONArray("users");
-                    JSONObject user = users.getJSONObject(0);
-                    String name = user.getString("name");
-                    String email = user.getString("email");
+                } else if (status == 203) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
                     dialog.setCancelable(false);
                     dialog.setTitle(result.getString("display_title"));
@@ -198,18 +190,24 @@ public class Login extends AppCompatActivity {
                     login.setEnabled(true);
 
 
-                } else {
+                } else if (status == 401){
                     progressbar.setVisibility(View.GONE);
                     login.setEnabled(true);
-                    Toast.makeText(Login.this, "Wrong Credentials", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(Login.this, result.getString("display_message"), Toast.LENGTH_SHORT).show();
+                } else if(status == 404){
+                    progressbar.setVisibility(View.GONE);
+                    login.setEnabled(true);
+                    Toast.makeText(Login.this, result.getString("display_message"), Toast.LENGTH_SHORT).show();
+                }else{
+                    progressbar.setVisibility(View.GONE);
+                    login.setEnabled(true);
+                    Toast.makeText(Login.this, result.getString("display_message"), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
-
     }
 
     public Boolean checkEmpty() {
@@ -224,5 +222,6 @@ public class Login extends AppCompatActivity {
         setResult(1, ib);
         finish();
     }
+
 
 }

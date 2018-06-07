@@ -40,12 +40,15 @@ import java.util.List;
 
 import ngeeann.com.redcamp.Content.Home;
 import ngeeann.com.redcamp.Content.MainActivity;
-import ngeeann.com.redcamp.Content.OcrCaptureActivity;
+
 import ngeeann.com.redcamp.Content.WebView;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.connection.HttpRequest;
 
+/**
+ *
+ */
 public class Signup extends AppCompatActivity {
     Button submit_user;
     ImageButton selectdob;
@@ -56,7 +59,11 @@ public class Signup extends AppCompatActivity {
     LinearLayout progressbar;
     ConstraintLayout ui;
     String getMethod;
-
+    String getemail;
+    String getname;
+    /**
+     * all shared preferences are gathered via String SESSION
+     */
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
     Links links;
@@ -70,7 +77,6 @@ public class Signup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,22 +106,53 @@ public class Signup extends AppCompatActivity {
         progressbar.setVisibility(View.GONE);
         ui = findViewById(R.id.ui);
 
+
         getMethod = getIntent.getStringExtra("method");
         switch (getMethod) {
             case "facebook":
-                name.setText(getIntent.getStringExtra("name"));
-                email.setText(getIntent.getStringExtra("email"));
+
+                if(getIntent.getStringExtra("name").equals("")){
+                    name.setText("");
+                }else{
+                    getname = getIntent.getStringExtra("name");
+                    name.setText(getname);
+                }
+
+                if(getIntent.getStringExtra("email").equals("")){
+                    email.setText("");
+                }else{
+                    getemail = getIntent.getStringExtra("email");
+                    email.setText(getemail);
+                    email.setVisibility(View.GONE);
+                }
+
                 password.setVisibility(View.GONE);
                 cfmPassword.setVisibility(View.GONE);
-                email.setVisibility(View.GONE);
+
 
                 break;
             case "google":
-                name.setText(getIntent.getStringExtra("name"));
-                email.setText(getIntent.getStringExtra("email"));
+                if(getIntent.getStringExtra("name").equals("")){
+                    name.setText("");
+
+                }else{
+                    getname = getIntent.getStringExtra("name");
+                    name.setText(getname);
+                }
+
+                if(getIntent.getStringExtra("email").equals("")){
+                    email.setText("");
+
+                }else{
+                    getemail = getIntent.getStringExtra("email");
+                    email.setText(getemail);
+                    email.setVisibility(View.GONE);
+                }
+
                 password.setVisibility(View.GONE);
                 cfmPassword.setVisibility(View.GONE);
-                email.setVisibility(View.GONE);
+
+
                 break;
             default:
 
@@ -123,6 +160,7 @@ public class Signup extends AppCompatActivity {
         }
 
         //Error Messages
+
         pwdErrorMsg = findViewById(R.id.pwdErrorMessage);
         pwdErrorMsg.setVisibility(View.GONE);
         emailErrorMsg = findViewById(R.id.emailErrorMessage);
@@ -134,19 +172,10 @@ public class Signup extends AppCompatActivity {
         dietErrorMessage = findViewById(R.id.dietErrorMessage);
         dietErrorMessage.setVisibility(View.GONE);
         selectdob = findViewById(R.id.selectdob);
-        nric.setHint("NRIC (XXXXXX)");
+        nric.setHint("NRIC (XXXXX)");
 
         dob.setOnClickListener(v -> selectDate());
         selectdob.setOnClickListener(v -> selectDate());
-//
-//        btnScan = findViewById(R.id.btnScan);
-//        btnScan.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, OcrCaptureActivity.class);
-//            intent.putExtra(OcrCaptureActivity.AutoFocus, true);
-//            intent.putExtra(OcrCaptureActivity.UseFlash, false);
-//
-//            startActivityForResult(intent, RC_OCR_CAPTURE);
-//        });
 
         school.setOnClickListener(v -> selectSchool());
         diet.setOnClickListener(v -> selectDiet());
@@ -157,8 +186,8 @@ public class Signup extends AppCompatActivity {
                 case "normal":
                     if (!checkEmpty()) {
                         progressbar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
-                    }else{
+                        Toast.makeText(this, "Please Fill in all details!", Toast.LENGTH_SHORT).show();
+                    } else {
 
                         if (checkValidation()) {
                             if (checkBox.isChecked()) {
@@ -176,43 +205,43 @@ public class Signup extends AppCompatActivity {
                             }
                         } else {
                             progressbar.setVisibility(View.GONE);
-                            Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Please Fill in the correct details!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     break;
                 case "google":
                     if (!socialMediaCheckEmpty()) {
                         progressbar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please Fill in all details!", Toast.LENGTH_SHORT).show();
 
-                    }else{
-                    if (checkSocialMediaValidation()) {
-                        if (checkBox.isChecked()) {
-                            if (checkNetwork()) {
-                                Log.e("NETWORK TYPE", "NETWORK FINE");
-                                Links link = new Links();
-                                RegisterSocialMedia register = new RegisterSocialMedia();
-                                register.execute(link.getRegister());
+                    } else {
+                        if (checkSocialMediaValidation()) {
+                            if (checkBox.isChecked()) {
+                                if (checkNetwork()) {
+                                    Log.e("NETWORK TYPE", "NETWORK FINE");
+                                    Links link = new Links();
+                                    RegisterSocialMedia register = new RegisterSocialMedia();
+                                    register.execute(link.getRegister());
+                                } else {
+                                    progressbar.setVisibility(View.GONE);
+                                    Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 progressbar.setVisibility(View.GONE);
-                                Toast.makeText(this, "Please switch on your data or wifi", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             progressbar.setVisibility(View.GONE);
-                            Toast.makeText(this, "Please Read and Accept our Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        progressbar.setVisibility(View.GONE);
-                        Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Please Fill in the correct details!", Toast.LENGTH_SHORT).show();
 
+                        }
                     }
-                }
                     break;
                 case "facebook":
                     if (!socialMediaCheckEmpty()) {
                         progressbar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Please Fill in all fields!", Toast.LENGTH_SHORT).show();
-                    }else{
+                        Toast.makeText(this, "Please Fill in all details!", Toast.LENGTH_SHORT).show();
+                    } else {
 
                         if (checkSocialMediaValidation()) {
                             if (checkBox.isChecked()) {
@@ -231,7 +260,7 @@ public class Signup extends AppCompatActivity {
                             }
                         } else {
                             progressbar.setVisibility(View.GONE);
-                            Toast.makeText(this, "There are still some errors", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Please Fill in the correct details!", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -242,7 +271,7 @@ public class Signup extends AppCompatActivity {
 
     public Boolean validate_nric(String nric) {
         String nricUpper = nric.toUpperCase();
-        return nricUpper.matches("\\p{Upper}\\d{7}\\p{Upper}");
+        return nricUpper.matches("\\d{4}\\p{Upper}");
     }
 
     public Boolean checkSchool(String school) {
@@ -286,7 +315,7 @@ public class Signup extends AppCompatActivity {
         Intent intent = new Intent(Signup.this, WebView.class);
         links = new Links();
         intent.putExtra("Links", links.getTnc());
-        intent.putExtra("name","Terms of Use");
+        intent.putExtra("name", "Terms of Use");
         startActivity(intent);
     }
 
@@ -294,7 +323,7 @@ public class Signup extends AppCompatActivity {
         Intent intent = new Intent(Signup.this, WebView.class);
         links = new Links();
         intent.putExtra("Links", links.getPp());
-        intent.putExtra("name","Privacy Policy");
+        intent.putExtra("name", "Privacy Policy");
         startActivity(intent);
     }
 
@@ -311,8 +340,9 @@ public class Signup extends AppCompatActivity {
             checkallvalidation[0] = true;
         }
         if (!validate_nric(nric.getText().toString())) {
-
-            checkallvalidation[1] = true;
+            nricErrorMessage.setVisibility(View.VISIBLE);
+            nricErrorMessage.setText("Please enter the correct NRIC number!");
+            checkallvalidation[1] = false;
 
         } else {
             checkallvalidation[1] = true;
@@ -333,7 +363,7 @@ public class Signup extends AppCompatActivity {
 
         } else {
             schoolErrorMessage.setVisibility(View.GONE);
-            if (school.getText().toString() == "OTHERS") {
+            if (school.getText().toString().equals("OTHERS")) {
 
             }
             checkallvalidation[3] = true;
@@ -626,25 +656,7 @@ public class Signup extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == RC_OCR_CAPTURE) {
-//            if (resultCode == CommonStatusCodes.SUCCESS) {
-//                if (data != null) {
-//                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
-//                    ocrText = text;
-//                    Log.e(TAG, "onActivityResult: " + ocrText);
-//                    Log.e(TAG, "Text read: " + text);
-//                    nric.setText(text);
-//                } else {
-//                    Log.d(TAG, "No Text captured, intent data is null");
-//                }
-//            } else {
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
+
 
     public int getRegistrationStatus(String date) {
         String[] yearString = date.split("-");
@@ -687,7 +699,7 @@ public class Signup extends AppCompatActivity {
                             + school.getText().toString()
                             + "&diet="
                             + diet.getText().toString()
-                            + "&password="+cfmPassword.getText().toString()
+                            + "&password=" + cfmPassword.getText().toString()
                             + "&statuses_id="
                             + String.valueOf(getRegistrationStatus(dob.getText().toString()))
                             + "&method=" + getMethod);
@@ -699,81 +711,78 @@ public class Signup extends AppCompatActivity {
 
             progressbar.setVisibility(View.GONE);
             Log.e("JSON RETURN: ", s);
-            String[] splitString = s.split("");
-            Log.e("ITEM RESULT", splitString[2]);
-            if (splitString[2].equals("D")) {
-                Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
-            } else {
-                try {
-                    JSONObject result = new JSONObject(s);
-                    int status = result.getInt("status");
-                    String message = result.getString("message");
 
-                    Log.i("JSON MESSAGE:", message);
-                    Log.i("JSON STATUS: ", String.valueOf(status));
+            try {
+                JSONObject result = new JSONObject(s);
+                int status = result.getInt("status");
+                String message = result.getString("message");
 
-                    if (status == 200) {
-                        int type = result.getInt("type");
-                        String display_message = result.getString("display_message");
-                        String display_title = result.getString("display_title");
-                        Log.i("JSON DISPLAY MESSAGE", display_message);
+                Log.i("JSON MESSAGE:", message);
+                Log.i("JSON STATUS: ", String.valueOf(status));
 
-                        switch (type) {
-                            case 1: {
+                if (status == 200) {
+                    int type = result.getInt("type");
+                    String display_message = result.getString("display_message");
+                    String display_title = result.getString("display_title");
+                    Log.i("JSON DISPLAY MESSAGE", display_message);
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
-                                AlertDialog dialogue = dialog.create();
+                    switch (type) {
+                        case 1: {
 
-                                dialogue.show();
-                                break;
-                            }
-                            case 2: {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle(display_title);
+                            dialog.setMessage(display_message);
+                            dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                            AlertDialog dialogue = dialog.create();
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-
-                                SharedPreferences.Editor editor = sessionManager.edit();
-                                editor.putString(SESSION_ID, "200");
-                                editor.putString("email", email.getText().toString());
-                                editor.putString("name", name.getText().toString());
-                                editor.putString("number", mobile.getText().toString());
-                                editor.putString("dob", dob.getText().toString());
-                                editor.apply();
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
-                                AlertDialog dialogue = dialog.create();
-                                dialogue.show();
-                                break;
-                            }
-                            case 3: {
-
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
-                                AlertDialog dialogue = dialog.create();
-
-                                dialogue.show();
-                                break;
-                            }
+                            dialogue.show();
+                            break;
                         }
+                        case 2: {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle(display_title);
+
+                            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                            SharedPreferences.Editor editor = sessionManager.edit();
+                            editor.putString(SESSION_ID, "200");
+                            editor.putString("email", email.getText().toString());
+                            editor.putString("name", name.getText().toString());
+                            editor.putString("number", mobile.getText().toString());
+                            editor.putString("dob", dob.getText().toString());
+                            editor.apply();
+                            dialog.setMessage(display_message);
+                            dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
+                            AlertDialog dialogue = dialog.create();
+                            dialogue.show();
+                            break;
+                        }
+                        case 3: {
+
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle(display_title);
+
+                            dialog.setMessage(display_message);
+                            dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                            AlertDialog dialogue = dialog.create();
+
+                            dialogue.show();
+                            break;
+                        }
+                    }
 //                    startActivity(new Intent(Signup.this, Home.class));
 
 
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else if (status == 404) {
+                    Toast.makeText(Signup.this, result.getString("message"), Toast.LENGTH_SHORT).show();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -782,7 +791,7 @@ public class Signup extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             Log.e("SOCIAL MEDIA LOGIN", "IN PROGRESS");
             String[] splitDate = dob.getText().toString().split("-");
-            String newDate = splitDate[2] +"-"+ splitDate[1] +"-"+ splitDate[0];
+            String newDate = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
             Log.e("NEW DATE: ", newDate);
 
             HttpRequest request = new HttpRequest();
@@ -815,79 +824,77 @@ public class Signup extends AppCompatActivity {
 
             progressbar.setVisibility(View.GONE);
             Log.e("JSON RETURN: ", s);
-            String[] splitString = s.split("");
-            Log.e("ITEM RESULT", splitString[2]);
-            if (splitString[2].equals("D")) {
-                Toast.makeText(Signup.this, "You have already Registered!", Toast.LENGTH_SHORT).show();
-            } else {
-                try {
-                    JSONObject result = new JSONObject(s);
-                    int status = result.getInt("status");
-                    String message = result.getString("message");
 
-                    Log.i("JSON MESSAGE:", message);
-                    Log.i("JSON STATUS: ", String.valueOf(status));
+            try {
+                JSONObject result = new JSONObject(s);
+                int status = result.getInt("status");
+                String message = result.getString("message");
 
-                    if (status == 200) {
-                        int type = result.getInt("type");
-                        String display_message = result.getString("display_message");
-                        String display_title = result.getString("display_title");
-                        Log.i("JSON DISPLAY MESSAGE", display_message);
+                Log.i("JSON MESSAGE:", message);
+                Log.i("JSON STATUS: ", String.valueOf(status));
 
-                        switch (type) {
-                            case 1: {
+                if (status == 200) {
+                    int type = result.getInt("type");
+                    String display_message = result.getString("display_message");
+                    String display_title = result.getString("display_title");
+                    Log.i("JSON DISPLAY MESSAGE", display_message);
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
-                                AlertDialog dialogue = dialog.create();
+                    switch (type) {
+                        case 1: {
 
-                                dialogue.show();
-                                break;
-                            }
-                            case 2: {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle(display_title);
+                            dialog.setMessage(display_message);
+                            dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                            AlertDialog dialogue = dialog.create();
 
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-
-                                SharedPreferences.Editor editor = sessionManager.edit();
-                                editor.putString(SESSION_ID, "200");
-                                editor.putString("email", email.getText().toString());
-                                editor.putString("name", name.getText().toString());
-                                editor.putString("number", mobile.getText().toString());
-                                editor.putString("dob", dob.getText().toString());
-                                editor.apply();
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
-                                AlertDialog dialogue = dialog.create();
-                                dialogue.show();
-                                break;
-                            }
-                            case 3: {
-
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
-                                dialog.setCancelable(false);
-                                dialog.setTitle(display_title);
-
-                                dialog.setMessage(display_message);
-                                dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
-                                AlertDialog dialogue = dialog.create();
-
-                                dialogue.show();
-                                break;
-                            }
+                            dialogue.show();
+                            break;
                         }
-//                    startActivity(new Intent(Signup.this, Home.class));
+                        case 2: {
+
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle(display_title);
+
+                            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                            SharedPreferences.Editor editor = sessionManager.edit();
+                            editor.putString(SESSION_ID, "200");
+                            editor.putString("email", email.getText().toString());
+                            editor.putString("name", name.getText().toString());
+                            editor.putString("number", mobile.getText().toString());
+                            editor.putString("dob", dob.getText().toString());
+                            editor.apply();
+                            dialog.setMessage(display_message);
+                            dialog.setPositiveButton("OK", (dialogInterface, i) -> startActivity(new Intent(Signup.this, Home.class)));
+                            AlertDialog dialogue = dialog.create();
+                            dialogue.show();
+                            break;
+                        }
+                        case 3: {
+
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle(display_title);
+
+                            dialog.setMessage(display_message);
+                            dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+                            AlertDialog dialogue = dialog.create();
+
+                            dialogue.show();
+                            break;
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+//                    startActivity(new Intent(Signup.this, Home.class));
+                } else if (status == 404) {
+                    Toast.makeText(Signup.this, result.getString("message"), Toast.LENGTH_SHORT).show();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
         }
     }
 }

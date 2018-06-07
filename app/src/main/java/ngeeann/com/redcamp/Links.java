@@ -1,20 +1,31 @@
 package ngeeann.com.redcamp;
 
 public class Links {
-    //link to main activity stuff
-    String camp_programme = "www.np.edu.sg";
-    String course_finder = "https://www.np.edu.sg/pages/diplomas.aspx";
-    String campus_explorer = "https://www.np.edu.sg/pages/tour.aspx";
-    String ask_red_camp = "https://www.np.edu.sg/redcamp/pages/askredcamp.aspx";
 
-    //API
-    String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
-    String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
+    /**
+     * links in the main activity
+     */
+    private String camp_programme = "www.np.edu.sg";
+    private String course_finder = "https://www.np.edu.sg/pages/diplomas.aspx";
+    private String campus_explorer = "https://www.np.edu.sg/pages/tour.aspx";
+    private String ask_red_camp = "https://www.np.edu.sg/redcamp/pages/askredcamp.aspx";
 
-    //tnc and pp
-    String tnc = "https://www.np.edu.sg/Pages/terms.aspx";
-    String pp = "https://www.np.edu.sg/Pages/privacy.aspx";
+    /**
+     * APIs for the login and register
+     */
+    private String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
+    private String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
 
+    /**
+     * terms of use and privacy policy
+     */
+    private String tnc = "https://www.np.edu.sg/Pages/terms.aspx";
+    private String pp = "https://www.np.edu.sg/Pages/privacy.aspx";
+
+    /**
+     * Forget Password
+     */
+    private String forgetpassword = "http://www.ehostingcentre.com/redcampadmin/API/forgetPassword.php";
 
     public String getCamp_programme() {
         return camp_programme;
@@ -48,8 +59,13 @@ public class Links {
         return pp;
     }
 
+    public String getForgetpassword() {
+        return forgetpassword;
+    }
+
     public Links() {
 
     }
+
 }
 

@@ -82,6 +82,9 @@ public class CampProgramme extends AppCompatActivity {
         d2.setTextColor(Color.parseColor("#ffffff"));
         d3.setTextColor(Color.parseColor("#ffffff"));
         d1.setTextColor(getResources().getColor(R.color.red));
+        d1.setBackgroundResource(R.drawable.day1);
+        d2.setBackgroundResource(R.drawable.day2);
+        d3.setBackgroundResource(R.drawable.day3);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             d1.setBackground(getResources().getDrawable(R.drawable.day1));
             d2.setBackground(getResources().getDrawable(R.drawable.day2));
@@ -131,6 +134,9 @@ public class CampProgramme extends AppCompatActivity {
         d1.setTextColor(Color.parseColor("#ffffff"));
         d3.setTextColor(Color.parseColor("#ffffff"));
         d2.setTextColor(getResources().getColor(R.color.red));
+        d1.setBackgroundResource(R.drawable.day2_selected_1);
+        d2.setBackgroundResource(R.drawable.day2_selected_2);
+        d3.setBackgroundResource(R.drawable.day3);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             d1.setBackground(getResources().getDrawable(R.drawable.day2_selected_1));
             d2.setBackground(getResources().getDrawable(R.drawable.day2_selected_2));
@@ -177,6 +183,9 @@ public class CampProgramme extends AppCompatActivity {
         d2.setTextColor(Color.parseColor("#ffffff"));
         d1.setTextColor(Color.parseColor("#ffffff"));
         d3.setTextColor(getResources().getColor(R.color.red));
+        d1.setBackgroundResource(R.drawable.day3_selected_1);
+        d2.setBackgroundResource(R.drawable.day3_selected_2);
+        d3.setBackgroundResource(R.drawable.day3_selected_3);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             d1.setBackground(getResources().getDrawable(R.drawable.day3_selected_1));
             d2.setBackground(getResources().getDrawable(R.drawable.day3_selected_2));

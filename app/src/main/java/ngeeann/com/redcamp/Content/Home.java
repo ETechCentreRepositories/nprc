@@ -188,11 +188,15 @@ public class Home extends AppCompatActivity {
     private void shareIt() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "download the Red Camp app from the link\n https://www.np.edu.sg/rc-app-playstore/Pages/default.aspx\n";
+        String shareBody = "I'm in for the MOST LIT Camp for O-levelers! \n" +
+                "Join me at RED CAMP 15!  \n" +
+                "\n" +
+                "Download the RED CAMP App now to register!\n" +
+                "\n" +
+                "https://www.np.edu.sg/redcamp/Pages/default.aspx#register";
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
-//sharing implementation here
+        //sharing implementation here
 
     }
 
