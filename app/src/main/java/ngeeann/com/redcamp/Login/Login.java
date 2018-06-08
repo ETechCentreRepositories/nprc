@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import ngeeann.com.redcamp.Content.Home;
@@ -78,8 +80,8 @@ public class Login extends AppCompatActivity {
                 if (checkNetwork()) {
                     Boolean checkNetworkState = checkNetwork();
                     if (!checkNetworkState) {
-
                         Toast.makeText(Login.this, "Please Switch on your wifi or Data", Toast.LENGTH_SHORT).show();
+
                     } else {
                         DoLogin login = new DoLogin();
                         login.execute(link.getLogin());
@@ -190,15 +192,15 @@ public class Login extends AppCompatActivity {
                     login.setEnabled(true);
 
 
-                } else if (status == 401){
+                } else if (status == 401) {
                     progressbar.setVisibility(View.GONE);
                     login.setEnabled(true);
                     Toast.makeText(Login.this, result.getString("display_message"), Toast.LENGTH_SHORT).show();
-                } else if(status == 404){
+                } else if (status == 404) {
                     progressbar.setVisibility(View.GONE);
                     login.setEnabled(true);
                     Toast.makeText(Login.this, result.getString("display_message"), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     progressbar.setVisibility(View.GONE);
                     login.setEnabled(true);
                     Toast.makeText(Login.this, result.getString("display_message"), Toast.LENGTH_SHORT).show();
@@ -222,6 +224,4 @@ public class Login extends AppCompatActivity {
         setResult(1, ib);
         finish();
     }
-
-
 }
