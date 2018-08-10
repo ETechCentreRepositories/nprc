@@ -14,6 +14,9 @@
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="facebook_app_id">836119169917710</string>
     <string name="fb_login_protocol_scheme">fb836119169917710</string>
+    <string name="loremipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="sample_notification_title">Congratulations! Your tribe has been chosen! Click here to reveal</string>
+    <string name="sample_notification_date">January 29, 2018 3:53pm</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -30,6 +33,20 @@
     <string name="course_finder">Course Finder</string>
     <string name="camp_programme">Camp Programme</string>
     <string name="last_4_digits_and_last_letter_of_nric">Last 4 digits and last letter of NRIC</string>
+
+    <string name="consent_form_message">Complete this form to get your unique QR code to <b>RED Camp!</b></string>
+    <string name="consent_form_agreement">I allow my child/ ward to participate in RED Camp 15 on 20 to 22 Nov 2018 at
+        Ngee Ann Polytechnic. I understand that my child/ ward will have to cooperate fully with the staff and diligently
+        comply with all the safety instructions and measures. Ngee Ann Polytechnic will do their utmost to ensure the
+        safety of all participants.</string>
+
+    <string-array name="relationship_array">
+        <item>Relationship</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Grandparent</item>
+        <item>Older Sibling</item>
+    </string-array>
 
     <string name="server_client_id">313250078269-folu0eg6rssqeatdjotns7nmdqp8t26v.apps.googleusercontent.com</string>
 

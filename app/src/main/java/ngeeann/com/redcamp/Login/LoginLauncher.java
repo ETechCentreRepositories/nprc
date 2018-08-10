@@ -2,6 +2,7 @@ package ngeeann.com.redcamp.Login;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -55,6 +57,7 @@ import ngeeann.com.redcamp.Content.MainActivity;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.connection.HttpRequest;
+import ngeeann.com.redcamp.services.CountdownReceiver;
 
 public class LoginLauncher extends AppCompatActivity {
     Button login, signup, fbsignup, googlesignup;
@@ -237,6 +240,16 @@ public class LoginLauncher extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Logs 'install' and 'app activate' App Events.
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("showDialog")){
+            if(sessionManager.getBoolean("showDialog",true)){
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putBoolean("timedOut",false);
+                editor.putBoolean("showDialog",false);
+                editor.apply();
+                showAutoLogoutDialog();
+            }
+        }
     }
 
     @Override
@@ -562,5 +575,21 @@ public class LoginLauncher extends AppCompatActivity {
             }
 
         }
+    }
+
+    public void showAutoLogoutDialog(){
+        android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(LoginLauncher.this);
+        LayoutInflater li = LayoutInflater.from(LoginLauncher.this);
+        final View gtnc = li.inflate(R.layout.dialog_auto_logout ,null);
+        dialog.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.setView(gtnc);
+        android.support.v7.app.AlertDialog dialogue = dialog.create();
+        dialogue.show();
     }
 }

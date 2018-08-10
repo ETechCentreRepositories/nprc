@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +20,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+         <service
+         android:name=".services.CountdownReceiver"
+         android:enabled="true" />
 
         <activity android:name=".Splash">
             <intent-filter>
@@ -90,6 +95,11 @@
             android:name=".Login.ForgotPassword"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".NavigationItems.parent_consent_form" />
+        <activity android:name=".NavigationItems.signature_activity" />
+        <activity android:name=".NavigationItems.Notifications" />
+        <activity android:name=".NotificationDetails" />
+        <activity android:name=".NavigationItems.TodayPoll"></activity>
     </application>
 
 </manifest>

@@ -13,9 +13,10 @@ public class Links {
     /**
      * APIs for the login and register
      */
-    private String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
-    private String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
-
+    //private String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
+    //private String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
+    private String login = "http://www.etechosting.com/api/Login";
+    private String register = "http://www.etechosting.com/api/Registration";
     /**
      * terms of use and privacy policy
      */

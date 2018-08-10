@@ -71,30 +71,33 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(() -> {
 
             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+            Intent i = new Intent(Splash.this, LoginLauncher.class);
+            startActivity(i);
+            finish();
 
-            if (sessionManager.getString(SESSION_ID, null) == null) {
-                Intent i = new Intent(Splash.this, LaunchScreen.class);
-                Log.w("SESSION_ID:", "not logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
-                startActivity(i);
-                finish();
-            } else if (sessionManager.getString(SESSION_ID, null).equals("404")) {
-                Intent i = new Intent(Splash.this, LoginLauncher.class);
-                Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
-                startActivity(i);
-                finish();
-            } else if (sessionManager.getString(SESSION_ID, null).equals("400")) {
-                Intent i = new Intent(Splash.this, LoginLauncher.class);
-                Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
-                startActivity(i);
-                finish();
-            } else if(sessionManager.getString(SESSION_ID, null).equals("200")){
-                Intent i = new Intent(Splash.this, Home.class);
-                Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
-                startActivity(i);
-                finish();
-            } else {
-                Log.e("SESSION_ID ERROR:", "Retrieved_ID ->" + sessionManager.getString(SESSION_ID, null));
-            }
+//            if (sessionManager.getString(SESSION_ID, null) == null) {
+//                Intent i = new Intent(Splash.this, LaunchScreen.class);
+//                Log.w("SESSION_ID:", "not logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
+//                startActivity(i);
+//                finish();
+//            } else if (sessionManager.getString(SESSION_ID, null).equals("404")) {
+//                Intent i = new Intent(Splash.this, LoginLauncher.class);
+//                Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
+//                startActivity(i);
+//                finish();
+//            } else if (sessionManager.getString(SESSION_ID, null).equals("400")) {
+//                Intent i = new Intent(Splash.this, LoginLauncher.class);
+//                Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
+//                startActivity(i);
+//                finish();
+//            } else if(sessionManager.getString(SESSION_ID, null).equals("200")){
+//                Intent i = new Intent(Splash.this, Home.class);
+//                Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
+//                startActivity(i);
+//                finish();
+//            } else {
+//                Log.e("SESSION_ID ERROR:", "Retrieved_ID ->" + sessionManager.getString(SESSION_ID, null));
+//            }
 
         }, SPLASH_TIME_OUT);
 

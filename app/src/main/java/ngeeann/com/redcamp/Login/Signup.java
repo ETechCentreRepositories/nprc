@@ -683,26 +683,27 @@ public class Signup extends AppCompatActivity {
             link = new Links();
 
             return request.PostRequest(link.getRegister()
-                    , "name="
+                    , "userName="
                             + name.getText().toString()
-                            + "&email="
+                            + "&userEmail="
                             + email.getText().toString()
-                            + "&nric="
+                            + "&userNric="
                             + nric.getText().toString()
-                            + "&dob="
+                            + "&userDob="
                             + dob.getText().toString().split("-")[2] + "-"
                             + dob.getText().toString().split("-")[1] + "-"
                             + dob.getText().toString().split("-")[0]
-                            + "&mobile="
+                            + "&userMobile="
                             + mobile.getText().toString()
-                            + "&school="
+                            + "&userSchool="
                             + school.getText().toString()
-                            + "&diet="
+                            + "&userDiet="
                             + diet.getText().toString()
-                            + "&password=" + cfmPassword.getText().toString()
-                            + "&statuses_id="
-                            + String.valueOf(getRegistrationStatus(dob.getText().toString()))
-                            + "&method=" + getMethod);
+                            + "&userPwd=" + cfmPassword.getText().toString()
+                            + "&userStatus=2"
+                            //+ String.valueOf(getRegistrationStatus(dob.getText().toString()))
+                            //+ "&userMethod=" + getMethod);
+                            + "&userMethod=Normal");
         }
 
         @Override

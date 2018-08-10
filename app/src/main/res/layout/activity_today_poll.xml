@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/poll_background"
+    tools:context=".NavigationItems.TodayPoll">
+
+    <RelativeLayout
+        android:id="@+id/toolbarll"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/red"
+            app:navigationIcon="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TODAY'S POLL"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/toolbarll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="vertical"
+                android:padding="50dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Poll"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="305 people have participated in this poll"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Was RED camp a fun experience for you?"
+                    android:textColor="@color/red"
+                    android:textSize="18sp"/>
+
+                <Button
+                    android:id="@+id/btnChoice1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/poll_rounded_btn"
+                    android:paddingLeft="10dp"
+                    android:text="Yes, it was amazing!"
+                    android:gravity="left|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
+                <Button
+                    android:id="@+id/btnChoice2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/poll_rounded_btn"
+                    android:paddingLeft="10dp"
+                    android:text="Meh, it was boring"
+                    android:gravity="left|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
+                <Button
+                    android:id="@+id/btnChoice3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/poll_rounded_btn"
+                    android:paddingLeft="10dp"
+                    android:text="Im not sure tbh"
+                    android:gravity="left|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
+
+                <Button
+                    android:id="@+id/btnVote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/poll_rounded_vote_btn"
+                    android:text="VOTE!"
+                    android:clickable="false"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+
+
+
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

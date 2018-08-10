@@ -9,6 +9,7 @@
         <item name="colorAccent">@color/red</item>
         <item name="android:font" tools:targetApi="o">@font/segoe_ui_bold</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/segoe_ui_bold</item>
+        <item name="android:listDivider">@color/listDividerGrey</item>
 
 
     </style>
@@ -20,5 +21,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="NavigationViewDivider" >
+        <item name="android:listDivider">@color/listDividerGrey</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
 
 </resources>

@@ -122,7 +122,8 @@ public class Login extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpRequest request = new HttpRequest();
             link = new Links();
-            return request.PostRequest(link.getLogin(), "email=" + email.getText().toString() + "&password=" + password.getText().toString() + "&type=3");
+            return request.GetRequest(link.getLogin()+"?useremail="+email.getText().toString()+"&password="+password.getText().toString()+"&loginmethod=Normal");
+            //return request.PostRequest(link.getLogin(), "useremail=" + email.getText().toString() + "&password=" + password.getText().toString() + "&loginmethod=Normal");
         }
 
         @Override
@@ -137,13 +138,13 @@ public class Login extends AppCompatActivity {
                 Log.i("JSON MESSAGE:", message);
                 Log.i("JSON STATUS: ", String.valueOf(status));
                 if (status == 201) {
-                    JSONArray users = result.getJSONArray("users");
+                    JSONArray users = result.getJSONArray("Users");
                     JSONObject user = users.getJSONObject(0);
-                    String name = user.getString("name");
-                    String email = user.getString("email");
+                    String name = user.getString("userName");
+                    String email = user.getString("userEmail");
                     Log.i("USER NAME: ", name);
                     Log.i("USER EMAIL: ", email);
-                    int statuses_id = user.getInt("statuses_id");
+                    int statuses_id = user.getInt("userStatus");
                     AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
                     dialog.setCancelable(false);
                     dialog.setTitle(result.getString("display_title"));
@@ -158,27 +159,34 @@ public class Login extends AppCompatActivity {
 
                     //remember me
                     sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                    JSONArray users = result.getJSONArray("users");
-                    JSONObject user = users.getJSONObject(0);
-                    String name = user.getString("name");
-                    String email = user.getString("email");
+                    //JSONArray users = result.getJSONArray("users");
+//                    JSONObject user = users.getJSONObject(0);
+                    //String name = user.getString("email");
+                    String name = result.getString("User");
+                    //String name = user.getString("name");
+                    //String email = user.getString("email");
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString(SESSION_ID, "200");
-                    editor.putString("email", email);
+                    //editor.putString("email", email);
                     editor.putString("name", name);
-                    editor.putString("number", user.getString("mobile"));
-                    editor.putString("dob", user.getString("dob"));
+                    //editor.putString("number", user.getString("mobile"));
+                    //editor.putString("dob", user.getString("dob"));
+                    editor.putBoolean("firstTime",true);
+                    editor.putBoolean("showDialog",false);
+                    editor.putBoolean("timedOut",false);
                     editor.apply();
                     Intent ib = new Intent();
                     ib.putExtra("type", "1");
                     setResult(1, ib);
-                    finish();
+                    //finish();
+//                    Intent forceLogoffIntent = new Intent(ForceOfflineReceiver.ACTION_FORCE_OFFLINE);
+//                    sendBroadcast(forceLogoffIntent);
                     startActivity(new Intent(Login.this, Home.class)
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            .putExtra("name", name)
-                            .putExtra("email", email)
-                            .putExtra("number", user.getString("mobile"))
-                            .putExtra("dob", user.getString("dob")));
+                            .putExtra("name", name));
+                            //.putExtra("email", email)
+                            //.putExtra("number", user.getString("mobile"))
+                            //.putExtra("dob", user.getString("dob")));
                     finish();
                 } else if (status == 203) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);

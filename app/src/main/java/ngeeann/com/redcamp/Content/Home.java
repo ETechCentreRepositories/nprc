@@ -1,10 +1,11 @@
 package ngeeann.com.redcamp.Content;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,25 +14,30 @@ import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import ngeeann.com.redcamp.HomePage;
 import ngeeann.com.redcamp.Login.LoginLauncher;
-import ngeeann.com.redcamp.Login.Signup;
+import ngeeann.com.redcamp.NavigationItems.Notifications;
+import ngeeann.com.redcamp.NavigationItems.signature_activity;
 import ngeeann.com.redcamp.R;
+import ngeeann.com.redcamp.NavigationItems.parent_consent_form;
+import ngeeann.com.redcamp.services.AutoLogout;
+import ngeeann.com.redcamp.services.CountdownReceiver;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
@@ -40,6 +46,8 @@ public class Home extends AppCompatActivity {
     LinearLayout logout;
     DrawerLayout drawerLayout;
     SharedPreferences sessionManager;
+    NavigationView navigationView;
+    Boolean hasNewNotifications = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,38 +57,52 @@ public class Home extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+        if(sessionManager.contains("firstTime")){
+            if(sessionManager.getBoolean("firstTime",false)){
+                Log.i("BroadcastService","in Home class");
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putBoolean("firstTime",false);
+                editor.apply();
+                startService(new Intent(this, CountdownReceiver.class));
+            }
+        }
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        name = findViewById(R.id.name);
-        email = findViewById(R.id.email);
-        number = findViewById(R.id.phone);
-        dob = findViewById(R.id.dob);
-        logout = findViewById(R.id.logout);
-        logout.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
-            dialog.setCancelable(false);
-            dialog.setTitle("Logout");
-            dialog.setMessage("Are you sure you want to log out?");
-            dialog.setPositiveButton("Yes", (dialogInterface, i) -> {
-                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sessionManager.edit();
-                editor.putString(SESSION_ID, "400");
-                editor.apply();
-                startActivity(new Intent(this, LoginLauncher.class));
-                finish();
-            });
-            dialog.setNegativeButton("No", (dialogInterface, i) -> {
 
-            });
-            AlertDialog dialogue = dialog.create();
-            dialogue.show();
 
-        });
+//        name = findViewById(R.id.name);
+//        email = findViewById(R.id.email);
+//        number = findViewById(R.id.phone);
+//        dob = findViewById(R.id.dob);
+//        logout = findViewById(R.id.logout);
+//        logout.setOnClickListener(v -> {
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
+//            dialog.setCancelable(false);
+//            dialog.setTitle("");
+//            dialog.setMessage("Are you sure you want to log out?");
+//            dialog.setPositiveButton("Yes", (dialogInterface, i) -> {
+//                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sessionManager.edit();
+//                editor.putString(SESSION_ID, "400");
+//                editor.apply();
+//                startActivity(new Intent(this, LoginLauncher.class));
+//                finish();
+//            });
+//            dialog.setNegativeButton("No", (dialogInterface, i) -> {
+//
+//            });
+//            AlertDialog dialogue = dialog.create();
+//            dialogue.show();
+//
+//        });
 
-        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
         Intent getintent = getIntent();
         String fullname = getintent.getStringExtra("name");
@@ -90,10 +112,10 @@ public class Home extends AppCompatActivity {
             String getNumber = getIntent().getStringExtra("number");
             String getdob = getIntent().getStringExtra("dob");
 
-            name.setText(getName);
-            email.setText(getEmail);
-            number.setText(getNumber);
-            dob.setText(getdob);
+//            name.setText(getName);
+//            email.setText(getEmail);
+//            number.setText(getNumber);
+//            dob.setText(getdob);
 
         } else {
             String getName = sessionManager.getString("name", null);
@@ -101,16 +123,20 @@ public class Home extends AppCompatActivity {
             String getNumber = sessionManager.getString("number", null);
             String getdob = sessionManager.getString("dob", null);
 
-            name.setText(getName);
-            email.setText(getEmail);
-            number.setText(getNumber);
-            dob.setText(getdob);
+//            name.setText(getName);
+//            email.setText(getEmail);
+//            number.setText(getNumber);
+//            dob.setText(getdob);
         }
 
-        NavigationView navigationView = findViewById(R.id.left_drawer);
+        navigationView = findViewById(R.id.left_drawer);
         replacefragment(new HomePage());
         configureToolbar();
         configureNavigationDrawer();
+
+        if(navigationView != null){
+            navigationView.setNavigationItemSelectedListener(this);
+        }
     }
 
     @Override
@@ -136,6 +162,7 @@ public class Home extends AppCompatActivity {
     private void configureNavigationDrawer() {
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navView = findViewById(R.id.left_drawer);
+
     }
 
     @Override
@@ -166,6 +193,8 @@ public class Home extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+
+
         return true;
     }
 
@@ -199,5 +228,86 @@ public class Home extends AppCompatActivity {
         //sharing implementation here
 
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemid = item.getItemId();
+
+        switch(itemid){
+            case R.id.notifications:
+//                Links links = new Links();
+//                Intent intent = new Intent(Home.this, WebView.class);
+//                intent.putExtra("Links", links.getCourse_finder());
+//                intent.putExtra("name","COURSE FINDER");
+//                startActivity(intent);
+//                if(hasNewNotifications){
+//                    hasNewNotifications = false;
+//                } else {
+//                    hasNewNotifications = true;
+//                }
+//                LinearLayout badgeLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.notifications).getActionView();
+//                ImageView ivAlert = badgeLayout.findViewById(R.id.ivNotificationAlert);
+//                if(ivAlert.getVisibility() == View.INVISIBLE){
+//                    ivAlert.setVisibility(View.VISIBLE);
+//                } else {
+//                    ivAlert.setVisibility(View.INVISIBLE);
+//                }
+//                return true;
+                Intent notificationsIntent = new Intent(Home.this,Notifications.class);
+                startActivity(notificationsIntent);
+                return true;
+            case R.id.parentConsent:
+                Intent consentFormIntent = new Intent(Home.this,parent_consent_form.class);
+                startActivity(consentFormIntent);
+                return true;
+            case R.id.qrcode:
+                AlertDialog.Builder dialogQR = new AlertDialog.Builder(Home.this);
+                LayoutInflater li = LayoutInflater.from(Home.this);
+                final View gtnc = li.inflate(R.layout.dialog_qr_code ,null);
+                dialogQR.setCancelable(true);
+                dialogQR.setView(gtnc);
+                AlertDialog dialogueQR = dialogQR.create();
+                dialogueQR.show();
+            case R.id.logout:
+                AlertDialog.Builder dialogLogout = new AlertDialog.Builder(Home.this);
+                dialogLogout.setCancelable(false);
+                dialogLogout.setTitle("");
+                dialogLogout.setMessage("Are you sure you want to log out?");
+                dialogLogout.setPositiveButton("Yes", (dialogInterface, i) -> {
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.clear();
+                    editor.putString(SESSION_ID, "400");
+                    editor.apply();
+                    startActivity(new Intent(this, LoginLauncher.class));
+                    finish();
+                });
+                dialogLogout.setNegativeButton("No", (dialogInterface, i) -> {
+
+                });
+                AlertDialog dialogueLogout = dialogLogout.create();
+                dialogueLogout.show();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("timedOut")){
+            if(sessionManager.getBoolean("timedOut",false)){
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putString(SESSION_ID, "400");
+                editor.apply();
+                startActivity(new Intent(Home.this, LoginLauncher.class));
+                finish();
+            }
+        }
+
+    }
+
+
 
 }

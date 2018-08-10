@@ -5,5 +5,9 @@
     <color name="grey">#808080</color>
     <color name="fb_blue">#3F4FF5</color>
     <color name="light_blue">#74B4F9</color>
+    <color name="white">#FFFFFF</color>
+    <color name="listDividerGrey">#707070</color>
+    <color name="drawerbg">#252527</color>
+    <color name="powerbg">#202022</color>
 
 </resources>

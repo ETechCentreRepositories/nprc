@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/grp0" android:checkableBehavior="single" >
+    </group>
+
+    <group android:id="@+id/grp1" android:checkableBehavior="single" >
+        <item
+            android:id="@+id/notifications"
+            app:actionLayout="@layout/notifications_red_button_layout"
+            android:title="Notifications"
+            android:icon="@drawable/ic_notifications">
+        </item>
+    </group>
+
+    <group android:id="@+id/grp2" android:checkableBehavior="single" >
+        <item
+            android:id="@+id/parentConsent"
+            android:title="Parent Consent Form"
+            android:icon="@drawable/ic_parentconsent">
+        </item>
+    </group>
+
+    <group android:id="@+id/grp3" android:checkableBehavior="single" >
+        <item
+            android:id="@+id/todayPoll"
+            android:title="Today's Poll"
+            android:icon="@drawable/ic_todaypoll">
+        </item>
+    </group>
+
+    <group android:id="@+id/grp4" android:checkableBehavior="single" >
+        <item
+            android:id="@+id/qrcode"
+            android:title="My QR Code"
+            android:icon="@drawable/sample_qr_code">
+        </item>
+
+    </group>
+
+    <group android:id="@+id/grp5" android:checkableBehavior="single" >
+
+        <item
+            android:id="@+id/logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_logout">
+        </item>
+    </group>
+
+</menu>
