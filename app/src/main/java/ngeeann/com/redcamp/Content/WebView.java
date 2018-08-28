@@ -3,6 +3,7 @@ package ngeeann.com.redcamp.Content;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.R;
 
 public class WebView extends AppCompatActivity {
@@ -27,6 +29,10 @@ public class WebView extends AppCompatActivity {
     RelativeLayout mRelativeLayout;
     private android.webkit.WebView mWebView;
     private ProgressBar mProgressBar;
+
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
+    SharedPreferences sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +120,26 @@ public class WebView extends AppCompatActivity {
             mWebView.goBack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        checkTimeOut();
+    }
+
+    private void checkTimeOut(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("timedOut")){
+            if(sessionManager.getBoolean("timedOut",false)){
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putString(SESSION_ID, "400");
+                editor.apply();
+                startActivity(new Intent(WebView.this, LoginLauncher.class));
+                finish();
+            }
         }
     }
 }

@@ -1,8 +1,10 @@
 package ngeeann.com.redcamp.NavigationItems;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.R;
 
 public class parent_consent_form extends AppCompatActivity {
@@ -25,6 +28,9 @@ public class parent_consent_form extends AppCompatActivity {
     //Spinner spnRelationship;
     Button btnSign;
     Toolbar toolbar;
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
+    SharedPreferences sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,5 +125,31 @@ public class parent_consent_form extends AppCompatActivity {
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
         //sharing implementation here
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        checkTimeOut();
+    }
+
+    private void checkTimeOut(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("timedOut")){
+            if(sessionManager.getBoolean("timedOut",false)){
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putString(SESSION_ID, "400");
+                editor.apply();
+                startActivity(new Intent(parent_consent_form.this, LoginLauncher.class));
+                finish();
+            }
+        }
     }
 }

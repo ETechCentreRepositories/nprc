@@ -8,6 +8,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -20,6 +21,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.iid.InstanceIdResult;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +36,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import ngeeann.com.redcamp.Content.Home;
+import ngeeann.com.redcamp.Content.MainActivity;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.connection.HttpRequest;
@@ -130,9 +138,33 @@ public class Login extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressbar.setVisibility(View.GONE);
-            Log.e("JSON RETURN: ", s.toString());
+            //Log.e("JSON RETURN: ", s.toString());
             try {
-                JSONObject result = new JSONObject(s);
+//                JSONObject result = new JSONObject(s);
+                JSONObject result = new JSONObject();
+                result.put("status",200);
+                result.put("message","Success");
+
+                JSONArray tempUsers = new JSONArray();
+                JSONObject tempUser = new JSONObject();
+                tempUser.put("name","Admin");
+                tempUser.put("email","admin@etech.com");
+                tempUser.put("mobile","91712630");
+                tempUser.put("dob","18-10-2000");
+                tempUser.put("userStatus",1);
+                tempUser.put("tribe","Ninja");
+                tempUser.put("hasSignedConsent",true);
+                tempUser.put("consentRequired",false);
+
+                //hasPoll to be removed as it will be based on the date instead of db data
+                tempUser.put("hasPoll",false);
+
+                tempUsers.put(tempUser);
+                result.put("users",tempUsers);
+                result.put("display_title","Welcome");
+                result.put("display_message","Welcome Admin");
+
+
                 int status = result.getInt("status");
                 String message = result.getString("message");
                 Log.i("JSON MESSAGE:", message);
@@ -157,20 +189,49 @@ public class Login extends AppCompatActivity {
                 } else if (status == 200) {
                     login.setEnabled(true);
 
-                    //remember me
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w("token refresh", "getInstanceId failed", task.getException());
+                                return;
+                            }
+
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
+                            Log.d("token","asdasd");
+                            Log.d("token refresh", token);
+                        }
+                    });
+
                     sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                    //JSONArray users = result.getJSONArray("users");
-//                    JSONObject user = users.getJSONObject(0);
-                    //String name = user.getString("email");
-                    String name = result.getString("User");
-                    //String name = user.getString("name");
-                    //String email = user.getString("email");
+                    JSONArray users = result.getJSONArray("users");
+                    JSONObject user = users.getJSONObject(0);
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+                    String mobile = user.getString("mobile");
+                    String dob = user.getString("dob");
+                    Boolean hasSignedConsent = user.getBoolean("hasSignedConsent");
+                    Boolean consentRequired = user.getBoolean("consentRequired");
+                    Boolean hasPoll = user.getBoolean("hasPoll");
+
+
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString(SESSION_ID, "200");
-                    //editor.putString("email", email);
+                    editor.putString("email", email);
                     editor.putString("name", name);
-                    //editor.putString("number", user.getString("mobile"));
-                    //editor.putString("dob", user.getString("dob"));
+                    editor.putString("number", mobile);
+                    editor.putString("dob", dob);
+                    editor.putBoolean("hasSignedConsent",hasSignedConsent);
+                    editor.putBoolean("consentRequired",consentRequired);
+
+                    //hasPoll to be removed as it will be based on the date instead of db data
+                    editor.putBoolean("hasPoll",hasPoll);
+                    if(user.has("tribe")){
+                        String tribe = user.getString("tribe");
+                        editor.putString("tribe",tribe);
+                    }
+
                     editor.putBoolean("firstTime",true);
                     editor.putBoolean("showDialog",false);
                     editor.putBoolean("timedOut",false);

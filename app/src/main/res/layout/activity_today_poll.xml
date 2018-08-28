@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/poll_background"
+    android:background="@drawable/event_photo"
     tools:context=".NavigationItems.TodayPoll">
 
     <RelativeLayout
@@ -28,109 +28,379 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_below="@id/toolbarll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="match_parent">
 
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv1"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
+            android:layout_height="match_parent" >
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvPoll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:orientation="vertical"
-                android:padding="50dp">
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="visible">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Today's Poll"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"/>
+                    android:background="@color/black"
+                    android:orientation="vertical"
+                    android:padding="50dp">
 
-                <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Today's Poll"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="305 people have participated in this poll"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+
+                    <TextView
+                        android:id="@+id/tvQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Was RED camp a fun experience for you?"
+                        android:textColor="@color/red"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/btnChoice1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_btn"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:text="Yes, it was amazing!"
+                        android:textColor="@color/black"
+                        android:clickable="true"
+                        android:onClick="onPollButtonClick"
+                        android:textSize="11dp"
+                        android:visibility="visible"  />
+
+                    <Button
+                        android:id="@+id/btnChoice2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_btn"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:text="Meh, it was boring"
+                        android:textColor="@color/black"
+                        android:clickable="true"
+                        android:onClick="onPollButtonClick"
+                        android:textSize="11dp"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/btnChoice3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_btn"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:text="Im not sure tbh"
+                        android:textColor="@color/black"
+                        android:clickable="true"
+                        android:onClick="onPollButtonClick"
+                        android:textSize="11dp"
+                        android:visibility="visible"  />
+
+                    <Button
+                        android:id="@+id/btnChoice4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_btn"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:text="Im not sure tbh"
+                        android:textColor="@color/black"
+                        android:clickable="true"
+                        android:onClick="onPollButtonClick"
+                        android:textSize="11dp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnChoice5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_btn"
+                        android:gravity="center"
+                        android:text="Im not sure tbh"
+                        android:textColor="@color/black"
+                        android:clickable="true"
+                        android:onClick="onPollButtonClick"
+                        android:textSize="11dp"
+                        android:visibility="gone" />
+
+
+                    <Button
+                        android:id="@+id/btnVote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_vote_btn"
+                        android:clickable="false"
+                        android:onClick="onPollButtonClick"
+                        android:text="VOTE!"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone">
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="305 people have participated in this poll"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"/>
+                    android:background="@color/black"
+                    android:orientation="vertical"
+                    android:padding="50dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Today's Poll"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvResultsDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="305 people have participated in this poll"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Was RED camp a fun experience for you?"
-                    android:textColor="@color/red"
-                    android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tvResultsQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Was RED camp a fun experience for you?"
+                        android:textColor="@color/red"
+                        android:textSize="18sp" />
 
-                <Button
-                    android:id="@+id/btnChoice1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/poll_rounded_btn"
-                    android:paddingLeft="10dp"
-                    android:text="Yes, it was amazing!"
-                    android:gravity="left|center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="10dp" />
-
-                <Button
-                    android:id="@+id/btnChoice2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/poll_rounded_btn"
-                    android:paddingLeft="10dp"
-                    android:text="Meh, it was boring"
-                    android:gravity="left|center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="10dp" />
-
-                <Button
-                    android:id="@+id/btnChoice3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/poll_rounded_btn"
-                    android:paddingLeft="10dp"
-                    android:text="Im not sure tbh"
-                    android:gravity="left|center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="10dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="left|center_vertical">
 
 
-                <Button
-                    android:id="@+id/btnVote"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/poll_rounded_vote_btn"
-                    android:text="VOTE!"
-                    android:clickable="false"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+                        <ProgressBar
+                            android:id="@+id/progressbar1"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dp"
+                            android:progressDrawable="@drawable/poll_progressbar"
+                            android:visibility="visible"
+                            android:layout_weight="1"
+                            android:max="100"
+                            android:progress="45"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/white"
+                            android:text="45%"/>
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/progressbardetail1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yes, it was amazing"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        android:textSize="10sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="left|center_vertical">
+
+                        <ProgressBar
+                            android:id="@+id/progressbar2"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:progressDrawable="@drawable/poll_progressbar"
+                            android:layout_weight="1"
+                            android:visibility="visible"
+                            android:max="100"
+                            android:progress="20"/>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/white"
+                            android:text="20%"/>
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/progressbardetail2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Meh, it was boring"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        android:textSize="10sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="left|center_vertical">
+
+                        <ProgressBar
+                            android:id="@+id/progressbar3"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_weight="1"
+                            android:progressDrawable="@drawable/poll_progressbar"
+                            android:visibility="visible"
+                            android:max="100"
+                            android:progress="35"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/white"
+                            android:text="35%"/>
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/progressbardetail3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="I'm not sure tbh"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        android:textSize="10sp" />
+
+
+                    <ProgressBar
+                        android:id="@+id/progressbar4"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="left|center_vertical"
+                        android:progressDrawable="@drawable/poll_progressbar"
+                        android:visibility="gone"
+                        android:max="100"
+                        android:progress="80"/>
+
+
+                    <TextView
+                        android:id="@+id/progressbardetail4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yes, it was amazing"
+                        android:textColor="@color/white"
+                        android:visibility="gone"
+                        android:textSize="10sp" />
+
+
+                    <ProgressBar
+                        android:id="@+id/progressbar5"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="left|center_vertical"
+                        android:progressDrawable="@drawable/poll_progressbar"
+                        android:visibility="gone"
+                        android:max="100"
+                        android:progress="80"/>
+
+
+                    <TextView
+                        android:id="@+id/progressbardetail5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yes, it was amazing"
+                        android:textColor="@color/white"
+                        android:visibility="gone"
+                        android:textSize="10sp" />
 
 
 
 
 
+                    <Button
+                        android:id="@+id/btnResultsNext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/poll_rounded_next_btn"
+                        android:clickable="false"
+                        android:onClick="onPollButtonClick"
+                        android:text="NEXT POLL"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
 
-            </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+                </LinearLayout>
 
+            </android.support.v7.widget.CardView>
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
 
 
 

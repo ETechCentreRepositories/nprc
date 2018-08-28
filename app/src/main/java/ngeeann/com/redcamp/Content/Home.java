@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -28,12 +29,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.scottyab.aescrypt.AESCrypt;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.GeneralSecurityException;
+
 import ngeeann.com.redcamp.HomePage;
 import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.NavigationItems.Notifications;
+import ngeeann.com.redcamp.NavigationItems.TodayPoll;
 import ngeeann.com.redcamp.NavigationItems.signature_activity;
+import ngeeann.com.redcamp.NotificationDetails;
 import ngeeann.com.redcamp.R;
 import ngeeann.com.redcamp.NavigationItems.parent_consent_form;
+import ngeeann.com.redcamp.SQLiteQuestions.DatabaseHelper;
 import ngeeann.com.redcamp.services.AutoLogout;
 import ngeeann.com.redcamp.services.CountdownReceiver;
 
@@ -72,9 +89,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                Log.i("Drawer","Opened");
+                checkNewNotifications();
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
 
 
 //        name = findViewById(R.id.name);
@@ -162,7 +188,64 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private void configureNavigationDrawer() {
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navView = findViewById(R.id.left_drawer);
+        View navHeader = navView.getHeaderView(0);
 
+        TextView tvUserName = navHeader.findViewById(R.id.tvUserName);
+        TextView tvTribe = navHeader.findViewById(R.id.tvUserTribe);
+        ImageView ivTribe = navHeader.findViewById(R.id.tribe_icon);
+        TextView tvPowerUp = navHeader.findViewById(R.id.powerUP);
+
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        Intent getintent = getIntent();
+        String fullname = getintent.getStringExtra("name");
+
+        if(fullname!=null){
+            String[] name = fullname.split(" ");            String firstName = name[0];
+            tvUserName.setText(firstName);
+        }else{
+            String[] name =  sessionManager.getString("name", null).split(" ");
+            String firstName = name[0];
+            tvUserName.setText(firstName);
+        }
+
+        if(sessionManager.contains("tribe")){
+            String tribe = sessionManager.getString("tribe","");
+
+            tvTribe.setText(tribe);
+            tvTribe.setVisibility(View.VISIBLE);
+
+            int imageID = getDrawerIcon(tribe);
+            ivTribe.setImageResource(imageID);
+            ivTribe.setVisibility(View.VISIBLE);
+            tvPowerUp.setVisibility(View.GONE);
+        } else {
+            tvTribe.setVisibility(View.GONE);
+            ivTribe.setVisibility(View.GONE);
+        }
+
+
+
+
+//        Menu menuNav=navigationView.getMenu();
+//        MenuItem nav_todaypoll = menuNav.findItem(R.id.todayPoll);
+//        nav_todaypoll.setVisible(false);
+//        MenuItem nav_qrcode = menuNav.findItem(R.id.todayPoll);
+//        nav_qrcode.setVisible(false);
+//        MenuItem nav_con = menuNav.findItem(R.id.todayPoll);
+//        nav_qrcode.setVisible(false);
+    }
+
+    private void checkNewNotifications(){
+        LinearLayout badgeLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.notifications).getActionView();
+        ImageView ivAlert = badgeLayout.findViewById(R.id.ivNotificationAlert);
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+        int amount = dbHelper.getNumberOfNewNotification();
+        Log.i("Drawer"," " + amount);
+        if(amount > 0){
+            ivAlert.setVisibility(View.VISIBLE);
+        } else {
+            ivAlert.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -235,39 +318,142 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         switch(itemid){
             case R.id.notifications:
-//                Links links = new Links();
-//                Intent intent = new Intent(Home.this, WebView.class);
-//                intent.putExtra("Links", links.getCourse_finder());
-//                intent.putExtra("name","COURSE FINDER");
-//                startActivity(intent);
-//                if(hasNewNotifications){
-//                    hasNewNotifications = false;
-//                } else {
-//                    hasNewNotifications = true;
-//                }
-//                LinearLayout badgeLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.notifications).getActionView();
-//                ImageView ivAlert = badgeLayout.findViewById(R.id.ivNotificationAlert);
-//                if(ivAlert.getVisibility() == View.INVISIBLE){
-//                    ivAlert.setVisibility(View.VISIBLE);
-//                } else {
-//                    ivAlert.setVisibility(View.INVISIBLE);
-//                }
-//                return true;
-                Intent notificationsIntent = new Intent(Home.this,Notifications.class);
+                Intent notificationsIntent = new Intent(Home.this,NotificationDetails.class);
                 startActivity(notificationsIntent);
                 return true;
             case R.id.parentConsent:
-                Intent consentFormIntent = new Intent(Home.this,parent_consent_form.class);
-                startActivity(consentFormIntent);
+                if(!consentFormRequired() && !hasSignedConsentForm()){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
+                    LayoutInflater li = LayoutInflater.from(Home.this);
+                    final View gtnc = li.inflate(R.layout.simple_dialog_message ,null);
+                    TextView tvSimpleMsg = gtnc.findViewById(R.id.tvSimpleMessage);
+                    tvSimpleMsg.setText("The Parent Consent Form will be available at a later date.\n\n You will receive a notification to get it signed in order to receive your QR code e-ticket to RED Camp");
+                    dialog.setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                } else if (consentFormRequired() && !hasSignedConsentForm()){
+                    Intent consentFormIntent = new Intent(Home.this,parent_consent_form.class);
+                    startActivity(consentFormIntent);
+                } else if (!consentFormRequired() && hasSignedConsentForm()){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
+                    LayoutInflater li = LayoutInflater.from(Home.this);
+                    final View gtnc = li.inflate(R.layout.simple_dialog_message ,null);
+                    TextView tvSimpleMsg = gtnc.findViewById(R.id.tvSimpleMessage);
+                    tvSimpleMsg.setText("You have already signed the Parent Consent Form.\n\n And can view your QR code e-ticket to RED Camp");
+                    dialog.setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                }
+
                 return true;
+
+            case R.id.todayPoll:
+                if(todayHasPoll()){
+                    Intent pollIntent = new Intent(Home.this,TodayPoll.class);
+                    startActivity(pollIntent);
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
+                    LayoutInflater li = LayoutInflater.from(Home.this);
+                    final View gtnc = li.inflate(R.layout.simple_dialog_message ,null);
+                    TextView tvSimpleMsg = gtnc.findViewById(R.id.tvSimpleMessage);
+                    tvSimpleMsg.setText("Check back here at RED camp Day 1!\nPoll Questions will be available during RED Camp.");
+                    dialog.setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                }
+
+                return true;
+
             case R.id.qrcode:
-                AlertDialog.Builder dialogQR = new AlertDialog.Builder(Home.this);
-                LayoutInflater li = LayoutInflater.from(Home.this);
-                final View gtnc = li.inflate(R.layout.dialog_qr_code ,null);
-                dialogQR.setCancelable(true);
-                dialogQR.setView(gtnc);
-                AlertDialog dialogueQR = dialogQR.create();
-                dialogueQR.show();
+                if(hasSignedConsentForm()){
+                    AlertDialog.Builder dialogQR = new AlertDialog.Builder(Home.this);
+                    LayoutInflater li = LayoutInflater.from(Home.this);
+                    final View gtnc = li.inflate(R.layout.dialog_qr_code ,null);
+                    ImageView qrcode = gtnc.findViewById(R.id.ivDialogQRCode);
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                    JSONObject jsonProfile = new JSONObject();
+                    String encryptedProfile = null;
+                    try{
+                        jsonProfile.put("name",sessionManager.getString("name","Not added"));
+                        jsonProfile.put("email",sessionManager.getString("email","Not added"));
+                        jsonProfile.put("mobile",sessionManager.getString("email","Not added"));
+                        jsonProfile.put("dob",sessionManager.getString("email","Not added"));
+                        jsonProfile.put("email",sessionManager.getString("tribe","Not assigned yet"));
+                        String stringProfile = jsonProfile.toString();
+                        encryptedProfile = AESCrypt.encrypt("password",stringProfile);
+                        String testLog = AESCrypt.decrypt("password",encryptedProfile);
+                        Log.d("beforeEncryption",stringProfile);
+                        Log.d("afterEncryption",encryptedProfile);
+                        Log.d("afterDecryption",testLog);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }catch (GeneralSecurityException e){
+                        e.printStackTrace();
+                    }
+
+                    if(encryptedProfile != null){
+
+                        String text = encryptedProfile; // qr code to be in json string
+                        //String text = jsonProfile.toString();
+
+                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                        try {
+                            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
+                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                            qrcode.setImageBitmap(bitmap);
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
+
+                        dialogQR.setCancelable(true);
+                        dialogQR.setView(gtnc);
+                        AlertDialog dialogueQR = dialogQR.create();
+                        dialogueQR.show();
+
+                    }
+
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
+                    LayoutInflater li = LayoutInflater.from(Home.this);
+                    final View gtnc = li.inflate(R.layout.simple_dialog_message ,null);
+                    TextView tvSimpleMsg = gtnc.findViewById(R.id.tvSimpleMessage);
+                    tvSimpleMsg.setText("Receive your QR code e-ticket to RED Camp when you get the Parent Consent Form signed");
+                    dialog.setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                }
+
+                return true;
             case R.id.logout:
                 AlertDialog.Builder dialogLogout = new AlertDialog.Builder(Home.this);
                 dialogLogout.setCancelable(false);
@@ -276,7 +462,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 dialogLogout.setPositiveButton("Yes", (dialogInterface, i) -> {
                     sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sessionManager.edit();
-                    editor.clear();
+                    //editor.clear();
                     editor.putString(SESSION_ID, "400");
                     editor.apply();
                     startActivity(new Intent(this, LoginLauncher.class));
@@ -291,9 +477,74 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         return false;
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        checkNewNotifications();
+        checkTimeOut();
+
+
+    }
+
+    private Boolean todayHasPoll(){
+        //check if today's date has a Poll
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("hasPoll")){
+            return sessionManager.getBoolean("hasPoll",false);
+        }
+        return false;
+    }
+
+    //before redcamp
+    //hasSignedConsentForm == false
+    //consentFormRequired == false
+
+    //redcamp starting
+    //hasSignedConsentForm == false
+    //consentFormRequired == true
+
+    //after signing form
+    //hasSignedConsentForm == true
+    //consentFormRequired == false
+
+
+    private Boolean hasSignedConsentForm(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("hasSignedConsent")){
+            return sessionManager.getBoolean("hasSignedConsent",false);
+        }
+        return false;
+    }
+
+    private Boolean consentFormRequired(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("consentRequired")){
+            return sessionManager.getBoolean("consentRequired",false);
+        }
+        return false;
+    }
+
+
+
+    private int getDrawerIcon(String tribe){
+        if(tribe.equalsIgnoreCase("Apache")) {
+            return R.drawable.apache_drawer_icon;
+        } else if (tribe.equalsIgnoreCase("Centurion")) {
+            return R.drawable.centurion_drawer_icon;
+        } else if (tribe.equalsIgnoreCase("Ninja")) {
+            return R.drawable.ninja_drawer_icon;
+        } else if (tribe.equalsIgnoreCase("Spartan")) {
+            return R.drawable.spartan_drawer_icon;
+        } else if (tribe.equalsIgnoreCase("Viking")) {
+            return R.drawable.viking_drawer_icon;
+        } else {
+            return 404;
+        }
+    }
+
+    private void checkTimeOut(){
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         if(sessionManager.contains("timedOut")){
             if(sessionManager.getBoolean("timedOut",false)){
@@ -305,9 +556,5 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 finish();
             }
         }
-
     }
-
-
-
 }

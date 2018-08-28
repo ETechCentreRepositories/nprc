@@ -29,33 +29,7 @@ public class CountdownReceiver extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Log.i(TAG, "Starting timer...");
 
-        cdt = new CountDownTimer(1 *5 * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-                Log.i(TAG, "Countdown seconds remaining: " + millisUntilFinished / 1000);
-                bi.putExtra("countdown", millisUntilFinished);
-                sendBroadcast(bi);
-            }
-
-            @Override
-            public void onFinish() {
-                Log.v(TAG, "Call Logout by Service");
-                // Code for Logout
-                Toast.makeText(getApplicationContext(),"Logging out",Toast.LENGTH_SHORT).show();
-                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sessionManager.edit();
-                editor.clear();
-                editor.putBoolean("timedOut", true);
-                editor.putBoolean("showDialog", true);
-                editor.apply();
-//                startActivity(new Intent(getApplicationContext(), LoginLauncher.class));
-            }
-        };
-
-        cdt.start();
     }
 
     @Override
@@ -68,11 +42,44 @@ public class CountdownReceiver extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
+        Log.i(TAG, "Starting timer...");
+
+        cdt = new CountDownTimer(20 *60 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                Log.i(TAG, "Countdown seconds remaining: " + millisUntilFinished / 1000);
+                bi.putExtra("countdown", millisUntilFinished);
+                sendBroadcast(bi);
+            }
+
+            @Override
+            public void onFinish() {
+                Log.v(TAG, "Call Logout by Service");
+                // Code for Logout
+                //Toast.makeText(getApplicationContext(),"Logging out",Toast.LENGTH_SHORT).show();
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.clear();
+                editor.putBoolean("timedOut", true);
+                editor.putBoolean("showDialog", true);
+                editor.apply();
+//                startActivity(new Intent(getApplicationContext(), LoginLauncher.class));
+            }
+        };
+
+        cdt.start();
+
         return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
     }
+
+
 }

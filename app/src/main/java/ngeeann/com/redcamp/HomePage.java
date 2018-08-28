@@ -6,15 +6,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
+
 import ngeeann.com.redcamp.Content.CampProgramme;
 import ngeeann.com.redcamp.Content.WebView;
+import ngeeann.com.redcamp.SQLiteQuestions.DatabaseHelper;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -26,9 +34,17 @@ public class HomePage extends Fragment {
     public static final String SESSION = "login_status";
     SharedPreferences sessionManager;
 
+    CarouselView carouselView;
+
+    int[] allCarousels = {R.drawable.carousel1, R.drawable.carousel2, R.drawable.carousel3, R.drawable.carousel4 };
 
     public HomePage() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     @Override
@@ -41,20 +57,34 @@ public class HomePage extends Fragment {
         Btn3 = view.findViewById(R.id.button3);
         Btn4 = view.findViewById(R.id.button4);
 
-        welcomeName = view.findViewById(R.id.welcomeName);
-        sessionManager = getContext().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+//        vpCarousell = view.findViewById(R.id.ivCarousell);
+//
+//        ImageAdapter adapter = new ImageAdapter(this); //Here we are defining the Imageadapter object
+//
+//        viewPager.setAdapter(adapter); // Here we are passing and setting the adapter for the images
 
+        welcomeName = view.findViewById(R.id.welcomeName);
+
+        carouselView = view.findViewById(R.id.carouselView);
+
+        carouselView.setImageListener(imageListener);
+        carouselView.setPageCount(allCarousels.length);
+
+
+        sessionManager = getContext().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         Intent getintent = getActivity().getIntent();
         String fullname = getintent.getStringExtra("name");
         if(fullname!=null){
-            String[] name = fullname.split(" ");
-            String firstName = name[0];
+            String[] name = fullname.split(" ");            String firstName = name[0];
             welcomeName.setText(String.format("Hi %s!",firstName));
         }else{
             String[] name =  sessionManager.getString("name", null).split(" ");
             String firstName = name[0];
             welcomeName.setText(String.format("Hi %s!",firstName));
         }
+
+
+
 
 
         Links links = new Links();
@@ -83,5 +113,12 @@ public class HomePage extends Fragment {
         });
         return view;
     }
+
+    ImageListener imageListener = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            imageView.setImageResource(allCarousels[position]);
+        }
+    };
 
 }

@@ -6,10 +6,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.drawable.AnimationDrawable;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -17,20 +16,21 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-import ngeeann.com.redcamp.Content.Home;
-import ngeeann.com.redcamp.Content.MainActivity;
-import ngeeann.com.redcamp.Login.LaunchScreen;
-import ngeeann.com.redcamp.Login.Login;
 import ngeeann.com.redcamp.Login.LoginLauncher;
+import ngeeann.com.redcamp.SQLiteQuestions.DatabaseHelper;
+import ngeeann.com.redcamp.SQLiteQuestions.Question;
+import ngeeann.com.redcamp.SQLiteQuestions.QuestionBank;
 
 public class Splash extends AppCompatActivity {
     ImageView background;
@@ -62,15 +62,19 @@ public class Splash extends AppCompatActivity {
         }
 
 
+
         Window w = getWindow();
         w.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             w.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         int SPLASH_TIME_OUT = 2000;
+        QuestionBank qb = new QuestionBank();
+        qb.initQuestions(getApplicationContext());
+        getAllQuestions();
         new Handler().postDelayed(() -> {
+ 
 
-            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
             Intent i = new Intent(Splash.this, LoginLauncher.class);
             startActivity(i);
             finish();
@@ -101,6 +105,59 @@ public class Splash extends AppCompatActivity {
 
         }, SPLASH_TIME_OUT);
 
+    }
+
+    private void getAllQuestions()
+    {
+
+        Log.i("db row question","starting getresults()");
+
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+
+        List<Question> list = dbHelper.getAllQuestionsList();
+
+
+        Log.i("db row question",list.toString());
+
+        //JSONArray resultSet  = new JSONArray();
+         JSONObject resultSet  = new JSONObject();
+
+        for(int i = 0; i < list.size(); i++){
+
+            JSONObject row = new JSONObject();
+            Question q = list.get(i);
+
+            try{
+                row.put("questionID",q.getQuestionID());
+                row.put("tribe",q.getTribe());
+                row.put("question",q.getQuestion());
+                JSONArray options = new JSONArray();
+                options.put(0,q.getOption(0));
+                options.put(1,q.getOption(1));
+                options.put(2,q.getOption(2));
+                options.put(3,q.getOption(3));
+                options.put(4,q.getOption(4));
+                row.put("options",options);
+                row.put("userAnswer",q.getUserAnswer());
+                resultSet.put(q.getTribe(),row);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        Log.i("db row question",resultSet.toString());
+
+
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sessionManager.edit();
+        editor.putString("allQuestions", resultSet.toString());
+        editor.commit();
+
+
+
+
+        //Log.d("TAG_NAME", resultSet.toString() );
+        //return resultSet;
     }
 
     @Override

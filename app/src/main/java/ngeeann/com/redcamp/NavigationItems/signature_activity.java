@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -21,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,13 +33,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import ngeeann.com.redcamp.Content.Home;
+import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.R;
 
 public class signature_activity extends AppCompatActivity {
@@ -49,6 +64,9 @@ public class signature_activity extends AppCompatActivity {
     View view;
     signature mSignature;
     Bitmap bitmap;
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
+    SharedPreferences sessionManager;
     Toolbar toolbar;
 
     // Creating Separate Directory for saving Generated Images
@@ -109,21 +127,48 @@ public class signature_activity extends AppCompatActivity {
                     //recreate();
                 }
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(signature_activity.this);
+                AlertDialog.Builder dialogQR = new AlertDialog.Builder(signature_activity.this);
                 LayoutInflater li = LayoutInflater.from(signature_activity.this);
-                final View gtnc = li.inflate(R.layout.dialog_qr_code ,null);
-                dialog.setPositiveButton("Home", new DialogInterface.OnClickListener() {
+                final View gtnc = li.inflate(R.layout.dialog_qr_code_aftersign ,null);
+                ImageView qrcode = gtnc.findViewById(R.id.ivDialogQRCode);
+                Button btnQRHome = gtnc.findViewById(R.id.btnQRHome);
+
+                btnQRHome.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent moveBack = new Intent(signature_activity.this, Home.class);
-                        startActivity(moveBack);
+                    public void onClick(View v) {
+                        startActivity(new Intent(signature_activity.this,Home.class));
                         finish();
                     }
                 });
-                dialog.setCancelable(true);
-                dialog.setView(gtnc);
-                AlertDialog dialogue = dialog.create();
-                dialogue.show();
+
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                JSONObject jsonProfile = new JSONObject();
+                try{
+                    jsonProfile.put("name",sessionManager.getString("name","Not added"));
+                    jsonProfile.put("email",sessionManager.getString("email","Not added"));
+                    jsonProfile.put("mobile",sessionManager.getString("email","Not added"));
+                    jsonProfile.put("dob",sessionManager.getString("email","Not added"));
+                    jsonProfile.put("email",sessionManager.getString("tribe","Not assigned yet"));
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                String text = jsonProfile.toString();
+                //String text="Damian lee"; // qr code to be in json string
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                try {
+                    BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    qrcode.setImageBitmap(bitmap);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+
+                dialogQR.setCancelable(false);
+                dialogQR.setView(gtnc);
+                AlertDialog dialogueQR = dialogQR.create();
+                dialogueQR.show();
 
 
             }
@@ -215,6 +260,9 @@ public class signature_activity extends AppCompatActivity {
                 FileOutputStream ostream = new FileOutputStream(f);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, ostream);
                 ostream.close();
+
+                String encodedimage = bitmapToBase64(bitmap);
+                Log.e("BITMAP: ", encodedimage);
 
                 MediaScannerConnection.scanFile(getApplicationContext(), new String[] { f.toString() }, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
@@ -310,6 +358,40 @@ public class signature_activity extends AppCompatActivity {
             dirtyRect.right = Math.max(lastTouchX, eventX);
             dirtyRect.top = Math.min(lastTouchY, eventY);
             dirtyRect.bottom = Math.max(lastTouchY, eventY);
+        }
+
+        //convert bitmap to string to be stored in database
+        private String bitmapToBase64(Bitmap bitmap) {
+            String encodedImage = "";
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            try {
+                encodedImage += URLEncoder.encode(Base64.encodeToString(byteArray, Base64.DEFAULT), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return encodedImage;
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        checkTimeOut();
+    }
+
+    private void checkTimeOut(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("timedOut")){
+            if(sessionManager.getBoolean("timedOut",false)){
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putString(SESSION_ID, "400");
+                editor.apply();
+                startActivity(new Intent(signature_activity.this, LoginLauncher.class));
+                finish();
+            }
         }
     }
 }

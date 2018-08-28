@@ -1,5 +1,8 @@
 package ngeeann.com.redcamp.Content;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +14,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.R;
 
 public class CampProgramme extends AppCompatActivity {
     Button d1,d2,d3;
     TextView content, date;
     Toolbar toolbar;
+
+    public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session";
+    SharedPreferences sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,5 +201,25 @@ public class CampProgramme extends AppCompatActivity {
         }
         content.setBackgroundColor(Color.parseColor("#ffffff"));
         content.setTextColor(Color.parseColor("#5c5c5c"));
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        checkTimeOut();
+    }
+
+    private void checkTimeOut(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        if(sessionManager.contains("timedOut")){
+            if(sessionManager.getBoolean("timedOut",false)){
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sessionManager.edit();
+                editor.putString(SESSION_ID, "400");
+                editor.apply();
+                startActivity(new Intent(CampProgramme.this, LoginLauncher.class));
+                finish();
+            }
+        }
     }
 }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "392216870915",
+    "firebase_url": "https://nprc-8da3d.firebaseio.com",
+    "project_id": "nprc-8da3d",
+    "storage_bucket": "nprc-8da3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392216870915:android:41baeddb641c6984",
+        "android_client_info": {
+          "package_name": "ngeeann.com.redcamp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392216870915-31v2n61blavuoodqm9o2kq4q9e7i1guu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp-FddMbWTQt7WC_nqAEYdKWfcrqooaXg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

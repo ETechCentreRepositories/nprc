@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5d5d63"
+    android:background="#FFFFFF"
     android:orientation="vertical">
 
 
@@ -14,9 +14,10 @@
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
         android:text="This is your QR code to RED Camp!"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#000000"/>
 
     <ImageView
+        android:id="@+id/ivDialogQRCode"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_width="150dp"
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
-        android:text="QR codes are unique and tagged toeach individual camper so don't share! You will need your own!"
-        android:textColor="#FFFFFF"/>
+        android:text="QR codes are unique and tagged to each individual camper so don't share! You will need your own!"
+        android:textColor="#000000"/>
 
 </LinearLayout>

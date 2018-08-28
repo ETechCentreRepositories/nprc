@@ -592,4 +592,6 @@ public class LoginLauncher extends AppCompatActivity {
         android.support.v7.app.AlertDialog dialogue = dialog.create();
         dialogue.show();
     }
+
+
 }

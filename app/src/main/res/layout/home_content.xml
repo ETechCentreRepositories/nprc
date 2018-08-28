@@ -50,6 +50,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/landing_main_image"/>
 
+
             </LinearLayout>
 
         </RelativeLayout>

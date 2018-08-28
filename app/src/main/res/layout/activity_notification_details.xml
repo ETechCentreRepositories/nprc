@@ -10,11 +10,11 @@
     <RelativeLayout
         android:id="@+id/toolbarll"
         android:layout_width="match_parent"
-        android:elevation="2dp"
         android:layout_height="?android:attr/actionBarSize">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            android:background="@color/red"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back" />
@@ -24,65 +24,72 @@
 
     <LinearLayout
         android:id="@+id/lbanner"
+        android:layout_below="@id/toolbarll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal">
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/landing_main_image"/>
+            android:id="@+id/ivBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/apache_banner"/>
 
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/tvTitle"
+    <RelativeLayout
         android:layout_below="@id/lbanner"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:fontFamily="@font/segoe_ui"
-        android:layout_centerHorizontal="true"
-        android:text="CONGRATULATIONS! \nYour tribe has been chosen!"/>
-    <TextView
-        android:id="@+id/tvDatetime"
-        android:layout_below="@id/tvTitle"
-        android:layout_marginTop="1dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:textSize="10sp"
-        android:fontFamily="@font/segoe_ui"
-        android:layout_alignLeft="@id/tvTitle"
-        android:text="January 29 2018 3:53pm"/>
-
-
-    <ScrollView
-        android:id="@+id/svMessage"
-        android:layout_below="@id/tvDatetime"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_alignLeft="@id/tvTitle"
-        android:layout_alignRight="@id/tvTitle"
-        android:layout_centerHorizontal="true">
+        android:layout_height="match_parent"
+        android:padding="15dp">
 
         <TextView
-            android:id="@+id/tvMessage"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="15sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/segoe_ui"
-            android:text="@string/loremipsum"/>
+            android:text="CONGRATULATIONS! \nYour tribe has been chosen!"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/tvDatetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvTitle"
+            android:layout_below="@id/tvTitle"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/segoe_ui"
+            android:text="January 29 2018 3:53pm"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
 
 
-    </ScrollView>
+        <ScrollView
+            android:id="@+id/svMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvTitle"
+            android:layout_alignRight="@id/tvTitle"
+            android:layout_below="@id/tvDatetime"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoe_ui"
+                android:text="@string/loremipsum"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+
+        </ScrollView>
+    </RelativeLayout>
 
 
 

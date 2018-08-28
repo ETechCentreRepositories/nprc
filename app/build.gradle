@@ -55,7 +55,26 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //firebase
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+
+    //fcm
+    implementation 'com.google.firebase:firebase-messaging:17.3.0'
 
     // RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+
+    //RoomDB
+    implementation 'android.arch.persistence.room:runtime:1.0.0'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
+
+    //QR Code
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+
+    //carouselview
+    implementation 'com.synnapps:carouselview:0.1.5'
+
+    //encryption
+    implementation 'com.scottyab:aescrypt:0.0.1'
 }
+apply plugin: 'com.google.gms.google-services'

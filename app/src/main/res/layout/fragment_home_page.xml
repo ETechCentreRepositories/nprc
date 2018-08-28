@@ -23,6 +23,7 @@
                android:layout_alignParentLeft="true"
                android:layout_alignParentStart="true"
                android:layout_margin="15dp"
+               android:elevation="1dp"
                android:orientation="vertical">
 
                <TextView
@@ -33,6 +34,7 @@
                    android:layout_marginBottom="10dp"
                    android:textSize="20sp"
                    android:padding="5dp"
+                   android:text="name here"
                    android:textAlignment="center"
                    android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
                    android:textColor="@android:color/white"
@@ -41,16 +43,34 @@
            </RelativeLayout>
 
            <LinearLayout
-               android:layout_marginTop="55dp"
+               android:layout_marginTop="10dp"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:orientation="vertical">
 
-               <ImageView
-                   android:padding="10dp"
+               <!--<ImageView-->
+                   <!--android:layout_width="match_parent"-->
+                   <!--android:layout_height="match_parent"-->
+                   <!--android:padding="10dp"-->
+                   <!--android:src="@drawable/carousel2"-->
+                   <!--android:visibility="visible" />-->
+
+               <com.synnapps.carouselview.CarouselView
+                   android:id="@+id/carouselView"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
-                   android:src="@drawable/landing_main_image"/>
+                   app:fillColor="#FFFFFFFF"
+                   app:pageColor="#00000000"
+                   app:radius="6dp"
+                   app:slideInterval="3000"
+                   app:strokeColor="#FF777777"
+                   app:strokeWidth="1dp"/>
+
+               <!--<android.support.v4.view.ViewPager-->
+                   <!--android:id="@+id/ivCarousell"-->
+                   <!--android:layout_width="match_parent"-->
+                   <!--android:layout_height="match_parent"-->
+                   <!--android:padding="10dp"/>-->
 
            </LinearLayout>
 

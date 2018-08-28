@@ -13,11 +13,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
+
         <ImageView
-            android:id="@+id/profile_image"
+            android:id="@+id/tribe_icon"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/logo" />
+            android:src="@drawable/apache_drawer_icon"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,23 +30,24 @@
             android:layout_gravity="center_vertical">
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/tvUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alice Lee"
+                android:text="Admin"
                 android:textColor="@color/white"
-                android:textSize="30sp"/>
+                android:textSize="30sp" />
 
 
             <TextView
-                android:id="@+id/tribe"
+                android:id="@+id/tvUserTribe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/segoe_ui"
                 android:text="Spartans"
                 android:textColor="@color/white"
-                android:fontFamily="@font/segoe_ui"
                 android:textSize="13sp"
-                android:layout_marginTop="-10dp"/>
+                android:visibility="visible"/>
 
         </LinearLayout>
 
@@ -60,12 +63,13 @@
         android:background="@color/powerbg">
 
         <TextView
+            android:id="@+id/powerUP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Power up to find your tribe and true calling!"
-            android:paddingLeft="35dp"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:gravity="center_horizontal"
+            android:textSize="11sp" />
 
 
         <TextView
@@ -74,8 +78,8 @@
             android:text="STRENGTH"
             android:layout_marginTop="15dp"
             android:paddingLeft="35dp"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="@color/white" />
 
         <ProgressBar
             android:id="@+id/strengthBar"

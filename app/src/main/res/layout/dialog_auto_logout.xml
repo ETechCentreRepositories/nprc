@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
-        android:text="This message appears when you have logged in for 20mins \nand will only be moving you back to the home page instead of the login page for testing purposes"
+        android:text="This message appears when you have logged in for more than 20mins \nPlease login again!"
         android:textColor="#000000"
         android:textSize="10sp"/>
 
