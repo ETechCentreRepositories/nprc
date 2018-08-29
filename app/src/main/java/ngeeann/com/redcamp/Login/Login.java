@@ -147,17 +147,19 @@ public class Login extends AppCompatActivity {
 
                 JSONArray tempUsers = new JSONArray();
                 JSONObject tempUser = new JSONObject();
+                tempUser.put("id","1");
                 tempUser.put("name","Admin");
                 tempUser.put("email","admin@etech.com");
-                tempUser.put("mobile","91712630");
+                tempUser.put("contact","91712630");
                 tempUser.put("dob","18-10-2000");
+                tempUser.put("nric","s9990000z");
                 tempUser.put("userStatus",1);
                 tempUser.put("tribe","Ninja");
                 tempUser.put("hasSignedConsent",true);
                 tempUser.put("consentRequired",false);
 
                 //hasPoll to be removed as it will be based on the date instead of db data
-                tempUser.put("hasPoll",false);
+                tempUser.put("hasPoll",true);
 
                 tempUsers.put(tempUser);
                 result.put("users",tempUsers);
@@ -193,23 +195,25 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
                             if (!task.isSuccessful()) {
-                                Log.w("token refresh", "getInstanceId failed", task.getException());
+                                Log.w("123token refresh", "getInstanceId failed", task.getException());
                                 return;
                             }
 
                             // Get new Instance ID token
                             String token = task.getResult().getToken();
-                            Log.d("token","asdasd");
-                            Log.d("token refresh", token);
+                            Log.d("123token","asdasd");
+                            Log.d("123token refresh", token);
                         }
                     });
 
                     sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                     JSONArray users = result.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
+                    String id = user.getString("id");
                     String name = user.getString("name");
                     String email = user.getString("email");
-                    String mobile = user.getString("mobile");
+                    String mobile = user.getString("contact");
+                    String nric = user.getString("nric");
                     String dob = user.getString("dob");
                     Boolean hasSignedConsent = user.getBoolean("hasSignedConsent");
                     Boolean consentRequired = user.getBoolean("consentRequired");
@@ -218,9 +222,11 @@ public class Login extends AppCompatActivity {
 
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString(SESSION_ID, "200");
+                    editor.putString("id",id);
                     editor.putString("email", email);
                     editor.putString("name", name);
-                    editor.putString("number", mobile);
+                    editor.putString("contact", mobile);
+                    editor.putString("nric",nric);
                     editor.putString("dob", dob);
                     editor.putBoolean("hasSignedConsent",hasSignedConsent);
                     editor.putBoolean("consentRequired",consentRequired);

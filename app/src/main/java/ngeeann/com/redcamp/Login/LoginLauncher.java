@@ -578,10 +578,13 @@ public class LoginLauncher extends AppCompatActivity {
     }
 
     public void showAutoLogoutDialog(){
+
         android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(LoginLauncher.this);
         LayoutInflater li = LayoutInflater.from(LoginLauncher.this);
-        final View gtnc = li.inflate(R.layout.dialog_auto_logout ,null);
-        dialog.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
+        final View gtnc = li.inflate(R.layout.simple_dialog_message ,null);
+        TextView tvSimpleMsg = gtnc.findViewById(R.id.tvSimpleMessage);
+        tvSimpleMsg.setText("You have been logged in for 20mins, Please log in again.");
+        dialog.setPositiveButton("I understand!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

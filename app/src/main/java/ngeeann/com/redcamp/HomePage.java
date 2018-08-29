@@ -18,6 +18,10 @@ import android.widget.TextView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import ngeeann.com.redcamp.Content.CampProgramme;
 import ngeeann.com.redcamp.Content.WebView;
 import ngeeann.com.redcamp.SQLiteQuestions.DatabaseHelper;
@@ -36,7 +40,7 @@ public class HomePage extends Fragment {
 
     CarouselView carouselView;
 
-    int[] allCarousels = {R.drawable.carousel1, R.drawable.carousel2, R.drawable.carousel3, R.drawable.carousel4 };
+    List<Integer> allCarousels  =  new ArrayList(Arrays.asList(R.drawable.carousel1, R.drawable.carousel2, R.drawable.carousel3, R.drawable.carousel4));
 
     public HomePage() {
         // Required empty public constructor
@@ -67,8 +71,7 @@ public class HomePage extends Fragment {
 
         carouselView = view.findViewById(R.id.carouselView);
 
-        carouselView.setImageListener(imageListener);
-        carouselView.setPageCount(allCarousels.length);
+
 
 
         sessionManager = getContext().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -82,6 +85,17 @@ public class HomePage extends Fragment {
             String firstName = name[0];
             welcomeName.setText(String.format("Hi %s!",firstName));
         }
+
+
+        if(!sessionManager.getBoolean("hasSignedConsent",false) && sessionManager.getBoolean("consentRequired",false)){
+            carouselView.setImageListener(imageListener);
+            carouselView.setPageCount(allCarousels.size());
+        } else {
+            allCarousels.remove(Integer.valueOf(R.drawable.carousel2));
+            carouselView.setImageListener(imageListener);
+            carouselView.setPageCount(allCarousels.size());
+        }
+
 
 
 
@@ -117,7 +131,7 @@ public class HomePage extends Fragment {
     ImageListener imageListener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(allCarousels[position]);
+            imageView.setImageResource(allCarousels.get(position));
         }
     };
 

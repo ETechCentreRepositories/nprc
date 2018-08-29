@@ -130,30 +130,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //        });
 
 
-        Intent getintent = getIntent();
-        String fullname = getintent.getStringExtra("name");
-        if (fullname != null) {
-            String getName = fullname;
-            String getEmail = getIntent().getStringExtra("email");
-            String getNumber = getIntent().getStringExtra("number");
-            String getdob = getIntent().getStringExtra("dob");
+//        Intent getintent = getIntent();
+//        String fullname = getintent.getStringExtra("name");
+//        if (fullname != null) {
+//            String getName = fullname;
+//            String getEmail = getIntent().getStringExtra("email");
+//            String getNumber = getIntent().getStringExtra("number");
+//            String getdob = getIntent().getStringExtra("dob");
 
 //            name.setText(getName);
 //            email.setText(getEmail);
 //            number.setText(getNumber);
 //            dob.setText(getdob);
 
-        } else {
-            String getName = sessionManager.getString("name", null);
-            String getEmail = sessionManager.getString("email", null);
-            String getNumber = sessionManager.getString("number", null);
-            String getdob = sessionManager.getString("dob", null);
+//        } else {
+//            String getName = sessionManager.getString("name", null);
+//            String getEmail = sessionManager.getString("email", null);
+//            String getNumber = sessionManager.getString("number", null);
+//            String getdob = sessionManager.getString("dob", null);
 
 //            name.setText(getName);
 //            email.setText(getEmail);
 //            number.setText(getNumber);
 //            dob.setText(getdob);
-        }
+//        }
 
         navigationView = findViewById(R.id.left_drawer);
         replacefragment(new HomePage());
@@ -318,7 +318,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         switch(itemid){
             case R.id.notifications:
-                Intent notificationsIntent = new Intent(Home.this,NotificationDetails.class);
+                Intent notificationsIntent = new Intent(Home.this,Notifications.class);
                 startActivity(notificationsIntent);
                 return true;
             case R.id.parentConsent:
@@ -386,7 +386,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 return true;
 
             case R.id.qrcode:
-                if(hasSignedConsentForm()){
+                //if(hasSignedConsentForm()){
+                if(1==1){
                     AlertDialog.Builder dialogQR = new AlertDialog.Builder(Home.this);
                     LayoutInflater li = LayoutInflater.from(Home.this);
                     final View gtnc = li.inflate(R.layout.dialog_qr_code ,null);
@@ -396,11 +397,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     JSONObject jsonProfile = new JSONObject();
                     String encryptedProfile = null;
                     try{
+                        jsonProfile.put("id",sessionManager.getString("id","no id"));
                         jsonProfile.put("name",sessionManager.getString("name","Not added"));
                         jsonProfile.put("email",sessionManager.getString("email","Not added"));
-                        jsonProfile.put("mobile",sessionManager.getString("email","Not added"));
-                        jsonProfile.put("dob",sessionManager.getString("email","Not added"));
-                        jsonProfile.put("email",sessionManager.getString("tribe","Not assigned yet"));
+                        jsonProfile.put("mobile",sessionManager.getString("contact","Not added"));
+                        jsonProfile.put("nric",sessionManager.getString("nric","Not added"));
+                        jsonProfile.put("dob",sessionManager.getString("dob","Not assigned yet"));
+                        jsonProfile.put("parentConsent",sessionManager.getBoolean("hasSignedConsent",false));
                         String stringProfile = jsonProfile.toString();
                         encryptedProfile = AESCrypt.encrypt("password",stringProfile);
                         String testLog = AESCrypt.decrypt("password",encryptedProfile);

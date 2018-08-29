@@ -1,1 +1,1 @@
-include ':app', ':nprcscanner', ':nprcticketscanner', ':rcscanner'
+include ':app', ':nprcscanner', ':nprcticketscanner', ':rcscanner', ':nprcscanner2', ':nprcregistrar'
