@@ -36,10 +36,11 @@ public class TodayPoll extends AppCompatActivity{
     public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
 
-    CardView cvPoll, cvResult;
+    CardView cvPoll;
+//    CardView cvResult;
     TextView tvQuestion,tvDetail;
     Toolbar toolbar;
-    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4, btnChoice5, btnVote, btnNextPoll;
+    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4, btnChoice5, btnVote;
     int questionNumber = 0;
     String chosenAnswer = null;
     String assignedQuestionID = "";
@@ -106,7 +107,7 @@ public class TodayPoll extends AppCompatActivity{
         btnVote = findViewById(R.id.btnVote);
 
         cvPoll = findViewById(R.id.cvPoll);
-        cvResult = findViewById(R.id.cvResult);
+//        cvResult = findViewById(R.id.cvResult);
 
         tvResultsDetail = findViewById(R.id.tvResultsDetail);
         tvResultsQuestion = findViewById(R.id.tvResultsQuestion);
@@ -125,12 +126,13 @@ public class TodayPoll extends AppCompatActivity{
         progressbardetailIDs.add(R.id.progressbardetail3);
         progressbardetailIDs.add(R.id.progressbardetail4);
         progressbardetailIDs.add(R.id.progressbardetail5);
-        btnNextPoll = findViewById(R.id.btnResultsNext);
+
+//        btnNextPoll = findViewById(R.id.btnResultsNext);
 
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
         //get assigned questions through tribe and day(1,2 or 3)
-        assignedQuestions = getAssignedQuestionsByTribeDay("apaches",1);
+        assignedQuestions = getAssignedQuestionsByTribeDay("vikings",3);
 
         String stringGetQuestion = sessionManager.getString("allQuestions","emptydb");
         if(!stringGetQuestion.equalsIgnoreCase("emptydb")){
@@ -197,17 +199,9 @@ public class TodayPoll extends AppCompatActivity{
             case R.id.btnVote:
                 //set to false to prevent multiple submissions
                 btnVote.setClickable(false);
-//
-                submitAnswer(chosenAnswer);
-                showPollResults(assignedQuestionID);
-                cvPoll.setVisibility(View.GONE);
-                cvResult.setVisibility(View.VISIBLE);
-                //Toast.makeText(TodayPoll.this,chosenAnswer,Toast.LENGTH_SHORT).show();
-                break;
 
-            case R.id.btnResultsNext:
-                //set to false to prevent multiple calls which will affect question number
-                btnNextPoll.setClickable(false);
+                submitAnswer(chosenAnswer);
+//                showPollResults(assignedQuestionID);
                 questionNumber++;
                 Log.i("todaypoll",questionNumber + " " +assignedQuestionID.toString());
                 if(questionNumber >= assignedQuestions.size()){
@@ -243,9 +237,17 @@ public class TodayPoll extends AppCompatActivity{
                     dialogue.show();
                 } else {
                     setQuestion();
-                    cvResult.setVisibility(View.GONE);
+//                    cvResult.setVisibility(View.GONE);
                     cvPoll.setVisibility(View.VISIBLE);
                 }
+//                cvResult.setVisibility(View.VISIBLE);
+                //Toast.makeText(TodayPoll.this,chosenAnswer,Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.btnResultsNext:
+                //set to false to prevent multiple calls which will affect question number
+//                btnNextPoll.setClickable(false);
+
 
                 //Toast.makeText(TodayPoll.this,"button clickednext",Toast.LENGTH_SHORT).show();
                 break;
@@ -305,14 +307,14 @@ public class TodayPoll extends AppCompatActivity{
         chosenAnswer = null;
     }
 
-    private void showPollResults(String tribe){
-        //set visibility of poll results layout
-        cvPoll.setVisibility(View.GONE);
-        cvResult.setVisibility(View.VISIBLE);
-        btnNextPoll.setClickable(true);
-
-
-    }
+//    private void showPollResults(String tribe){
+//        //set visibility of poll results layout
+//        cvPoll.setVisibility(View.GONE);
+////        cvResult.setVisibility(View.VISIBLE);
+//        btnNextPoll.setClickable(true);
+//
+//
+//    }
 
     private void setQuestion(){
         resetPollButtons();
@@ -399,36 +401,35 @@ public class TodayPoll extends AppCompatActivity{
 
         if(tribe.equalsIgnoreCase("vikings")){
             List<List<String>> apaches = new ArrayList<>();
-            apaches.add(Arrays.asList("1a","hs1","hs2","lsct1","lsct2","ba1","ba2","soe1","soe2","1b"));
-            apaches.add(Arrays.asList("ccas1","ccas2","hms1","hms2","fms1","fms2","2a","2b"));
-            apaches.add(Arrays.asList("de1","de2","ict1","ict2","3a","3b","3c","3d","3e","3f"));
-
+            apaches.add(Arrays.asList("1a","ba1","ba2","soe1","soe2","fms","fms2","hms1","hms","1b"));
+            apaches.add(Arrays.asList("de1","de2","ccas1","ccas2","2a","2b"));
+            apaches.add(Arrays.asList("hs1","hs2","lsct1","lsct2","3a","3b","3c","3d","3e","3f"));
             return apaches.get(day-1);
         }
 
         if(tribe.equalsIgnoreCase("centurions")){
             List<List<String>> apaches = new ArrayList<>();
-            apaches.add(Arrays.asList("1a","hs1","hs2","lsct1","lsct2","ba1","ba2","soe1","soe2","1b"));
-            apaches.add(Arrays.asList("ccas1","ccas2","hms1","hms2","fms1","fms2","2a","2b"));
-            apaches.add(Arrays.asList("de1","de2","ict1","ict2","3a","3b","3c","3d","3e","3f"));
+            apaches.add(Arrays.asList("1a","de1","de2","ict1","ict2","ccas1","ccas2","1b"));
+            apaches.add(Arrays.asList("fms1","fms2","hms1","hms2","hs1","hs2","2a","2b"));
+            apaches.add(Arrays.asList("ba1","ba2","soe1","soe2","3a","3b","3c","3d","3e","3f"));
 
             return apaches.get(day-1);
         }
 
         if(tribe.equalsIgnoreCase("ninjas")){
             List<List<String>> apaches = new ArrayList<>();
-            apaches.add(Arrays.asList("1a","hs1","hs2","lsct1","lsct2","ba1","ba2","soe1","soe2","1b"));
-            apaches.add(Arrays.asList("ccas1","ccas2","hms1","hms2","fms1","fms2","2a","2b"));
-            apaches.add(Arrays.asList("de1","de2","ict1","ict2","3a","3b","3c","3d","3e","3f"));
+            apaches.add(Arrays.asList("1a","hms1","hms2","fms1","fms2","hs1","hs2","lsct1","lsct2","1b"));
+            apaches.add(Arrays.asList("ba1","ba2","soe1","soe2","de1","de2","ict1","ict2","2a","2b"));
+            apaches.add(Arrays.asList("ccas1","ccas2","3a","3b","3c","3d","3e","3f"));
 
             return apaches.get(day-1);
         }
 
         if(tribe.equalsIgnoreCase("spartans")){
             List<List<String>> apaches = new ArrayList<>();
-            apaches.add(Arrays.asList("1a","hs1","hs2","lsct1","lsct2","ba1","ba2","soe1","soe2","1b"));
-            apaches.add(Arrays.asList("ccas1","ccas2","hms1","hms2","fms1","fms2","2a","2b"));
-            apaches.add(Arrays.asList("de1","de2","ict1","ict2","3a","3b","3c","3d","3e","3f"));
+            apaches.add(Arrays.asList("1a","ccas1","ccas2","de1","de2","ict1","ict2","1b"));
+            apaches.add(Arrays.asList("hs1","hs2","lsct1","lsct2","ba1","ba2","soe1","soe2","2a","2b"));
+            apaches.add(Arrays.asList("fms1","fms2","hms1","hms2","3a","3b","3c","3d","3e","3f"));
 
             return apaches.get(day-1);
         }
