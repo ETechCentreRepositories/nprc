@@ -132,7 +132,21 @@ public class TodayPoll extends AppCompatActivity{
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
         //get assigned questions through tribe and day(1,2 or 3)
-        assignedQuestions = getAssignedQuestionsByTribeDay("vikings",3);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("apaches",1);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("apaches",2);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("apaches",3);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("vikings",1);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("vikings",2);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("vikings",3);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("centurions",1);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("centurions",2);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("centurions",3);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("ninjas",1);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("ninjas",2);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("ninjas",3);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("spartans",1);
+//        assignedQuestions = getAssignedQuestionsByTribeDay("spartans",2);
+        assignedQuestions = getAssignedQuestionsByTribeDay("spartans",3);
 
         String stringGetQuestion = sessionManager.getString("allQuestions","emptydb");
         if(!stringGetQuestion.equalsIgnoreCase("emptydb")){
@@ -401,8 +415,8 @@ public class TodayPoll extends AppCompatActivity{
 
         if(tribe.equalsIgnoreCase("vikings")){
             List<List<String>> apaches = new ArrayList<>();
-            apaches.add(Arrays.asList("1a","ba1","ba2","soe1","soe2","fms","fms2","hms1","hms","1b"));
-            apaches.add(Arrays.asList("de1","de2","ccas1","ccas2","2a","2b"));
+            apaches.add(Arrays.asList("1a","ba1","ba2","soe1","soe2","fms1","fms2","hms1","hms","1b"));
+            apaches.add(Arrays.asList("de1","de2","ict1","ict2","ccas1","ccas2","2a","2b"));
             apaches.add(Arrays.asList("hs1","hs2","lsct1","lsct2","3a","3b","3c","3d","3e","3f"));
             return apaches.get(day-1);
         }
@@ -410,7 +424,7 @@ public class TodayPoll extends AppCompatActivity{
         if(tribe.equalsIgnoreCase("centurions")){
             List<List<String>> apaches = new ArrayList<>();
             apaches.add(Arrays.asList("1a","de1","de2","ict1","ict2","ccas1","ccas2","1b"));
-            apaches.add(Arrays.asList("fms1","fms2","hms1","hms2","hs1","hs2","2a","2b"));
+            apaches.add(Arrays.asList("fms1","fms2","hms1","hms2","hs1","hs2","lsct1","lsct2","2a","2b"));
             apaches.add(Arrays.asList("ba1","ba2","soe1","soe2","3a","3b","3c","3d","3e","3f"));
 
             return apaches.get(day-1);
