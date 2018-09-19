@@ -23,8 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import ngeeann.com.redcamp.Content.Home;
@@ -146,7 +148,25 @@ public class TodayPoll extends AppCompatActivity{
 //        assignedQuestions = getAssignedQuestionsByTribeDay("ninjas",3);
 //        assignedQuestions = getAssignedQuestionsByTribeDay("spartans",1);
 //        assignedQuestions = getAssignedQuestionsByTribeDay("spartans",2);
-        assignedQuestions = getAssignedQuestionsByTribeDay("spartans",3);
+        int day = 0;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        String date = dateFormat.format(Calendar.getInstance().getTime());
+        if(date.equals("20-10-2018")||date.equals("21-10-2018")||date.equals("22-10-2018")){
+            if(date.equals("20-10-2018")){
+                day = 1;
+            }else if(date.equals("21-10-2018")){
+                day = 2;
+            }else if(date.equals("22-10-2018")){
+                day = 3;
+            }else{
+                day = 0;
+            }
+        }else{
+            day = 0;
+        }
+        sessionManager = getSharedPreferences("login_status",Context.MODE_PRIVATE);
+        String tribe = sessionManager.getString("tribe","no tribe");
+        assignedQuestions = getAssignedQuestionsByTribeDay("tribe",day);
 
         String stringGetQuestion = sessionManager.getString("allQuestions","emptydb");
         if(!stringGetQuestion.equalsIgnoreCase("emptydb")){
@@ -156,10 +176,8 @@ public class TodayPoll extends AppCompatActivity{
                 e.printStackTrace();
             }
         }
-
         setQuestion();
     }
-
     public void onPollButtonClick(View v) {
         Button clickedButton = findViewById(v.getId());
         btnVote.setClickable(true);
@@ -415,7 +433,7 @@ public class TodayPoll extends AppCompatActivity{
 
         if(tribe.equalsIgnoreCase("vikings")){
             List<List<String>> apaches = new ArrayList<>();
-            apaches.add(Arrays.asList("1a","ba1","ba2","soe1","soe2","fms1","fms2","hms1","hms","1b"));
+            apaches.add(Arrays.asList("1a","ba1","ba2","soe1","soe2","fms1","fms2","hms1","hms2","1b"));
             apaches.add(Arrays.asList("de1","de2","ict1","ict2","ccas1","ccas2","2a","2b"));
             apaches.add(Arrays.asList("hs1","hs2","lsct1","lsct2","3a","3b","3c","3d","3e","3f"));
             return apaches.get(day-1);

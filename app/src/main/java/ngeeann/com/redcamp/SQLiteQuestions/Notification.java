@@ -7,12 +7,36 @@ public class Notification {
     private String title;
     private String message;
     private String datetimeReceived;
+    private int userid;
+
+    public String getData() {
+        return data;
+    }
+
+    private String data;
 
     public Notification(){
 
     }
 
+    public Notification(int id , String message, String title, String data, int userid){
+        this.notificationID = id;
+        this.message = message;
+        this.title = title;
+        this.data = data;
+        this.userid = userid;
+
+    }
+
     public Notification(int notificationID, String type, String isRead, String title, String message, String datetimeReceived) {
+        this.notificationID = notificationID;
+        this.type = type;
+        this.isRead = isRead;
+        this.title = title;
+        this.message = message;
+        this.datetimeReceived = datetimeReceived;
+    }
+    public Notification(int notificationID, String type, String isRead, String title, String message) {
         this.notificationID = notificationID;
         this.type = type;
         this.isRead = isRead;

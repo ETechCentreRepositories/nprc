@@ -87,7 +87,7 @@ public class HomePage extends Fragment {
         }
 
 
-        if(!sessionManager.getBoolean("hasSignedConsent",false) && sessionManager.getBoolean("consentRequired",false)){
+        if(!sessionManager.getString("hasSignedConsent","").isEmpty() && sessionManager.getString("consentRequired","").isEmpty()){
             carouselView.setImageListener(imageListener);
             carouselView.setPageCount(allCarousels.size());
         } else {

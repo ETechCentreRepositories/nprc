@@ -54,6 +54,7 @@ public class parent_consent_form extends AppCompatActivity {
 //                R.array.relationship_array, android.R.layout.simple_spinner_item);
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spnRelationship.setAdapter(adapter);
+
         etRelationship.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,25 +85,28 @@ public class parent_consent_form extends AppCompatActivity {
         btnSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(parent_consent_form.this,signature_activity.class);
-                startActivity(in);
+                if(etParentName.getText().toString().isEmpty()||etParentMobile.getText().toString().isEmpty()||etRelationship.getText().toString().equals("Relationship")){
+                    Toast.makeText(parent_consent_form.this, "Please fill in all your details!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent in = new Intent(parent_consent_form.this,signature_activity.class)
+                            .putExtra("name",etParentName.getText().toString())
+                            .putExtra("mobile",etParentMobile.getText().toString())
+                            .putExtra("relationship", etRelationship.getText().toString());
+                    startActivity(in);
+                }
             }
         });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-
         switch (itemId) {
             case R.id.share:
                 shareIt();
                 return true;
-
         }
-
         return false;
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -152,4 +156,5 @@ public class parent_consent_form extends AppCompatActivity {
             }
         }
     }
+
 }

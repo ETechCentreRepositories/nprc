@@ -45,7 +45,6 @@ public class NotificationDetails extends AppCompatActivity {
             R.drawable.find_your_tribe, R.drawable.power_up, R.drawable.telegram, R.drawable.sign_up,
             R.drawable.countdown_1, R.drawable.countdown_2, R.drawable.countdown_3, R.drawable.countdown_4,
             R.drawable.countdown_5
-
     );
 
     Map<String, Integer> allBanners2 = new HashMap<String, Integer>();
@@ -80,8 +79,7 @@ public class NotificationDetails extends AppCompatActivity {
         tvMessage.setText(message);
         tvDatetime.setText(datetime);
         if(type != null){
-            int intType = Integer.parseInt(type);
-            ivBanner.setImageResource(allBanners.get(intType));
+            ivBanner.setImageResource(allBanners.get(5));
 
         } else {
             Log.i("null","type is null");

@@ -3,12 +3,10 @@ package ngeeann.com.redcamp.NavigationItems;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,23 +15,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import ngeeann.com.redcamp.Login.LoginLauncher;
 import ngeeann.com.redcamp.NotificationDetails;
 import ngeeann.com.redcamp.R;
-import ngeeann.com.redcamp.SQLiteQuestions.DatabaseHelper;
 import ngeeann.com.redcamp.SQLiteQuestions.Notification;
-import ngeeann.com.redcamp.SQLiteQuestions.Question;
+import ngeeann.com.redcamp.connection.HttpRequest;
 
 public class Notifications extends AppCompatActivity {
 
@@ -57,9 +52,17 @@ public class Notifications extends AppCompatActivity {
 
         notificationLayout = findViewById(R.id.layoutNotifications);
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sessionManager.edit();
 
-        updateNotificationUI();
+
+        try {
+            updateNotificationUI(new JSONObject(new getnotifications().execute(sessionManager.getString("id", "")).get()).getJSONArray("Notification"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -71,7 +74,6 @@ public class Notifications extends AppCompatActivity {
             case R.id.share:
                 shareIt();
                 return true;
-
         }
 
         return false;
@@ -81,8 +83,6 @@ public class Notifications extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu_share_diag, menu);
-
-
         return true;
     }
 
@@ -98,35 +98,37 @@ public class Notifications extends AppCompatActivity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
         //sharing implementation here
-
     }
 
-    private void updateNotificationUI(){
+    private void updateNotificationUI(JSONArray details) throws JSONException {
         int counter = 0;
-        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
-        List<Notification> list = dbHelper.getAllNotification();
+
+        ArrayList<Notification> list = new ArrayList<Notification>();
+        for (int j = 0; j < details.length(); j++) {
+            JSONObject noti = details.getJSONObject(j);
+            list.add(new Notification(noti.getInt("noti_id"), noti.getString("noti_type"), "false", noti.getString("title"), noti.getString("message")));
+        }
         Log.i("Notifications List: ", list.toString());
         //updateAmountOfNewNotification();
         notificationLayout.removeAllViews();
-        for (int n = 0; n < list.size(); n++){
+        for (int n = 0; n < list.size(); n++) {
             int i = updateRow(list.get(n));
+
             counter = counter + i;
         }
         updateAmountOfNewNotification(counter);
+
     }
 
-    private void updateAmountOfNewNotification(int counter){
+    private void updateAmountOfNewNotification(int counter) {
         TextView tvAmount = findViewById(R.id.tvAmount);
-
         //DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
         //int newAmount = dbHelper.getNumberOfNewNotification();
-
         tvAmount.setText(counter + " NEW");
-
     }
 
 
-    private int updateRow(Notification notification){
+    private int updateRow(Notification notification) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         View view = inflater.inflate(R.layout.notification_row, null);
@@ -137,10 +139,10 @@ public class Notifications extends AppCompatActivity {
         ImageView ivCircle = view.findViewById(R.id.ivRedCircle);
         CardView cvNotification = view.findViewById(R.id.cv1);
 
-        tvTime.setText(notification.getDatetimeReceived());
+//        tvTime.setText(notification.getDatetimeReceived());
         tvTitle.setText(notification.getTitle());
         String isRead = notification.getIsRead();
-        if(isRead.equalsIgnoreCase("false")){
+        if (isRead.equalsIgnoreCase("false")) {
             ivCircle.setVisibility(View.VISIBLE);
             ivArrow.setVisibility(View.GONE);
         } else {
@@ -153,7 +155,7 @@ public class Notifications extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Notifications.this, NotificationDetails.class);
                 Notification n = notification;
-                intent.putExtra("id",n.getNotificationID());
+                intent.putExtra("id", n.getNotificationID());
                 intent.putExtra("type", n.getType());
                 intent.putExtra("title", n.getTitle());
                 intent.putExtra("isRead", n.getIsRead());
@@ -164,8 +166,8 @@ public class Notifications extends AppCompatActivity {
         });
 
         notificationLayout.addView(view);
-
-        if(isRead.equalsIgnoreCase("false")){
+//
+        if (isRead.equalsIgnoreCase("false")) {
             return 1;
         } else {
             return 0;
@@ -180,10 +182,9 @@ public class Notifications extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         checkTimeOut();
-        updateNotificationUI();
     }
 
     @Override
@@ -192,10 +193,10 @@ public class Notifications extends AppCompatActivity {
         finish();
     }
 
-    private void checkTimeOut(){
+    private void checkTimeOut() {
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-        if(sessionManager.contains("timedOut")){
-            if(sessionManager.getBoolean("timedOut",false)){
+        if (sessionManager.contains("timedOut")) {
+            if (sessionManager.getBoolean("timedOut", false)) {
                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sessionManager.edit();
                 editor.putString(SESSION_ID, "400");
@@ -203,6 +204,17 @@ public class Notifications extends AppCompatActivity {
                 startActivity(new Intent(Notifications.this, LoginLauncher.class));
                 finish();
             }
+        }
+    }
+
+    public class getnotifications extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpRequest request = new HttpRequest();
+            String sendrequest = request.GetRequest("https://www1dev.np.edu.sg/npnet/MobileApi/api/Notification/getUserNotification?userid=" + strings[0]);
+            Log.i("NOTIFICATION REQUEST", sendrequest);
+            return sendrequest;
         }
     }
 }

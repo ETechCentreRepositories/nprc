@@ -1,4 +1,4 @@
-package ngeeann.com.redcamp.connection;
+package com.example.nprcregistrar;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

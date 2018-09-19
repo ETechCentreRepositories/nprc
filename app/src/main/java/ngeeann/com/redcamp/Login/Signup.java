@@ -3,44 +3,33 @@ package ngeeann.com.redcamp.Login;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.CommonStatusCodes;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 import ngeeann.com.redcamp.Content.Home;
-import ngeeann.com.redcamp.Content.MainActivity;
-
 import ngeeann.com.redcamp.Content.WebView;
 import ngeeann.com.redcamp.Links;
 import ngeeann.com.redcamp.R;
@@ -111,16 +100,16 @@ public class Signup extends AppCompatActivity {
         switch (getMethod) {
             case "facebook":
 
-                if(getIntent.getStringExtra("name").equals("")){
+                if (getIntent.getStringExtra("name").equals("")) {
                     name.setText("");
-                }else{
+                } else {
                     getname = getIntent.getStringExtra("name");
                     name.setText(getname);
                 }
 
-                if(getIntent.getStringExtra("email").equals("")){
+                if (getIntent.getStringExtra("email").equals("")) {
                     email.setText("");
-                }else{
+                } else {
                     getemail = getIntent.getStringExtra("email");
                     email.setText(getemail);
                     email.setVisibility(View.GONE);
@@ -132,18 +121,18 @@ public class Signup extends AppCompatActivity {
 
                 break;
             case "google":
-                if(getIntent.getStringExtra("name").equals("")){
+                if (getIntent.getStringExtra("name").equals("")) {
                     name.setText("");
 
-                }else{
+                } else {
                     getname = getIntent.getStringExtra("name");
                     name.setText(getname);
                 }
 
-                if(getIntent.getStringExtra("email").equals("")){
+                if (getIntent.getStringExtra("email").equals("")) {
                     email.setText("");
 
-                }else{
+                } else {
                     getemail = getIntent.getStringExtra("email");
                     email.setText(getemail);
                     email.setVisibility(View.GONE);
@@ -657,7 +646,6 @@ public class Signup extends AppCompatActivity {
     }
 
 
-
     public int getRegistrationStatus(String date) {
         String[] yearString = date.split("-");
         int year = Integer.parseInt(yearString[2]);
@@ -681,6 +669,17 @@ public class Signup extends AppCompatActivity {
 
             HttpRequest request = new HttpRequest();
             link = new Links();
+            String dobsubmit = "";
+            String year = dob.getText().toString().split("-")[2];
+            String month = dob.getText().toString().split("-")[1];
+            String date = dob.getText().toString().split("-")[0];
+            if(date.length()==1){
+                date = date+"0";
+            }
+            if(month.length()==1){
+                month = "0"+month;
+            }
+            dobsubmit = date+"-"+month+"-"+year;
 
             return request.PostRequest(link.getRegister()
                     , "userName="
@@ -690,9 +689,7 @@ public class Signup extends AppCompatActivity {
                             + "&userNric="
                             + nric.getText().toString()
                             + "&userDob="
-                            + dob.getText().toString().split("-")[2] + "-"
-                            + dob.getText().toString().split("-")[1] + "-"
-                            + dob.getText().toString().split("-")[0]
+                            + dobsubmit
                             + "&userMobile="
                             + mobile.getText().toString()
                             + "&userSchool="
@@ -700,7 +697,7 @@ public class Signup extends AppCompatActivity {
                             + "&userDiet="
                             + diet.getText().toString()
                             + "&userPwd=" + cfmPassword.getText().toString()
-                            + "&userStatus=2"
+                            + "&userStatus=Pending"
                             //+ String.valueOf(getRegistrationStatus(dob.getText().toString()))
                             //+ "&userMethod=" + getMethod);
                             + "&userMethod=Normal");
@@ -722,13 +719,15 @@ public class Signup extends AppCompatActivity {
                 Log.i("JSON STATUS: ", String.valueOf(status));
 
                 if (status == 200) {
-                    int type = result.getInt("type");
+//                    String type = result.getString("userStatus");
+                    JSONObject user = result.getJSONObject("User");
+                    String type = user.getString("userStatus");
                     String display_message = result.getString("display_message");
                     String display_title = result.getString("display_title");
                     Log.i("JSON DISPLAY MESSAGE", display_message);
 
                     switch (type) {
-                        case 1: {
+                        case "Pending": {
 
                             AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
                             dialog.setCancelable(false);
@@ -740,7 +739,7 @@ public class Signup extends AppCompatActivity {
                             dialogue.show();
                             break;
                         }
-                        case 2: {
+                        case "Accepted": {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
                             dialog.setCancelable(false);
                             dialog.setTitle(display_title);
@@ -760,7 +759,7 @@ public class Signup extends AppCompatActivity {
                             dialogue.show();
                             break;
                         }
-                        case 3: {
+                        case "Rejected": {
 
                             AlertDialog.Builder dialog = new AlertDialog.Builder(Signup.this);
                             dialog.setCancelable(false);
@@ -775,8 +774,6 @@ public class Signup extends AppCompatActivity {
                         }
                     }
 //                    startActivity(new Intent(Signup.this, Home.class));
-
-
                 } else if (status == 404) {
                     Toast.makeText(Signup.this, result.getString("message"), Toast.LENGTH_SHORT).show();
                 }

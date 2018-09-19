@@ -20,7 +20,7 @@ import java.security.GeneralSecurityException;
 public class ScanDetails extends AppCompatActivity {
 
     Button btnRegister, btnHome;
-    TextView tvName, tvMobile, tvNric, tvConsent;
+    TextView tvName, tvMobile, tvNric, tvConsent, tvTribe;
     int studentID;
 
     @Override
@@ -36,7 +36,10 @@ public class ScanDetails extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvMobile = findViewById(R.id.tvMobile);
         tvNric = findViewById(R.id.tvNric);
+        tvTribe = findViewById(R.id.tvtribe);
         tvConsent = findViewById(R.id.tvConsent);
+
+
 
         Intent i = getIntent();
         try{
@@ -50,6 +53,7 @@ public class ScanDetails extends AppCompatActivity {
             tvName.setText(jsonProfile.getString("name"));
             tvNric.setText(jsonProfile.getString("nric"));
             tvMobile.setText(jsonProfile.getString("mobile"));
+            tvTribe.setText(jsonProfile.getString("tribe"));
             if(jsonProfile.getBoolean("parentConsent")){
                 tvConsent.setText("Yes");
             } else {

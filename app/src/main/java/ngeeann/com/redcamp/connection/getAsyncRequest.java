@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 public class getAsyncRequest extends AsyncTask<String, Void , String>{
     OnAsyncResult onAsyncResult;
 
-
     public void setOnResultListener(OnAsyncResult onAsyncResult) {
         if (onAsyncResult != null) {
             this.onAsyncResult = onAsyncResult;

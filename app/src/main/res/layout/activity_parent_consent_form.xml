@@ -93,6 +93,7 @@
         android:textColor="@color/black"
         android:textColorHint="@color/red"
         android:fontFamily="@font/segoe_ui"
+        android:text="Relationship"
         android:hint="Relationship"/>
 
     <EditText

@@ -309,7 +309,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
         //sharing implementation here
-
     }
 
     @Override
@@ -401,9 +400,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         jsonProfile.put("name",sessionManager.getString("name","Not added"));
                         jsonProfile.put("email",sessionManager.getString("email","Not added"));
                         jsonProfile.put("mobile",sessionManager.getString("contact","Not added"));
+                        jsonProfile.put("tribe",sessionManager.getString("tribe","Not added"));
                         jsonProfile.put("nric",sessionManager.getString("nric","Not added"));
                         jsonProfile.put("dob",sessionManager.getString("dob","Not assigned yet"));
-                        jsonProfile.put("parentConsent",sessionManager.getBoolean("hasSignedConsent",false));
+                        jsonProfile.put("parentConsent",sessionManager.getString("hasSignedConsent","").isEmpty());
                         String stringProfile = jsonProfile.toString();
                         encryptedProfile = AESCrypt.encrypt("password",stringProfile);
                         String testLog = AESCrypt.decrypt("password",encryptedProfile);
@@ -516,7 +516,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Boolean hasSignedConsentForm(){
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         if(sessionManager.contains("hasSignedConsent")){
-            return sessionManager.getBoolean("hasSignedConsent",false);
+            return sessionManager.getString("hasSignedConsent","").isEmpty();
         }
         return false;
     }
@@ -524,23 +524,38 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Boolean consentFormRequired(){
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         if(sessionManager.contains("consentRequired")){
-            return sessionManager.getBoolean("consentRequired",false);
+            String consentRequired = sessionManager.getString("consentRequired","");
+            Log.e("CONSENT REQUIRED", consentRequired);
+            if(consentRequired.equals("")){
+                //default
+                return false;
+            }else if(consentRequired.equals("Enabled")){
+                //can go in
+                return true;
+            }else if(consentRequired.equals("Submitted")){
+                //cannot go in
+                return false;
+            }else if(consentRequired.equals("null")){
+                //null string
+                return false;
+            }else{
+                //invalid return type
+                return false;
+            }
         }
         return false;
     }
 
-
-
     private int getDrawerIcon(String tribe){
-        if(tribe.equalsIgnoreCase("Apache")) {
+        if(tribe.equalsIgnoreCase("Apaches")) {
             return R.drawable.apache_drawer_icon;
-        } else if (tribe.equalsIgnoreCase("Centurion")) {
+        } else if (tribe.equalsIgnoreCase("Centurions")) {
             return R.drawable.centurion_drawer_icon;
-        } else if (tribe.equalsIgnoreCase("Ninja")) {
+        } else if (tribe.equalsIgnoreCase("Ninjas")) {
             return R.drawable.ninja_drawer_icon;
-        } else if (tribe.equalsIgnoreCase("Spartan")) {
+        } else if (tribe.equalsIgnoreCase("Spartans")) {
             return R.drawable.spartan_drawer_icon;
-        } else if (tribe.equalsIgnoreCase("Viking")) {
+        } else if (tribe.equalsIgnoreCase("Vikings")) {
             return R.drawable.viking_drawer_icon;
         } else {
             return 404;
