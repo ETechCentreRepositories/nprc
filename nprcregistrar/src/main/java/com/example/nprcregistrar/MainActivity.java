@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         @Override
         protected String doInBackground(String... strings) {
-            String link = "https://www1dev.np.edu.sg/npnet/MobileApi/api/Attend/postattend/?userid=" + strings[0] + "&day=" + strings[1];
+            String link = "https://www1.np.edu.sg/npnet/MobileApi/api/Attend/postattend/?userid=" + strings[0] + "&day=" + strings[1];
             HttpRequest sendRequest = new HttpRequest();
             String params = "";
 //            return "{'status'=200}"; // success
