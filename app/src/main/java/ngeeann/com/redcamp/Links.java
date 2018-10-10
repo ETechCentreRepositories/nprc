@@ -15,9 +15,9 @@ public class Links {
      */
     //private String login = "http://ehostingcentre.com/redcampadmin/API/login.php";
     //private String register = "http://ehostingcentre.com/redcampadmin/API/addUsers.php";
-    private String login = "https://www1dev.np.edu.sg/npnet/MobileApi/api/Login/isAuthenticated/";
-    private String register = "https://www1dev.np.edu.sg/npnet/MobileApi/api/Login/RegisterUser/";
-    private String updateFCMToken = "https://www1dev.np.edu.sg/npnet/MobileApi/api/Notification/updateToken/";
+    private String login = "https://www1.np.edu.sg/npnet/MobileApi/api/Login/isAuthenticated/";
+    private String register = "https://www1.np.edu.sg/npnet/MobileApi/api/Login/RegisterUser/";
+    private String updateFCMToken = "https://www1.np.edu.sg/npnet/MobileApi/api/Notification/updateToken/";
     /**
      * terms of use and privacy policy
      */

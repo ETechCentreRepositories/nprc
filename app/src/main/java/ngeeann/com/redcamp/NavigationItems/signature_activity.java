@@ -431,7 +431,7 @@ public class signature_activity extends AppCompatActivity {
             String number = i.getStringExtra("mobile");
             String relationship = i.getStringExtra("relationship");
             String signature = strings[0];
-            String update = request.PostRequest("https://www1dev.np.edu.sg/npnet/MobileApi/api/Login/parentConcern/?userid="+userid+"&parentName="+name+"&parentMobile="+number+"parentRelation="+relationship+"&parentSign="+signature,"");
+            String update = request.PostRequest("https://www1.np.edu.sg/npnet/MobileApi/api/Login/parentConcern/?userid="+userid+"&parentName="+name+"&parentMobile="+number+"parentRelation="+relationship+"&parentSign="+signature,"");
             return update;
         }
     }
